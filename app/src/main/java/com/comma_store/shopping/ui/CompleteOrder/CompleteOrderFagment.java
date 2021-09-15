@@ -53,6 +53,7 @@ public class CompleteOrderFagment extends Fragment {
 
         Integer max = Collections.max(listsOfItem.getItemModels().stream().map(ItemModel::getDuration).collect(Collectors.toList()));
         // get max
+        // add comment
         return binding.getRoot();
     }
 }
