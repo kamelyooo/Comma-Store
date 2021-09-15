@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cart_graph"
+    app:startDestination="@id/cartFragment">
+
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.comma_store.shopping.ui.Cart.CartFragment"
+        tools:layout="@layout/cart_fragment" >
+        <action
+            android:id="@+id/action_cartFragment_to_completeOrderFagment"
+            app:destination="@id/completeOrderFagment" />
+    </fragment>
+    <fragment
+        android:id="@+id/completeOrderFagment"
+        android:name="com.comma_store.shopping.ui.CompleteOrder.CompleteOrderFagment"
+        android:label="complete_order_fagment"
+        tools:layout="@layout/complete_order_fagment" >
+        <argument
+            android:name="ListsOfItem"
+            app:argType="com.comma_store.shopping.pojo.CompleteOrderModel" />
+    </fragment>
+</navigation>

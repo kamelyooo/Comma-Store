@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/get_items_graph"
+    app:startDestination="@+id/SubCategoryItems">
+    <fragment
+        android:id="@+id/SubCategoryItems"
+        android:name="com.comma_store.shopping.ui.SubCategoryItems.SubCategoryItemsFragment"
+        android:label="SearchFragment" >
+        <argument
+            android:name="subCategory_id"
+            app:argType="integer"
+            android:defaultValue="10" />
+        <action
+            android:id="@+id/action_SubCategoryItems_to_itemDetailsFragment"
+            app:destination="@id/itemDetailsFragment" />
+        <action
+            android:id="@+id/action_SubCategoryItems_to_search_graph"
+            app:destination="@id/search_graph" />
+    </fragment>
+    <fragment
+        android:id="@+id/itemDetailsFragment"
+        android:name="com.comma_store.shopping.ui.ItemDetails.ItemDetailsFragment"
+        android:label="item_details_fragment"
+        tools:layout="@layout/item_details_fragment" >
+        <argument
+            android:name="itemDetails"
+            app:argType="com.comma_store.shopping.pojo.ItemModel"
+            app:nullable="true" />
+    </fragment>
+    <include app:graph="@navigation/search_graph" />
+</navigation>

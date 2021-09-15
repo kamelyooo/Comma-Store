@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/_5sdp"
+    android:layout_marginEnd="@dimen/_5sdp"
+    android:background="@drawable/custom_item_shape"
+    android:elevation="2dp">
+
+    <View
+        android:id="@+id/view4"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:background="@color/HeaderTextColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cm_Image_cartItem" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/Error_Layout_Item_Cart"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/warning_not_enough_cart_item_shap"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/warningImage_CartItem"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_warning_not_enough_cart_item_shap" />
+
+        <TextView
+            android:id="@+id/warningMassage_CartItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:maxLines="2"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/closeWarning_itemCart"
+            app:layout_constraintStart_toEndOf="@+id/warningImage_CartItem"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="there is no enough amount of item ..the avalible amount is (5)" />
+
+        <ImageView
+            android:id="@+id/closeWarning_itemCart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_2sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_close_24" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/cm_spin_kit_CartItem"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_gravity="center"
+        android:src="@drawable/comma"
+        app:layout_constraintBottom_toBottomOf="@+id/cm_Image_cartItem"
+        app:layout_constraintEnd_toEndOf="@+id/cm_Image_cartItem"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cm_Image_cartItem"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/cm_Image_cartItem"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_110sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Error_Layout_Item_Cart"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/cm_title_cartItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:textSize="@dimen/_16sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cm_Image_cartItem"
+        app:layout_constraintTop_toBottomOf="@+id/Error_Layout_Item_Cart"
+        tools:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat" />
+
+    <TextView
+        android:id="@+id/cm_PriceAfter_Cart_item"
+        style="@style/SubHeaderTextViewFont"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:layout_constraintStart_toEndOf="@+id/cm_Image_cartItem"
+        app:layout_constraintTop_toBottomOf="@+id/cm_title_cartItem"
+        tools:text="3000 EGP" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cm_DescountLayout_CartItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cm_Image_cartItem"
+        app:layout_constraintTop_toBottomOf="@+id/cm_PriceAfter_Cart_item">
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/HeaderTextColor"
+            app:layout_constraintBottom_toBottomOf="@+id/cm_PriceBefor_Cart_item"
+            app:layout_constraintEnd_toEndOf="@+id/cm_PriceBefor_Cart_item"
+            app:layout_constraintStart_toStartOf="@+id/cm_PriceBefor_Cart_item"
+            app:layout_constraintTop_toTopOf="@+id/cm_PriceBefor_Cart_item" />
+
+        <TextView
+            android:id="@+id/cm_PriceBefor_Cart_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/HeaderTextColor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="2000 EGP" />
+
+        <TextView
+            android:id="@+id/cm_DescountPercentage_cart_Item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:text="50 %Off"
+            android:textColor="@android:color/holo_red_dark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cm_PriceBefor_Cart_item"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/cm_MinusButton_CartItem"
+        style="@style/ButtonStyle"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:background="@drawable/buttons_shape"
+        android:text="-"
+        android:textSize="@dimen/_18sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view4" />
+
+    <TextView
+        android:id="@+id/cm_QuantityTV_CartItem"
+        style="@style/SubHeaderTextViewFont"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:gravity="center"
+        android:text="0"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/cm_MinusButton_CartItem"
+        app:layout_constraintStart_toEndOf="@+id/cm_MinusButton_CartItem"
+        app:layout_constraintTop_toTopOf="@+id/cm_MinusButton_CartItem" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/cm_PlusButton_CartItem"
+        style="@style/ButtonStyle"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:background="@drawable/buttons_shape"
+        android:text="+"
+        android:textSize="@dimen/_18sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/cm_MinusButton_CartItem"
+        app:layout_constraintStart_toEndOf="@+id/cm_QuantityTV_CartItem"
+        app:layout_constraintTop_toTopOf="@+id/cm_MinusButton_CartItem" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cm_Delete_cartItem"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:layout_constraintEnd_toStartOf="@+id/textView16"
+        app:layout_constraintStart_toEndOf="@+id/cm_PlusButton_CartItem"
+        app:layout_constraintTop_toBottomOf="@+id/view4">
+
+        <ImageView
+            android:id="@+id/imageView9"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_delet_cart_item" />
+
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:text="Remove"
+            android:textColor="@color/HeaderTextColor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView9"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/cm_total_CartItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:textColor="@color/HeaderTextColor"
+        app:layout_constraintBottom_toBottomOf="@+id/cm_Delete_cartItem"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view4"
+        tools:text="20000" />
+
+    <TextView
+        android:id="@+id/textView16"
+        style="@style/SubHeaderTextViewFont"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:text="Total"
+        app:layout_constraintBottom_toBottomOf="@+id/cm_Delete_cartItem"
+        app:layout_constraintEnd_toStartOf="@+id/cm_total_CartItem"
+        app:layout_constraintTop_toBottomOf="@+id/view4" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

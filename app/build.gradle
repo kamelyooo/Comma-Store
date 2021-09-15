@@ -1,0 +1,118 @@
+plugins {
+    id 'com.android.application'
+    id 'com.google.gms.google-services'
+    id 'kotlin-android'
+    id 'androidx.navigation.safeargs'
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        applicationId "com.comma_store.shopping"
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        // Flag to enable support for the new language APIs
+        coreLibraryDesugaringEnabled true
+        // Sets Java compatibility to Java 8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    dataBinding{
+        enabled = true
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.appcompat:appcompat:1.3.0'
+    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.navigation:navigation-fragment:2.3.5'
+    implementation 'androidx.navigation:navigation-ui:2.3.5'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    //kotlin extention
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.5.20"
+    implementation 'androidx.core:core-ktx:1.6.0'
+
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.9'
+    // sdp
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
+    //picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    //retrofit
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    //rxjava2
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.9'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+
+    //rxjava2 converter
+   implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
+
+
+
+    //picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    //Firebase
+    implementation platform('com.google.firebase:firebase-bom:28.2.0')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-messaging'
+
+    //glide
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+
+    //slider
+    implementation 'com.github.smarteist:autoimageslider:1.4.0'
+    //spinKit
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+    //pagging
+    def paging_version = "2.0.0"
+
+    implementation "androidx.paging:paging-runtime:$paging_version"
+    implementation "androidx.paging:paging-rxjava2:$paging_version"
+
+    //FlexboxLayoutManager for recycleview
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
+    //Dialogs
+    implementation 'com.crowdfire.cfalertdialog:cfalertdialog:1.1.0'
+    //card Slider
+    implementation 'com.github.IslamKhSh:CardSlider:1.0.1'
+
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.10'
+
+    //room
+    def room_version = "2.3.0"
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-rxjava2:$room_version"
+
+    //flashBar
+    implementation 'com.andrognito.flashbar:flashbar:1.0.3'
+    //location picker
+    implementation 'com.schibstedspain.android:leku:8.0.0'
+    //awesomeDialog
+    implementation 'com.github.blennerSilva:AwesomeDialog:2.0.5'
+}

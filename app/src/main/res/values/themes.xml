@@ -1,0 +1,82 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.CommaStore" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/ToolBar</item>
+        <item name="colorPrimaryVariant">@color/white</item>
+        <item name="colorOnPrimary">@color/ToolBar</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="autoCompleteTextViewStyle">@style/cursorColor</item>
+    </style>
+
+
+    <!--    header Font text home Style-->
+    <style name="HeaderTextViewFontProfile" parent="Widget.AppCompat.TextView">
+        <item name="fontFamily" >sans-serif-thin</item>
+        <item name="android:textSize">@dimen/_25sdp</item>
+        <item name="android:textColor">#d8e3e7</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!--    header Font text logIN Style-->
+    <style name="HeaderTextViewFontlogIN" parent="Widget.AppCompat.TextView">
+        <item name="fontFamily" >sans-serif-thin</item>
+        <item name="android:textSize">@dimen/_20sdp</item>
+        <item name="android:textColor">@color/HeaderTextColor</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+    <style name="SubHeaderTextViewFontProfile" parent="Widget.AppCompat.TextView">
+        <item name="fontFamily" >sans-serif-thin</item>
+        <item name="android:textSize">@dimen/_17sdp</item>
+        <item name="android:textColor">#d8e3e7</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <!--    header Font text  Style-->
+    <style name="HeaderTextViewFont" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">@dimen/_20sdp</item>
+        <item name="android:textColor">#132c33</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="shopNowButton" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">@dimen/_12sdp</item>
+        <item name="android:textColor">@color/ToolBar</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+    <!--    header Font text  Style-->
+    <style name="SubHeaderTextViewFont" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">@dimen/_12sdp</item>
+        <item name="android:textColor">#132c33</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="roundedImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/_5sdp</item>
+    </style>
+
+<!--    change color of cursor in search view-->
+    <style name="cursorColor" parent="Widget.AppCompat.SearchView">
+        <item name="android:textCursorDrawable">@drawable/cursor_shape</item>
+        <item name="android:textSize">@dimen/_12sdp</item>
+        <item name="android:textColorHint">@color/Buttons</item>
+    </style>
+    <style name="ButtonStyle" parent="Widget.AppCompat.Button">
+        <item name="android:textColor">@color/BottomNavBar</item>
+        <item name="background">@drawable/buttons_shape</item>
+        <item name="android:layout_height">@dimen/_50sdp</item>
+    </style>
+    <style name="Theme.CommaStore.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.CommaStore.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.CommaStore.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+</resources>

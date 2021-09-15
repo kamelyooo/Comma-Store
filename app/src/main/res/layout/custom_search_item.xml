@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/Cm_SearchItemLayOut"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/spin_kit_SerachItem"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_gravity="center"
+        android:src="@drawable/comma"
+        app:SpinKit_Color="@color/ToolBar"
+        app:layout_constraintBottom_toBottomOf="@+id/Cm_ImageSearchItem"
+        app:layout_constraintEnd_toEndOf="@+id/Cm_ImageSearchItem"
+        app:layout_constraintStart_toStartOf="@+id/Cm_ImageSearchItem"
+        app:layout_constraintTop_toTopOf="@+id/Cm_ImageSearchItem"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/Cm_ImageSearchItem"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_110sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/Cm_TitleSearchItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:textSize="@dimen/_16sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/_120sdp" />
+
+    <TextView
+        android:id="@+id/Cm_PriceAfterSearchItem"
+        style="@style/SubHeaderTextViewFont"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_7sdp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toBottomOf="@+id/Cm_TitleSearchItem"
+        tools:text="EGP 6000" />
+
+    <TextView
+        android:id="@+id/Cm_PriceBeforeSearchItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:textColor="@color/HeaderTextColor"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toBottomOf="@+id/Cm_PriceAfterSearchItem"
+        tools:text="EGP 8000" />
+
+    <View
+        android:id="@+id/Cm_ViewSearchItem"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/HeaderTextColor"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/Cm_PriceBeforeSearchItem"
+        app:layout_constraintEnd_toEndOf="@+id/Cm_PriceBeforeSearchItem"
+        app:layout_constraintStart_toStartOf="@+id/Cm_PriceBeforeSearchItem"
+        app:layout_constraintTop_toTopOf="@+id/Cm_PriceBeforeSearchItem" />
+
+    <TextView
+        android:id="@+id/Cm_DescountPecentageSearchItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:textColor="@android:color/holo_red_dark"
+        app:layout_constraintBottom_toBottomOf="@+id/Cm_PriceBeforeSearchItem"
+        app:layout_constraintStart_toEndOf="@+id/Cm_PriceBeforeSearchItem"
+        app:layout_constraintTop_toTopOf="@+id/Cm_PriceBeforeSearchItem"
+        tools:text="50%OFF" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

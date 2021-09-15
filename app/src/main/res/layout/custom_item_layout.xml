@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/CustomItemLayoutType0"
+    android:layout_width="@dimen/_110sdp"
+    android:layout_height="@dimen/_180sdp"
+    android:layout_margin="@dimen/_2sdp"
+    android:background="@drawable/custom_item_shape"
+    android:elevation="2dp">
+
+    <ImageView
+        android:id="@+id/cm_Item_Image"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_105sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/Custom_item_Title"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-thin"
+        android:maxLines="2"
+        android:paddingEnd="@dimen/_5sdp"
+        android:textColor="@color/HeaderTextColor"
+        android:textSize="@dimen/_10sdp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toBottomOf="@+id/cm_Item_Image"
+        tools:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat" />
+
+    <TextView
+        android:id="@+id/Custom_Item_PriceAfter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/HeaderTextColor"
+        android:textSize="@dimen/_11sdp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toBottomOf="@+id/Custom_item_Title"
+        tools:text="5000" />
+
+
+    <TextView
+        android:id="@+id/Custom_Item_PriceBefor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/HeaderTextColor"
+        android:textSize="@dimen/_9sdp"
+        android:visibility="invisible"
+
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toBottomOf="@+id/Custom_Item_PriceAfter"
+        tools:text="6000" />
+
+    <View
+        android:id="@+id/Custom_Item_View"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/HeaderTextColor"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/Custom_Item_PriceBefor"
+        app:layout_constraintEnd_toEndOf="@+id/Custom_Item_PriceBefor"
+        app:layout_constraintStart_toStartOf="@+id/Custom_Item_PriceBefor"
+        app:layout_constraintTop_toBottomOf="@+id/Custom_Item_PriceAfter" />
+
+
+
+    <TextView
+        android:id="@+id/Custom_Item_Precentage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="@dimen/_9sdp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@+id/Custom_Item_View"
+        app:layout_constraintTop_toBottomOf="@+id/Custom_Item_PriceAfter"
+        tools:text="10 OFF" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/_5sdp" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
+        app:layout_constraintEnd_toEndOf="@+id/cm_Item_Image"
+        app:layout_constraintTop_toTopOf="@+id/cm_Item_Image"
+        app:srcCompat="@drawable/ic_favorite_add_outlined" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_graph">
+
+    <fragment
+        android:id="@+id/logInFragment"
+        android:name="com.comma_store.shopping.ui.LogInFragment.LogInFragment"
+        android:label="log_in_fragment"
+        tools:layout="@layout/log_in_fragment" >
+        <action
+            android:id="@+id/action_logInFragment_to_registrationFragment"
+            app:destination="@id/registrationFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_logInFragment_to_recieveCodeVerificationFragment"
+            app:destination="@id/CodeVerificationFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_logInFragment_to_sendCodeVerificationFragment"
+            app:destination="@id/sendCodeVerificationFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/registrationFragment"
+        android:name="com.comma_store.shopping.ui.RegistrationFragment.RegistrationFragment"
+        android:label="registration_fragment"
+        tools:layout="@layout/registration_fragment" >
+        <action
+            android:id="@+id/action_registrationFragment_to_logInFragment"
+            app:destination="@id/logInFragment"
+            app:popUpTo="@id/login_graph" />
+        <action
+            android:id="@+id/action_registrationFragment_to_recieveCodeVerificationFragment"
+            app:destination="@id/CodeVerificationFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/changePasswordTMPFragment"
+        android:name="com.comma_store.shopping.ui.ChangePasswordTMP.ChangePasswordTMPFragment"
+        android:label="change_password_tmp_fragment"
+        tools:layout="@layout/change_password_tmp_fragment" >
+        <argument
+            android:name="TmpToken"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="Email" />
+        <argument
+            android:name="Email"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="Email" />
+        <action
+            android:id="@+id/action_changePasswordTMPFragment_to_logInFragment"
+            app:destination="@id/logInFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/CodeVerificationFragment"
+        android:name="com.comma_store.shopping.ui.CodeVerification.CodeVerificationFragment"
+        android:label="recieve_code_verification_fragment"
+        tools:layout="@layout/code_verification_fragment" >
+        <argument
+            android:name="Email"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="email" />
+        <argument android:name="TmpToken"
+            android:defaultValue="TmpToken" />
+    </fragment>
+    <fragment
+        android:id="@+id/sendCodeVerificationFragment"
+        android:name="com.comma_store.shopping.ui.SendCodeVerification.SendCodeVerificationFragment"
+        android:label="send_code_verification_fragment"
+        tools:layout="@layout/send_code_verification_fragment" >
+        <action
+            android:id="@+id/action_sendCodeVerificationFragment_to_changePasswordTMPFragment"
+            app:destination="@id/changePasswordTMPFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_sendCodeVerificationFragment_to_recieveCodeVerificationFragment"
+            app:destination="@id/CodeVerificationFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="Resone"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <action
+            android:id="@+id/action_sendCodeVerificationFragment_to_registrationFragment"
+            app:destination="@id/registrationFragment" />
+    </fragment>
+</navigation>

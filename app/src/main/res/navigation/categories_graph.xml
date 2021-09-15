@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/categories_graph"
+    app:startDestination="@id/categoriesFragment">
+    <fragment
+        android:id="@+id/categoriesFragment"
+        android:name="com.comma_store.shopping.ui.Categories.CategoriesFragment"
+        tools:layout="@layout/categories_fragment" >
+        <action
+            android:id="@+id/action_categoriesFragment_to_get_items_graph"
+            app:destination="@id/get_items_graph" >
+            <argument
+                android:name="subCategory_id"
+                app:argType="integer"
+                android:defaultValue="10" />
+        </action>
+        <action
+            android:id="@+id/action_categoriesFragment_to_search_graph"
+            app:destination="@id/search_graph" />
+    </fragment>
+    <include app:graph="@navigation/search_graph" />
+    <include app:graph="@navigation/get_sub_items_graph" />
+</navigation>

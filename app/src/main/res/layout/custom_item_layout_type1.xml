@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cm_layout_item_Type1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_2sdp"
+    android:background="@drawable/custom_item_shape_type1">
+
+    <ImageView
+        android:id="@+id/cm_Item_Image_type1"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_105sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/Custom_item_Title_type1"
+        android:layout_width="@dimen/_90sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="@color/HeaderTextColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cm_Item_Image_type1"
+        tools:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:text="EGP"
+        android:textColor="@color/HeaderTextColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Custom_item_Title_type1" />
+
+    <TextView
+        android:id="@+id/Custom_Item_PriceAfter_type1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_2sdp"
+        android:textColor="@color/HeaderTextColor"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textView5"
+        app:layout_constraintStart_toEndOf="@+id/textView5"
+        app:layout_constraintTop_toTopOf="@+id/textView5"
+        tools:text="5000" />
+
+    <TextView
+        android:id="@+id/Custom_Item_EGP_type1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:text="EGP"
+        android:textColor="@color/HeaderTextColor"
+        android:textSize="12sp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+    <TextView
+        android:id="@+id/Custom_Item_PriceBefor_type1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_1sdp"
+        android:textColor="@color/HeaderTextColor"
+        android:textSize="12sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/Custom_Item_EGP_type1"
+        app:layout_constraintStart_toEndOf="@+id/Custom_Item_EGP_type1"
+        app:layout_constraintTop_toTopOf="@+id/Custom_Item_EGP_type1"
+        tools:text="60" />
+
+    <View
+        android:id="@+id/Custom_Item_View_type1"
+        android:layout_width="37dp"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@color/HeaderTextColor"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/Custom_Item_EGP_type1"
+        app:layout_constraintEnd_toEndOf="@+id/Custom_Item_PriceBefor_type1"
+        app:layout_constraintStart_toStartOf="@+id/Custom_Item_EGP_type1"
+        app:layout_constraintTop_toTopOf="@+id/Custom_Item_EGP_type1" />
+
+    <TextView
+        android:id="@+id/Custom_Item_Off_type1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:text="%OFF"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="@dimen/_15sdp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Custom_Item_Precentage_type1" />
+
+    <TextView
+        android:id="@+id/Custom_Item_Precentage_type1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_7sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="@dimen/_22sdp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cm_Item_Image_type1"
+        tools:text="10" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

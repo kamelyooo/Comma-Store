@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sort_by">الترتيب</string>
+    <string name="egp">ج.م</string>
+    <string name="add_to_cart">أضف الى السله</string>
+    <string name="Select_Sort_Option">إختار الترتيب</string>
+    <string name="EGP">" ج.م"</string>
+    <string name="off">% خصم</string>
+    <string name="duration">مده التوصيل</string>
+    <string name="colors">الالوان</string>
+    <string name="description">الوصف</string>
+    <string name="language">اللغه</string>
+    <string name="langAR">English</string>
+    <string-array name="DialgoArray">
+        <item>من الاحدث الى الاقدم</item>
+        <item>من الاقدم الى الاحدث</item>
+        <item>من الاغلى الى الارخص</item>
+        <item>من الارخص الى الاغلى</item>
+    </string-array>
+</resources>
