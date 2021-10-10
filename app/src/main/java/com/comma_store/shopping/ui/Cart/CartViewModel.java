@@ -19,6 +19,8 @@ import com.comma_store.shopping.pojo.CompleteOrderModel;
 import com.comma_store.shopping.pojo.ItemModel;
 import com.comma_store.shopping.pojo.Resource;
 
+import org.intellij.lang.annotations.JdkConstants;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -33,12 +35,12 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class CartViewModel extends ViewModel {
-    MutableLiveData<Integer>ScreenState=new MutableLiveData<>();
+
     List<CartItem> cartItemsLocalLiveData = Arrays.asList();
     MutableLiveData<List<ItemModel>> cartItemsLiveData =new MutableLiveData<>();
     List<Integer> cartItemsIds;
     boolean vaild,validating;
-    CompleteOrderModel  completeOrderModel;
+    CompleteOrderModel lists;
 
     CartFragmentDirections.ActionCartFragmentToCompleteOrderFagment action;
 
@@ -88,9 +90,6 @@ public class CartViewModel extends ViewModel {
                 }else {
                     getDataDone(cartFragment);
                 }
-
-
-
             }
 
             @Override
@@ -109,11 +108,9 @@ public class CartViewModel extends ViewModel {
 
     }
 
-    public void validateList(CartFragment cartFragment) {
+    public void validateList() {
         vaild = true;
         validating=true;
-        getItem(cartFragment);
-
     }
 
     private void setVaild(List<ItemModel>itemModels,CartFragment cartFragment){
@@ -134,11 +131,9 @@ public class CartViewModel extends ViewModel {
             //make validat  if log in or not
 
             if (SharedPreferencesUtils.getInstance(cartFragment.getActivity()).getIsLogin()) {
-                completeOrderModel = new CompleteOrderModel();
-                completeOrderModel.setItemModels(itemModels);
-                completeOrderModel.setCartItemList(cartItemsLocalLiveData);
-                action = CartFragmentDirections.actionCartFragmentToCompleteOrderFagment(completeOrderModel);
-                action.setListsOfItem(completeOrderModel);
+                lists = new CompleteOrderModel(itemModels,cartItemsLocalLiveData);
+                action = CartFragmentDirections.actionCartFragmentToCompleteOrderFagment(lists);
+                action.setListsOfItem(lists);
                 Navigation.findNavController(cartFragment.getView()).navigate(action);
 
 
@@ -148,13 +143,12 @@ public class CartViewModel extends ViewModel {
                 cartFragment.startActivity(intent);
 
             }
-            getDataDone(cartFragment);
 
         } else {
 
             Toast.makeText(cartFragment.getActivity(), "You Have To Make All Items Valid", Toast.LENGTH_SHORT).show();
-            getDataDone(cartFragment);
         }
+        getDataDone(cartFragment);
         validating=false;
     }
 

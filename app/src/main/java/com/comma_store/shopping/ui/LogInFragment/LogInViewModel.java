@@ -42,7 +42,8 @@ public class LogInViewModel extends ViewModel {
                     SharedPreferencesUtils.getInstance(logInFragment.getActivity()).setCustomerInfo(customerModelResource.getData().getName(),
                             customerModelResource.getData().getEmail(),
                             customerModelResource.getData().getPhone(), customerModelResource.getData().getLatitude() + "",
-                            customerModelResource.getData().getLongitude() + "", customerModelResource.getData().getAddress());
+                            customerModelResource.getData().getLongitude() + "", customerModelResource.getData().getAddress(),
+                            customerModelResource.getData().getApi_key());
                     SharedPreferencesUtils.getInstance(logInFragment.getActivity()).setIsLogin(true);
                     logInFragment.getActivity().finish();
                 } else if (customerModelResource.getStatus()==400){

@@ -60,7 +60,8 @@ public class CodeVerificationViewModel extends ViewModel {
                     SharedPreferencesUtils.getInstance(codeVerificationFragment.getActivity()).setCustomerInfo(customerModelResource.getData().getName(),
                             customerModelResource.getData().getEmail(),
                             customerModelResource.getData().getPhone(), customerModelResource.getData().getLatitude() + "",
-                            customerModelResource.getData().getLongitude() + "", customerModelResource.getData().getAddress());
+                            customerModelResource.getData().getLongitude() + "", customerModelResource.getData().getAddress()
+                    ,customerModelResource.getData().getApi_key());
                     SharedPreferencesUtils.getInstance(codeVerificationFragment.getActivity()).setIsLogin(true);
                     codeVerificationFragment.getActivity().finish();
                 }

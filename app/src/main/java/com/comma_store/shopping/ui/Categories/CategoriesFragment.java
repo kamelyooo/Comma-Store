@@ -39,7 +39,6 @@ import java.util.List;
 public class CategoriesFragment extends Fragment {
     CategoriesReycycleAdapter categoriesReycycleAdapter;
     SubCategoriesRecycleAdapter subCategoriesRecycleAdapter;
-    FlexboxLayoutManager layoutManager;
     CategoriesViewModel mViewModel;
     Button tryAgainErrorScreen;
     CategoriesFragmentBinding binding;
@@ -50,7 +49,7 @@ public class CategoriesFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(CategoriesViewModel.class);
         loadData();
-//        mViewModel.showSpinKitCategories = true;
+        mViewModel.showSpinKitCategories = true;
     }
 
     private void loadData() {

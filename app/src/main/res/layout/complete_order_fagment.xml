@@ -23,10 +23,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/CompleteOrderScreen"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -83,7 +85,8 @@
             <ScrollView
                 android:id="@+id/scrollView3"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/constraintLayout200"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -99,6 +102,7 @@
                     tools:layout_editor_absoluteY="0dp">
 
                     <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/ReviewTheOrderRecycleView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
@@ -209,7 +213,7 @@
                         android:text="Order Summary"
                         android:textSize="@dimen/_16sdp"
                         app:layout_constraintStart_toStartOf="@+id/guideline24"
-                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout5" />
+                        app:layout_constraintTop_toBottomOf="@+id/CustomerNote" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/constraintLayout5"
@@ -254,7 +258,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/_15sdp"
+                            android:enabled="false"
                             android:text="Apply"
+                            android:textColor="@color/DisAbleColor"
                             app:layout_constraintBottom_toBottomOf="@+id/promoCodeEditText"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="@+id/promoCodeEditText" />
@@ -329,6 +335,7 @@
                             android:layout_marginTop="8dp"
                             android:background="@color/HeaderTextColor"
                             app:layout_constraintEnd_toStartOf="@+id/guideline26"
+                            app:layout_constraintStart_toStartOf="@+id/guideline27"
                             app:layout_constraintTop_toBottomOf="@+id/textView43" />
 
                         <TextView
@@ -413,6 +420,24 @@
                             app:layout_constraintTop_toBottomOf="@+id/textView46" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <EditText
+                        android:id="@+id/CustomerNote"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@drawable/search_view_shape"
+                        android:ems="10"
+                        android:gravity="center|start"
+                        android:hint="Enter Your Note (Optional)"
+                        android:inputType="textMultiLine"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingTop="@dimen/_10sdp"
+                        android:paddingBottom="@dimen/_10sdp"
+                        android:theme="@style/cursorColor"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline25"
+                        app:layout_constraintStart_toStartOf="@+id/guideline24"
+                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout5" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>
         </androidx.constraintlayout.widget.ConstraintLayout>

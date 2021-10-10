@@ -52,10 +52,7 @@ public class CartFragment extends Fragment {
 
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -128,7 +125,9 @@ public class CartFragment extends Fragment {
                 binding.CompleteOrderTV.setText("Please Wait");
                 binding.spinKitCompleteYourOrderBtn.setVisibility(View.VISIBLE);
                 binding.spinKitCartScreen.setVisibility(View.VISIBLE);
-               mViewModel. validateList(CartFragment.this);
+               mViewModel. validateList();
+                mViewModel.getItemsCartLocal(CartFragment.this);
+
             }
         });
         return root;

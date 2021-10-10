@@ -135,13 +135,16 @@ public class SharedPreferencesUtils {
                                String customerPhone ,
                                 String customerLat,
                                 String customerLong,
-                                String customerAddress){
+                                String customerAddress,
+                                String apiKey
+    ){
         mEditor.putString(CustomerName,customerName);
         mEditor.putString(CustomerEmail,customerEmail);
         mEditor.putString(CustomerPhone,customerPhone);
         mEditor.putString(CustomerLat,customerLat);
         mEditor.putString(CustomerLong,customerLong);
         mEditor.putString(CustomerAddress,customerAddress);
+        mEditor.putString(ApiKey,apiKey);
         mEditor.apply();
     }
 }
