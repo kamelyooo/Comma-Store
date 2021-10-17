@@ -1,7 +1,6 @@
 package com.comma_store.shopping.ui.Cart;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -18,8 +17,6 @@ import com.comma_store.shopping.pojo.CartItem;
 import com.comma_store.shopping.pojo.CompleteOrderModel;
 import com.comma_store.shopping.pojo.ItemModel;
 import com.comma_store.shopping.pojo.Resource;
-
-import org.intellij.lang.annotations.JdkConstants;
 
 import java.util.Arrays;
 import java.util.List;
@@ -57,7 +54,7 @@ public class CartViewModel extends ViewModel {
                     public void onSuccess(@NonNull List<CartItem> cartItems) {
                         if (!cartItems.isEmpty()) {
                             cartItemsLocalLiveData= cartItems;
-                            cartItemsIds = cartItems.stream().map(CartItem::getId).collect(Collectors.toList());
+                            cartItemsIds = cartItems.stream().map(CartItem::getItem_id).collect(Collectors.toList());
                             getItem(cartFragment);
                         }else {
                             cartFragment.binding.cartScreen.setVisibility(View.INVISIBLE);
@@ -117,7 +114,7 @@ public class CartViewModel extends ViewModel {
         Optional<ItemModel> itemModelFound;
         for (int i = 0; i < cartItemsLocalLiveData.size(); i++) {
             int finalI = i;
-            itemModelFound = itemModels.parallelStream().filter(x -> x.getId() ==cartItemsLocalLiveData.get(finalI).getId()).findFirst();
+            itemModelFound = itemModels.parallelStream().filter(x -> x.getId() ==cartItemsLocalLiveData.get(finalI).getItem_id()).findFirst();
             if (itemModelFound.isPresent()) {
                 if (itemModelFound.get().getCount() < cartItemsLocalLiveData.get(finalI).getQuantity()||itemModelFound.get().getCount() == 0) {
                     vaild = false;

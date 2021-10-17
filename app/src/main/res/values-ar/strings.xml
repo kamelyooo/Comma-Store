@@ -11,6 +11,8 @@
     <string name="description">الوصف</string>
     <string name="language">اللغه</string>
     <string name="langAR">English</string>
+    <string name="comma">كوما</string>
+    <string name="quantity">الكميه :</string>
     <string-array name="DialgoArray">
         <item>من الاحدث الى الاقدم</item>
         <item>من الاقدم الى الاحدث</item>

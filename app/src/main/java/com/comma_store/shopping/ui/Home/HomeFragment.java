@@ -1,8 +1,6 @@
 package com.comma_store.shopping.ui.Home;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -25,6 +22,7 @@ import com.comma_store.shopping.R;
 import com.comma_store.shopping.Utils.SharedPreferencesUtils;
 import com.comma_store.shopping.databinding.FragmentHomeBinding;
 
+
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
@@ -32,6 +30,7 @@ public class HomeFragment extends Fragment {
     Button RetryAgainBtn;
     String deviceToken;
     boolean deviceTokenSentBoolean;
+    HomeFragmentDirections.ActionHomeFragmentToGetItemsGraph action;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,6 +61,26 @@ public class HomeFragment extends Fragment {
           homeViewModel.AddDeviceTokenGuest(deviceToken, getActivity());
 
         }
+
+        if (SharedPreferencesUtils.getInstance(getActivity()).getNotificationNavigation()!=null){
+            int notificationId = SharedPreferencesUtils.getInstance(getActivity()).getNotificationId();
+            switch (SharedPreferencesUtils.getInstance(getActivity()).getNotificationNavigation()){
+                case "order":
+//                    Toast.makeText(this, "order"+id, Toast.LENGTH_SHORT).show();
+                    break;
+                case "promoCode":
+//                    Toast.makeText(this, "promoCode"+id, Toast.LENGTH_SHORT).show();
+                    break;
+                case "offers_sub":
+                    action = HomeFragmentDirections.actionHomeFragmentToGetItemsGraph();
+                    action.setSubCategoryId(notificationId);
+                    Navigation.findNavController(getActivity(),R.id.nav_host_fragment).navigate(action);
+                    break;
+            }
+
+            SharedPreferencesUtils.getInstance(getActivity()).setNotificationId(-1);
+            SharedPreferencesUtils.getInstance(getActivity()).setNotificationNavigation(null);
+        }
         homeViewModel.getConnect().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean connect) {
@@ -81,10 +100,11 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
+
         binding.etSearchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_search_graph);
+                Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_search_graph);
             }
         });
         RetryAgainBtn.setOnClickListener(new View.OnClickListener() {
@@ -98,6 +118,5 @@ public class HomeFragment extends Fragment {
         });
         return root;
     }
-
 
 }

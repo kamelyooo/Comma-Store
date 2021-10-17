@@ -5,37 +5,24 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.comma_store.shopping.Utils.NavigationUtils;
 import com.comma_store.shopping.Utils.SharedPreferencesUtils;
 import com.comma_store.shopping.data.CartDataBase;
 import com.comma_store.shopping.databinding.ActivityMainBinding;
 import com.comma_store.shopping.pojo.CartItem;
-import com.comma_store.shopping.ui.Home.HomeFragmentDirections;
-import com.comma_store.shopping.ui.Home.HomeViewModel;
 import com.google.android.material.badge.BadgeDrawable;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-
-import io.reactivex.SingleObserver;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
     NavHostFragment navHostFragment;
@@ -83,15 +70,16 @@ public class MainActivity extends AppCompatActivity {
 
         if(getIntent().hasExtra("navigation")){
             int id = getIntent().getIntExtra("id",0);
+            SharedPreferencesUtils.getInstance(this).setNotificationId(id);
             switch (getIntent().getStringExtra("navigation")){
                 case "order":
-                    Toast.makeText(this, "order"+id, Toast.LENGTH_SHORT).show();
+                    SharedPreferencesUtils.getInstance(this).setNotificationNavigation("order");
                     break;
                 case "promoCode":
-                    Toast.makeText(this, "promoCode"+id, Toast.LENGTH_SHORT).show();
+                    SharedPreferencesUtils.getInstance(this).setNotificationNavigation("promoCode");
                     break;
                 case "offers_sub":
-//                    Toast.makeText(this, "offers_sub"+id, Toast.LENGTH_SHORT).show();
+                    SharedPreferencesUtils.getInstance(this).setNotificationNavigation("offers_sub");
                     break;
             }
         }
@@ -122,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
         badgeDrawable.setBadgeTextColor(Color.WHITE);
         badgeDrawable.setMaxCharacterCount(3);
         badgeDrawable.setNumber(number);
+        badgeDrawable.setBadgeGravity(BadgeDrawable.TOP_END);
         badgeDrawable.setVisible(visibilty);
     }
 }

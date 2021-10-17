@@ -16,7 +16,7 @@
 
         <com.github.ybq.android.spinkit.SpinKitView
             android:id="@+id/spin_kit"
-            style="@style/SpinKitView.WanderingCubes"
+            style="@style/SpinKitStyle"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_40sdp"
             android:layout_gravity="center"
@@ -36,12 +36,13 @@
             <include layout="@layout/error_internet_connection"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/home_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="invisible"
-            >
+            android:visibility="invisible">
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycleParent"
                 android:layout_width="match_parent"
@@ -52,7 +53,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/frameLayout4" />
 
-            <FrameLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/frameLayout4"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
@@ -60,12 +61,27 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
+                <androidx.constraintlayout.helper.widget.Flow
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    app:constraint_referenced_ids="constraintLayout6,etSearchView"
+
+                    app:flow_horizontalGap="@dimen/_10sdp"
+                    app:flow_horizontalStyle="spread_inside"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <EditText
                     android:id="@+id/etSearchView"
-                    android:layout_width="@dimen/_200sdp"
-                    android:layout_height="@dimen/_30sdp"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
                     android:layout_gravity="end|center"
-                    android:layout_marginEnd="@dimen/_15sdp"
                     android:background="@drawable/search_view_shape"
                     android:clickable="true"
                     android:cursorVisible="false"
@@ -73,18 +89,44 @@
                     android:ems="10"
                     android:focusable="false"
                     android:gravity="center"
-                    android:theme="@style/cursorColor"
                     android:hint="What Are You Looking For?"
                     android:inputType="textPersonName"
-                    android:paddingStart="@dimen/_15sdp"
-                    />
+                    android:paddingStart="@dimen/_20sdp"
+                    android:theme="@style/cursorColor"
+                    tools:layout_editor_absoluteX="151dp"
+                    tools:layout_editor_absoluteY="17dp" />
 
-                <pl.droidsonroids.gif.GifImageView
-                    android:id="@+id/imageView3"
-                    android:layout_width="@dimen/_90sdp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/word" />
-            </FrameLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:layout_editor_absoluteX="110dp"
+                    tools:layout_editor_absoluteY="7dp">
+
+                    <TextView
+                        android:id="@+id/text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/emblema_one"
+                        android:gravity="center"
+                        android:text="@string/comma"
+                        android:textAlignment="center"
+                        android:textColor="@color/HeaderTextColor"
+                        android:textSize="@dimen/_18sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imageView3"
+                        android:layout_width="@dimen/_17sdp"
+                        android:layout_height="@dimen/_17sdp"
+                        app:layout_constraintBottom_toBottomOf="@+id/text"
+                        app:layout_constraintStart_toEndOf="@+id/text"
+                        app:layout_constraintTop_toTopOf="@+id/text"
+                        app:srcCompat="@drawable/ic_notification" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

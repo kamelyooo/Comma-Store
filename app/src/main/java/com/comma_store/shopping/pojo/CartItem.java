@@ -6,16 +6,16 @@ import androidx.room.PrimaryKey;
 @Entity(tableName ="cart")
 public class CartItem {
     @PrimaryKey
-    int id;
+    int item_id;
     int quantity;
     String color;
 
-    public int getId() {
-        return id;
+    public int getItem_id() {
+        return item_id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setItem_id(int item_id) {
+        this.item_id = item_id;
     }
 
     public int getQuantity() {

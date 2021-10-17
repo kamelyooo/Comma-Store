@@ -31,8 +31,7 @@ import com.comma_store.shopping.databinding.CategoriesFragmentBinding;
 import com.comma_store.shopping.pojo.CategoryModel;
 import com.comma_store.shopping.pojo.CategoryScreenResposnse;
 import com.comma_store.shopping.pojo.SubCategory;
-import com.google.android.flexbox.FlexboxLayoutManager;
-import com.google.android.flexbox.JustifyContent;
+
 
 import java.util.List;
 

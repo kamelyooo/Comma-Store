@@ -15,13 +15,13 @@
             android:id="@+id/nav_view"
             android:layout_width="0dp"
             android:layout_height="?attr/actionBarSize"
-            app:labelVisibilityMode="labeled"
+            android:layout_margin="@dimen/_6sdp"
+            android:background="@drawable/bottm_bar_shape"
             app:itemIconTint="@drawable/nav_item_selected"
             app:itemTextColor="@drawable/nav_item_selected"
-            android:background="@drawable/bottm_bar_shape"
+            app:labelVisibilityMode="auto"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_margin="@dimen/_6sdp"
             app:layout_constraintRight_toRightOf="parent"
             app:menu="@menu/bottom_nav_menu">
 

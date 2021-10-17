@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.paging.PagedList;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -26,12 +27,11 @@ import com.comma_store.shopping.R;
 import com.comma_store.shopping.databinding.SearchFragmentBinding;
 import com.comma_store.shopping.pojo.ItemModel;
 import com.crowdfire.cfalertdialog.CFAlertDialog;
-import com.google.android.flexbox.FlexboxLayoutManager;
-import com.google.android.flexbox.JustifyContent;
+
 
 public class SearchFragment extends Fragment {
     int sortBySelected=0;
-    FlexboxLayoutManager layoutManager;
+
     ItemAdapterSearchScreen adapter;
   SearchViewModel mViewModel;
     SearchFragmentBinding binding;
@@ -57,9 +57,8 @@ Button TryAgain;
         mViewModel.searchingForSuggition(this);
 
         adapter = new ItemAdapterSearchScreen(getActivity());
-        layoutManager = new FlexboxLayoutManager(getActivity());
-        layoutManager.setJustifyContent(JustifyContent.SPACE_EVENLY);
-        binding.recycleViewSearchScreen.setLayoutManager(layoutManager);
+
+        binding.recycleViewSearchScreen.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.recycleViewSearchScreen.setAdapter(adapter);
         binding.etSearchViewSearchScreen.requestFocus();
         if (mViewModel.itemPagedList!=null)
@@ -86,6 +85,13 @@ Button TryAgain;
         mViewModel.itemPagedList.observe(getViewLifecycleOwner(),(Observer<PagedList<ItemModel>>) itemModels -> {
             adapter.submitList(itemModels);
         });
+
+//        mViewModel.iitempagelist.observe(getViewLifecycleOwner(), new Observer<PagedList<ItemModel>>() {
+//            @Override
+//            public void onChanged(PagedList<ItemModel> itemModels) {
+//                adapter.submitList(itemModels);
+//            }
+//        });
         mViewModel.observe=true;
     }
     private void showSortByDialog() {

@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.navigation.Navigation;
 
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeErrorDialog;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeWarningDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 import com.comma_store.shopping.R;
 import com.comma_store.shopping.Utils.SharedPreferencesUtils;
@@ -26,7 +27,9 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class LogInViewModel extends ViewModel {
-    MutableLiveData<Boolean> IsLoading=new MutableLiveData<>();
+    MutableLiveData<Boolean> IsLoading = new MutableLiveData<>();
+    String tmpToken;
+
     public void login(LogInFragment logInFragment, String email, String password, String deviceToken) {
 
         ItemClient.getINSTANCE().getItemInterface().login(email, password, 0, deviceToken, Locale.getDefault().getLanguage())
@@ -46,16 +49,16 @@ public class LogInViewModel extends ViewModel {
                             customerModelResource.getData().getApi_key());
                     SharedPreferencesUtils.getInstance(logInFragment.getActivity()).setIsLogin(true);
                     logInFragment.getActivity().finish();
-                } else if (customerModelResource.getStatus()==400){
+                } else if (customerModelResource.getStatus() == 400) {
                     IsLoading.postValue(false);
-                    if (customerModelResource.getMessage().containsKey("error")){
+                    if (customerModelResource.getMessage().containsKey("error")) {
                         logInFragment.getActivity().runOnUiThread(() -> ShowDialog(logInFragment));
 
                     }
-                    if (customerModelResource.getMessage().containsKey("email")){
+                    if (customerModelResource.getMessage().containsKey("email")) {
                         logInFragment.getActivity().runOnUiThread(() -> logInFragment.binding.textInputEmail.setError(customerModelResource.getMessage().get("email")));
                     }
-                    if (customerModelResource.getMessage().containsKey("password")){
+                    if (customerModelResource.getMessage().containsKey("password")) {
                         logInFragment.getActivity().runOnUiThread(() -> {
                             logInFragment.binding.passwordInputLogInScreen.setError(customerModelResource.getMessage().get("password"));
                             logInFragment.binding.passwordInputLogInScreen.setErrorIconDrawable(null);
@@ -74,29 +77,30 @@ public class LogInViewModel extends ViewModel {
         });
     }
 
-        private void ShowDialog(LogInFragment logInFragment){
+    private void ShowDialog(LogInFragment logInFragment) {
 
-            String tmpToken = SharedPreferencesUtils.getInstance(logInFragment.getActivity()).getTmpToken();
-            new AwesomeErrorDialog(logInFragment.getActivity())
+        tmpToken = SharedPreferencesUtils.getInstance(logInFragment.getActivity()).getTmpToken();
+        new AwesomeWarningDialog(logInFragment.getActivity())
                 .setTitle("Validation Error")
                 .setMessage("This Email is Not Valid")
-                .setColoredCircle(R.color.dialogErrorBackgroundColor)
-                .setDialogIconAndColor(R.drawable.ic_dialog_error, R.color.white)
+                .setColoredCircle(R.color.dialogNoticeBackgroundColor)
+                .setDialogIconAndColor(R.drawable.ic_notice, R.color.white)
                 .setCancelable(true)
+                .setButtonTextColor(R.color.white)
                 .setButtonText("Validate Email")
-
-                .setErrorButtonClick(new Closure() {
+                .setButtonBackgroundColor(R.color.dialogNoticeBackgroundColor)
+                .setWarningButtonClick(new Closure() {
                     @Override
                     public void exec() {
                         // click
-                        if (tmpToken!=null){
-                            LogInFragmentDirections.ActionLogInFragmentToRecieveCodeVerificationFragment action=
+                        if (tmpToken != null) {
+                            LogInFragmentDirections.ActionLogInFragmentToRecieveCodeVerificationFragment action =
                                     LogInFragmentDirections.actionLogInFragmentToRecieveCodeVerificationFragment();
                             action.setEmail(logInFragment.binding.EmailETLogINScreen.getText().toString());
                             action.setTmpToken(tmpToken);
                             Navigation.findNavController(logInFragment.getView()).navigate(action);
-                        }else {
-                            LogInFragmentDirections.ActionLogInFragmentToSendCodeVerificationFragment action=
+                        } else {
+                            LogInFragmentDirections.ActionLogInFragmentToSendCodeVerificationFragment action =
                                     LogInFragmentDirections.actionLogInFragmentToSendCodeVerificationFragment();
                             action.setResone(1);
                             Navigation.findNavController(logInFragment.getView()).navigate(action);

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_5sdp"
+    android:background="#FFFFFF">
+
+    <ImageView
+        android:id="@+id/imageViewOrderItem"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_110sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:id="@+id/spin_kit_OrderItem"
+        style="@style/SpinKitView.Small.FoldingCube"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_gravity="center"
+        app:SpinKit_Color="@color/Buttons"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewOrderItem"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewOrderItem"
+        app:layout_constraintStart_toStartOf="@+id/imageViewOrderItem"
+        app:layout_constraintTop_toTopOf="@+id/imageViewOrderItem"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/Cm_TitleOrderItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:textSize="@dimen/_16sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+
+        app:layout_constraintGuide_percent="0.35" />
+
+    <TextView
+        android:id="@+id/textView33"
+        style="@style/SubHeaderTextViewFont"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:text="@string/quantity"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toBottomOf="@+id/Cm_TitleOrderItem" />
+
+    <TextView
+        android:id="@+id/QuantityTVOrderItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/HeaderTextColor"
+        app:layout_constraintBottom_toBottomOf="@+id/textView33"
+        app:layout_constraintStart_toEndOf="@+id/textView33"
+        app:layout_constraintTop_toTopOf="@+id/textView33"
+        tools:text="3" />
+
+    <TextView
+        android:id="@+id/Cm_PriceBeforeOrderItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:textColor="@color/HeaderTextColor"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toBottomOf="@+id/PriceAfterOrderItemTV"
+        tools:text="EGP 8000" />
+
+    <View
+        android:id="@+id/Cm_ViewOrderItem"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/HeaderTextColor"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/Cm_PriceBeforeOrderItem"
+        app:layout_constraintEnd_toEndOf="@+id/Cm_PriceBeforeOrderItem"
+        app:layout_constraintStart_toStartOf="@+id/Cm_PriceBeforeOrderItem"
+        app:layout_constraintTop_toTopOf="@+id/Cm_PriceBeforeOrderItem" />
+
+    <TextView
+        android:id="@+id/Cm_DescountPecentageOrderItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:textColor="@android:color/holo_red_dark"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/Cm_PriceBeforeOrderItem"
+        app:layout_constraintStart_toEndOf="@+id/Cm_PriceBeforeOrderItem"
+        app:layout_constraintTop_toTopOf="@+id/Cm_PriceBeforeOrderItem"
+        tools:text="50%OFF" />
+
+    <TextView
+        android:id="@+id/PriceAfterOrderItemTV"
+        style="@style/SubHeaderTextViewFont"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_2sdp"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toBottomOf="@+id/textView33"
+        tools:text="EGP 5000" />
+
+    <TextView
+        android:id="@+id/textViewColotText"
+        style="@style/SubHeaderTextViewFont"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:text="Color :"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toBottomOf="@+id/Cm_PriceBeforeOrderItem" />
+
+    <TextView
+        android:id="@+id/ColorOrderItemTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/HeaderTextColor"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewColotText"
+        app:layout_constraintStart_toEndOf="@+id/textViewColotText"
+        app:layout_constraintTop_toTopOf="@+id/textViewColotText"
+        tools:text="Black" />
+
+    <TextView
+        android:id="@+id/textView47"
+        style="@style/SubHeaderTextViewFont"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:text="Total Cost :"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toBottomOf="@+id/textViewColotText" />
+
+    <TextView
+        android:id="@+id/TotalCostOrderItemTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/HeaderTextColor"
+        app:layout_constraintBottom_toBottomOf="@+id/textView47"
+        app:layout_constraintStart_toEndOf="@+id/textView47"
+        app:layout_constraintTop_toTopOf="@+id/textView47"
+        tools:text="EGP 15000" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -26,15 +26,13 @@ import com.comma_store.shopping.databinding.SubCategoryItemsFragmentBinding;
 import com.comma_store.shopping.pojo.ItemModel;
 import com.comma_store.shopping.ui.Deals.ItemAdapter;
 import com.crowdfire.cfalertdialog.CFAlertDialog;
-import com.google.android.flexbox.FlexboxLayoutManager;
-import com.google.android.flexbox.JustifyContent;
 
 public class SubCategoryItemsFragment extends Fragment {
 
      SubCategoryItemsViewModel mViewModel;
     SubCategoryItemsFragmentBinding binding;
     View root;
-    FlexboxLayoutManager layoutManager;
+
     ItemAdapter adapter;
     int sortBySelected=0;
     @Override
@@ -66,9 +64,6 @@ Button TryAgain;
         showSpinKit();
         adapter = new ItemAdapter(getActivity());
 
-
-        layoutManager = new FlexboxLayoutManager(getActivity());
-        layoutManager.setJustifyContent(JustifyContent.SPACE_EVENLY);
 
 
         binding.recycleSubCategoryItems.setLayoutManager(new GridLayoutManager(getActivity(),2));

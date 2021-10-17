@@ -161,6 +161,7 @@
                         android:theme="@style/cursorColor" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInputPassword"
                     android:layout_width="0dp"
@@ -179,7 +180,6 @@
                         android:id="@+id/password_ET"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_50sdp"
-
                         android:ems="10"
                         android:hint="password"
                         android:inputType="textPassword"
@@ -225,7 +225,6 @@
                         android:id="@+id/Email_ET"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_50sdp"
-
                         android:ems="10"
                         android:hint="Email"
                         android:inputType="textEmailAddress"

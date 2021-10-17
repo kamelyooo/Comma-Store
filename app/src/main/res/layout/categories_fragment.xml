@@ -88,7 +88,7 @@
 
             </androidx.recyclerview.widget.RecyclerView>
 
-            <FrameLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/frameLayout10"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
@@ -96,12 +96,27 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
+                <androidx.constraintlayout.helper.widget.Flow
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    app:constraint_referenced_ids="constraintLayout6,etSearchView_Categorties"
+
+                    app:flow_horizontalGap="@dimen/_10sdp"
+                    app:flow_horizontalStyle="spread_inside"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <EditText
                     android:id="@+id/etSearchView_Categorties"
-                    android:layout_width="@dimen/_200sdp"
-                    android:layout_height="@dimen/_30sdp"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
                     android:layout_gravity="end|center"
-                    android:layout_marginEnd="@dimen/_15sdp"
                     android:background="@drawable/search_view_shape"
                     android:clickable="true"
                     android:cursorVisible="false"
@@ -111,15 +126,42 @@
                     android:gravity="center"
                     android:hint="What Are You Looking For?"
                     android:inputType="textPersonName"
-                    android:paddingStart="@dimen/_15sdp"
+                    android:paddingStart="@dimen/_20sdp"
                     android:theme="@style/cursorColor"
-                    tools:ignore="RtlSymmetry" />
+                    tools:layout_editor_absoluteX="151dp"
+                    tools:layout_editor_absoluteY="17dp" />
 
-                <ImageView
-                    android:layout_width="@dimen/_80sdp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_notification" />
-            </FrameLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:layout_editor_absoluteX="110dp"
+                    tools:layout_editor_absoluteY="7dp">
+
+                    <TextView
+                        android:id="@+id/text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/emblema_one"
+                        android:gravity="center"
+                        android:text="@string/comma"
+                        android:textAlignment="center"
+                        android:textColor="@color/HeaderTextColor"
+                        android:textSize="@dimen/_18sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imageView3"
+                        android:layout_width="@dimen/_17sdp"
+                        android:layout_height="@dimen/_17sdp"
+                        app:layout_constraintBottom_toBottomOf="@+id/text"
+                        app:layout_constraintStart_toEndOf="@+id/text"
+                        app:layout_constraintTop_toTopOf="@+id/text"
+                        app:srcCompat="@drawable/ic_notification" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             <androidx.constraintlayout.widget.Guideline

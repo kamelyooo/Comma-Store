@@ -1,9 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.CommaStore" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Theme.CommaStore" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/ToolBar</item>
-        <item name="colorPrimaryVariant">@color/white</item>
+        <item name="colorPrimaryVariant">#4D132C33</item>
         <item name="colorOnPrimary">@color/ToolBar</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -24,6 +23,9 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="SpinKitStyle" parent="SpinKitView.WanderingCubes">
+
+    </style>
     <!--    header Font text logIN Style-->
     <style name="HeaderTextViewFontlogIN" parent="Widget.AppCompat.TextView">
         <item name="fontFamily" >sans-serif-thin</item>

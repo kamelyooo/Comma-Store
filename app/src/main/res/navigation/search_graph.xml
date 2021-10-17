@@ -8,6 +8,7 @@
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.comma_store.shopping.ui.Search.SearchFragment"
+        tools:layout="@layout/search_fragment"
         android:label="SearchFragment" >
         <action
             android:id="@+id/action_searchFragment_to_itemDetailsFragment3"

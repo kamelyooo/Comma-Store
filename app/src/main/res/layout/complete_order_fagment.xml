@@ -107,6 +107,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_5sdp"
+                        android:background="@color/BottomNavBar"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/guideline25"
                         app:layout_constraintStart_toStartOf="@+id/guideline24"

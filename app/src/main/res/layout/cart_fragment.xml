@@ -20,7 +20,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -156,7 +155,6 @@
                 app:srcCompat="@drawable/ic_shopping_cart_filled" />
         </androidx.constraintlayout.widget.ConstraintLayout>
         <com.github.ybq.android.spinkit.SpinKitView
-
             android:id="@+id/spin_kit_cartScreen"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_40sdp"

@@ -17,6 +17,8 @@ public class SharedPreferencesUtils {
     public static String CustomerLong="CustomerLong";
     public static String CustomerLat="CustomerLat";
     public static String CustomerAddress="CustomerAddress";
+    public static String notificationId="notificationId";
+    public static String NotificationNavigation="NotificationNavigation";
     private  SharedPreferences mPref;
     private SharedPreferences.Editor mEditor;
     private static  SharedPreferencesUtils instance;
@@ -126,8 +128,30 @@ public class SharedPreferencesUtils {
         mEditor.putString(CustomerAddress,customerAddress);
         mEditor.apply();
     }
+
+
     public String getCustomerAddress(){
         return mPref.getString(CustomerAddress,null);
+    }
+
+
+    public void setNotificationId(int notificationI){
+        mEditor.putInt(notificationId,notificationI);
+        mEditor.apply();
+    }
+
+    public int getNotificationId(){
+        return mPref.getInt(notificationId,-1);
+    }
+
+    public void setNotificationNavigation(String notificationNavigation){
+        mEditor.putString(NotificationNavigation,notificationNavigation);
+        mEditor.apply();
+    }
+
+
+    public String getNotificationNavigation(){
+        return mPref.getString(NotificationNavigation,null);
     }
 
     public void setCustomerInfo(String customerName,

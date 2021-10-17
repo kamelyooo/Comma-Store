@@ -27,7 +27,6 @@ public class HomeViewModel extends ViewModel {
     private MutableLiveData<GetHomeResponse> liveDatagetHomeResponse=new MutableLiveData<>();
     private MutableLiveData<String> onError = new MutableLiveData<>();
     private MutableLiveData<Boolean>Connect=new MutableLiveData<>();
-    public MutableLiveData<Integer>SubId=new MutableLiveData<>();
     public void AddDeviceTokenGuest(String DeviceToken, FragmentActivity activity){
         ItemClient.getINSTANCE().getItemInterface().addDviceTokenGuest(DeviceToken,0).subscribeOn(Schedulers.io()).subscribe(new SingleObserver<Resource<String>>() {
             @Override

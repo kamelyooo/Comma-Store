@@ -67,8 +67,13 @@
                 <androidx.constraintlayout.helper.widget.Flow
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    app:flow_horizontalGap="@dimen/_10sdp"
+                    app:flow_horizontalStyle="spread_inside"
                     app:constraint_referenced_ids="sortBySubCategoryItems,etSearchViewSubCategoryItems"
-                    app:flow_horizontalStyle="spread"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -76,8 +81,8 @@
 
                 <EditText
                     android:id="@+id/etSearchViewSubCategoryItems"
-                    android:layout_width="@dimen/_200sdp"
-                    android:layout_height="@dimen/_30sdp"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
                     android:layout_gravity="end|center"
                     android:background="@drawable/search_view_shape"
                     android:clickable="true"
@@ -89,7 +94,9 @@
                     android:hint="What Are You Looking For?"
                     android:inputType="textPersonName"
                     android:paddingStart="@dimen/_15sdp"
-                    android:theme="@style/cursorColor" />
+                    android:theme="@style/cursorColor"
+                    tools:layout_editor_absoluteX="138dp"
+                    tools:layout_editor_absoluteY="9dp" />
 
                 <TextView
                     android:id="@+id/sortBySubCategoryItems"
@@ -98,7 +105,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|start"
                     android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
-                    android:text="@string/sort_by"/>
+                    android:fontFamily="sans-serif-thin"
+                    android:text="@string/sort_by"
+                    android:textSize="@dimen/_17sdp"/>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

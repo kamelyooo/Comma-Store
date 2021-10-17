@@ -33,11 +33,12 @@
             android:id="@+id/DealsScreen"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:visibility="invisible">
+            app:layout_constraintTop_toTopOf="parent">
+
             <FrameLayout
                 android:id="@+id/toolbar_Categories"
                 android:layout_width="match_parent"
@@ -67,8 +68,13 @@
                 <androidx.constraintlayout.helper.widget.Flow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:paddingBottom="@dimen/_5sdp"
                     app:constraint_referenced_ids="sortByDeals,etSearchViewDeals"
-                    app:flow_horizontalStyle="spread"
+                    app:flow_horizontalGap="@dimen/_10sdp"
+                    app:flow_horizontalStyle="spread_inside"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -80,14 +86,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|start"
-                    android:layout_marginStart="@dimen/_10sdp"
                     android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
-                    android:text="@string/sort_by" />
+                    android:fontFamily="sans-serif-thin"
+                    android:text="@string/sort_by"
+                    android:textSize="@dimen/_17sdp"
+                    tools:layout_editor_absoluteX="26dp"
+                    tools:layout_editor_absoluteY="13dp" />
 
                 <EditText
                     android:id="@+id/etSearchViewDeals"
-                    android:layout_width="@dimen/_200sdp"
-                    android:layout_height="@dimen/_30sdp"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
                     android:background="@drawable/search_view_shape"
                     android:clickable="true"
                     android:cursorVisible="false"
@@ -97,8 +106,10 @@
                     android:gravity="center"
                     android:hint="What Are You Looking For?"
                     android:inputType="textPersonName"
-                    android:paddingStart="@dimen/_15sdp"
-                    android:theme="@style/cursorColor" />
+                    android:paddingStart="@dimen/_20sdp"
+                    android:theme="@style/cursorColor"
+                    tools:layout_editor_absoluteX="128dp"
+                    tools:layout_editor_absoluteY="9dp" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -113,18 +124,19 @@
 
                 app:layout_constraintTop_toBottomOf="@+id/frameLayout9" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <com.github.ybq.android.spinkit.SpinKitView
             android:id="@+id/spin_kit_Deals"
             style="@style/SpinKitView.DoubleBounce"
             android:layout_width="@dimen/_60sdp"
             android:layout_height="@dimen/_60sdp"
             android:layout_gravity="center"
+            android:visibility="invisible"
             app:SpinKit_Color="@color/ToolBar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:visibility="invisible"
             tools:ignore="MissingConstraints" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -21,5 +21,10 @@
         <argument
             android:name="ListsOfItem"
             app:argType="com.comma_store.shopping.pojo.CompleteOrderModel" />
+        <action
+            android:id="@+id/action_completeOrderFagment_to_cartFragment"
+            app:destination="@id/cartFragment"
+            app:popUpTo="@id/cartFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

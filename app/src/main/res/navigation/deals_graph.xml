@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/dealsFragment"
         android:name="com.comma_store.shopping.ui.Deals.DealsFragment"
-        tools:layout="@layout/deals_fragment" >
+        tools:layout="@layout/deals_fragment">
         <action
             android:id="@+id/action_dealsFragment_to_search_graph"
             app:destination="@id/search_graph" />
@@ -16,13 +16,14 @@
             android:id="@+id/action_dealsFragment_to_itemDetailsFragment2"
             app:destination="@id/itemDetailsFragment" />
 
+
     </fragment>
     <include app:graph="@navigation/search_graph" />
     <fragment
         android:id="@+id/itemDetailsFragment"
         android:name="com.comma_store.shopping.ui.ItemDetails.ItemDetailsFragment"
         android:label="item_details_fragment"
-        tools:layout="@layout/item_details_fragment" >
+        tools:layout="@layout/item_details_fragment">
         <argument
             android:name="itemDetails"
             app:argType="com.comma_store.shopping.pojo.ItemModel"

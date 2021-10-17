@@ -1,21 +1,18 @@
 package com.comma_store.shopping.ui.CompleteOrder;
 
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
-import android.content.ClipData;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -24,34 +21,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.comma_store.shopping.LogIn_Registration_Activity;
 import com.comma_store.shopping.R;
 import com.comma_store.shopping.Utils.NetworkUtils;
 import com.comma_store.shopping.Utils.SharedPreferencesUtils;
-import com.comma_store.shopping.data.ItemClient;
 import com.comma_store.shopping.databinding.CompleteOrderFagmentBinding;
+import com.comma_store.shopping.pojo.AddOrderModel;
 import com.comma_store.shopping.pojo.CompleteOrderModel;
 import com.comma_store.shopping.pojo.ItemModel;
-import com.comma_store.shopping.pojo.Resource;
-import com.comma_store.shopping.pojo.SettingResponse;
-import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.schibstedspain.leku.LocationPickerActivity;
 import com.schibstedspain.leku.LocationPickerActivityKt;
 
-import java.net.Inet4Address;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import io.reactivex.SingleObserver;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 import static android.provider.MediaStore.Video.VideoColumns.LATITUDE;
 import static android.provider.MediaStore.Video.VideoColumns.LONGITUDE;
@@ -63,11 +49,11 @@ public class CompleteOrderFagment extends Fragment {
     CompleteOrderModel listsOfItem;
     int SubTotalCost = 0;
     int deliverCost = 0;
+    int deliverCostReq=0;
     int promoCodeCut = 0;
     String adress = "";
     String promoCode;
-
-
+    double latitude,longitude;
     Button tryAgainErrorScreen;
 
     Intent locationPickerIntent;
@@ -87,6 +73,8 @@ public class CompleteOrderFagment extends Fragment {
             mViewModel.isConnected.postValue(false);
         }
         adress = SharedPreferencesUtils.getInstance(getActivity()).getCustomerAddress();
+        latitude=Double.parseDouble(SharedPreferencesUtils.getInstance(getActivity()).getCustomerLat());
+        longitude=Double.parseDouble(SharedPreferencesUtils.getInstance(getActivity()).getCustomerLong());
         mViewModel.spinKitIsShow = true;
     }
 
@@ -186,11 +174,39 @@ public class CompleteOrderFagment extends Fragment {
                         setTotalCost(SubTotalCost, deliverCost, promoCodeCut);
 
                     } else {
-                        mViewModel.ErrorMsg.postValue("* The Cost Of The Order Is Lessthan The Minimum Cost Of PromoCode");
+                        mViewModel.ErrorMsg.postValue("* The Cost Of The Order Is Less than The Minimum Cost Of PromoCode");
                     }
                 }
             }
         });
+        binding.SubmitOrderCompleteOrderScreenBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewModel.isSubmitLoading.postValue(true);
+                 AddOrderModel orderModel=new AddOrderModel(SharedPreferencesUtils.getInstance(getActivity()).getApiKey()
+                ,Locale.getDefault().getLanguage(),deliverCostReq,mViewModel.promoCodeSubmited,longitude,latitude,adress,binding.CustomerNote.getText().toString()
+                ,listsOfItem.getCartItemList());
+
+                mViewModel.AddOrder(orderModel,CompleteOrderFagment.this);
+
+
+            }
+        });
+        mViewModel.isSubmitLoading.observe(getViewLifecycleOwner(), isSubmitLoading -> {
+            if (isSubmitLoading){
+                binding.SubmitOrderCompleteOrderScreenBtn.setEnabled(false);
+                binding.SubmitOrderTV.setText("Please Wait");
+                binding.spinKitSubmitOrderBtn.setVisibility(View.VISIBLE);
+            }else {
+                binding.SubmitOrderCompleteOrderScreenBtn.setEnabled(true);
+                binding.SubmitOrderTV.setText("Submit Your Order");
+                binding.spinKitSubmitOrderBtn.setVisibility(View.GONE);
+            }
+        });
+
+        CompleteOrderAdapter adapter=new CompleteOrderAdapter(listsOfItem.getCartItemList(),listsOfItem.getItemModels(),getActivity());
+        binding.ReviewTheOrderRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.ReviewTheOrderRecycleView.setAdapter(adapter);
         return root;
     }
 
@@ -202,12 +218,12 @@ public class CompleteOrderFagment extends Fragment {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             promoCode = binding.promoCodeEditText.getText().toString().trim();
 
             if (!promoCode.isEmpty() && !promoCode.equals(mViewModel.promoCodeSubmited)) {
                 promoCodeCut = 0;
                 mViewModel.promoCodeCut = 0;
+                mViewModel.promoCodeSubmited=null;
                 binding.promoCodeCutTv.setText("-" + promoCodeCut);
                 setTotalCost(SubTotalCost, deliverCost, promoCodeCut);
                 binding.ErrorMassegePromoCodeTv.setVisibility(View.GONE);
@@ -225,7 +241,6 @@ public class CompleteOrderFagment extends Fragment {
 
         @Override
         public void afterTextChanged(Editable s) {
-
         }
     };
 
@@ -233,7 +248,7 @@ public class CompleteOrderFagment extends Fragment {
         Optional<ItemModel> itemModel;
         for (int i = 0; i < listsOfItem.getCartItemList().size(); i++) {
             int finalI = i;
-            itemModel = listsOfItem.getItemModels().parallelStream().filter(x -> x.getId() == listsOfItem.getCartItemList().get(finalI).getId()).findFirst();
+            itemModel = listsOfItem.getItemModels().parallelStream().filter(x -> x.getId() == listsOfItem.getCartItemList().get(finalI).getItem_id()).findFirst();
             SubTotalCost = SubTotalCost + listsOfItem.getCartItemList().get(i).getQuantity() * itemModel.get().getPriceAfter();
         }
 
@@ -249,8 +264,10 @@ public class CompleteOrderFagment extends Fragment {
         if (adress.toLowerCase().contains("cairo") ||
                 adress.toLowerCase().contains("giza")) {
             deliverCost = Integer.parseInt(mViewModel.DataResponse.get(5).getValue());
+            deliverCostReq=0;
         } else {
             deliverCost = Integer.parseInt(mViewModel.DataResponse.get(6).getValue());
+            deliverCostReq=1;
         }
         binding.deliverCostTv.setText(deliverCost + "");
         setTotalCost(SubTotalCost, deliverCost, promoCodeCut);
@@ -306,7 +323,8 @@ public class CompleteOrderFagment extends Fragment {
                 if (requestCode == 2) {
                     adress = data.getStringExtra(LocationPickerActivityKt.LOCATION_ADDRESS);
                     setDeliverCost(data.getStringExtra(LocationPickerActivityKt.LOCATION_ADDRESS));
-
+                    latitude = data.getDoubleExtra(LATITUDE, 0.0);
+                    longitude = data.getDoubleExtra(LONGITUDE, 0.0);
                     binding.locationTV.setText(adress);
                 }
             } catch (Exception ex) {

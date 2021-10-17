@@ -35,6 +35,7 @@ public class ItemDetailsFragment extends Fragment {
     ItemDetailsFragmentBinding binding;
     ItemDetailsSliderAdapter adapter;
     CartItem cartItem;
+    ItemModel itemDetail;
     int Quantity=1;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,11 +51,11 @@ public class ItemDetailsFragment extends Fragment {
         View root = binding.getRoot();
         if (getArguments()!=null){
             if (ItemDetailsFragmentArgs.fromBundle(getArguments()).getItemDetails()!=null){
-                ItemModel itemDetail = ItemDetailsFragmentArgs.fromBundle(getArguments()).getItemDetails();
+                itemDetail = ItemDetailsFragmentArgs.fromBundle(getArguments()).getItemDetails();
                 handleCartItem(itemDetail);
                 setview(itemDetail);
-            }
 
+            }
         }
 
 
@@ -96,7 +97,7 @@ public class ItemDetailsFragment extends Fragment {
                 binding.MinusButton.setEnabled(true);
                 binding.AddToCartButton.setEnabled(false);
                 cartItem = new CartItem();
-                cartItem.setId(itemDetails.getId());
+                cartItem.setItem_id(itemDetails.getId());
                 cartItem.setQuantity(Quantity);
                 if (!itemDetails.getColors().get(0).equals("")) {
                     cartItem.setColor(binding.colorSpinner.getSelectedItem().toString());

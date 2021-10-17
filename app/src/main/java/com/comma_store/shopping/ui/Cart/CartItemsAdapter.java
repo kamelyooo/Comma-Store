@@ -1,11 +1,7 @@
 package com.comma_store.shopping.ui.Cart;
 
-import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -20,19 +16,13 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.andrognito.flashbar.Flashbar;
-import com.andrognito.flashbar.anim.FlashAnim;
 import com.comma_store.shopping.R;
 import com.comma_store.shopping.pojo.CartItem;
 import com.comma_store.shopping.pojo.ItemModel;
-import com.comma_store.shopping.ui.Deals.ItemAdapter;
 import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.net.Inet4Address;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,7 +66,7 @@ public class CartItemsAdapter extends ListAdapter<CartItem,CartItemsAdapter.View
     @Override
     public void onBindViewHolder(@NonNull CartItemsAdapter.ViewHolder holder, int position) {
         CartItem localItem = getItem(position);
-        Optional<ItemModel> itemModelFound = ItemsCart.stream().filter(x -> x.getId() == localItem.getId()).findFirst();
+        Optional<ItemModel> itemModelFound = ItemsCart.stream().filter(x -> x.getId() == localItem.getItem_id()).findFirst();
         if (itemModelFound.isPresent()) {
             if (itemModelFound.get().getCount()==0){
                 holder.Error_Layout_Item_Cart.setVisibility(View.VISIBLE);

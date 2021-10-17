@@ -26,8 +26,7 @@ import com.comma_store.shopping.R;
 import com.comma_store.shopping.databinding.DealsFragmentBinding;
 import com.comma_store.shopping.pojo.ItemModel;
 import com.crowdfire.cfalertdialog.CFAlertDialog;
-import com.google.android.flexbox.FlexboxLayoutManager;
-import com.google.android.flexbox.JustifyContent;
+
 
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -39,7 +38,6 @@ public class DealsFragment extends Fragment {
     DealsViewModel mViewModel;
     DealsFragmentBinding binding;
     Button tryAgainErrorScreen;
-    FlexboxLayoutManager layoutManager;
     ItemAdapter adapter;
     View root;
     int sortBySelected = 0;
@@ -70,6 +68,7 @@ public class DealsFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.deals_fragment, container, false);
         root = binding.getRoot();
         tryAgainErrorScreen = root.findViewById(R.id.Error_Conection_Retry_Btn);
+
         //show spinKite according to showSpinkite in view modle
         showSpinKite();
         //onclick on sort by to open the dialog of sorting
@@ -78,8 +77,6 @@ public class DealsFragment extends Fragment {
         });
         //make adapter for recycleView Deals
         adapter = new ItemAdapter(getActivity());
-        layoutManager = new FlexboxLayoutManager(getActivity());
-        layoutManager.setJustifyContent(JustifyContent.SPACE_EVENLY);
         binding.RecycleDeals.setLayoutManager(new GridLayoutManager(getActivity(),2));
         binding.RecycleDeals.setAdapter(adapter);
         binding.DealsScreen.setVisibility(View.VISIBLE);

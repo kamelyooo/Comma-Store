@@ -27,9 +27,12 @@ public interface itemCartDAO {
     Single<Integer> update( CartItem item);
     @Insert
     Single<Long> insert(CartItem item);
-    @Query("SELECT * FROM cart WHERE id =:itemId")
+    @Query("SELECT * FROM cart WHERE item_id =:itemId")
     Single<CartItem> getitembyId( int itemId);
 
     @Query("SELECT SUM (quantity) as total FROM cart")
     Single<Integer> TotalItemInCart ();
+
+    @Query("DELETE FROM cart")
+   Single<Void> deleteAll ();
 }

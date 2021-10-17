@@ -1,21 +1,20 @@
 package com.comma_store.shopping.data;
 
+import com.comma_store.shopping.pojo.AddOrderModel;
+import com.comma_store.shopping.pojo.CartItem;
 import com.comma_store.shopping.pojo.CategoryModel;
 import com.comma_store.shopping.pojo.CategoryScreenResposnse;
 import com.comma_store.shopping.pojo.CheckPromoCodeResponse;
 import com.comma_store.shopping.pojo.CustomerModel;
 import com.comma_store.shopping.pojo.GetHomeResponse;
 import com.comma_store.shopping.pojo.GetItemResponse;
-import com.comma_store.shopping.pojo.GetItemsCartRespons;
 import com.comma_store.shopping.pojo.ItemModel;
 import com.comma_store.shopping.pojo.RegisterResponse;
 import com.comma_store.shopping.pojo.Resource;
 import com.comma_store.shopping.pojo.SettingResponse;
 import com.comma_store.shopping.pojo.SubCategory;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -122,5 +121,10 @@ public interface ItemInterface {
     Single<Resource<CheckPromoCodeResponse>> checkPromoCode(@Query("lang") String lang,
                                                             @Query("api_key") String apiKey,
                                                             @Query("promocode") String promoCode);
+
+
+    @Headers("token:" + token)
+    @POST("mttgr/public/api/AddOrder")
+    Single<Resource<String>> AddOrder2(@Body AddOrderModel order);
 
 }

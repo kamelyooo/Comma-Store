@@ -53,6 +53,9 @@ public class SearchViewModel extends ViewModel {
             liveDataSource = itemDataSourceFactory.getItemLiveDataSource();
         //Getting PagedList config
 
+
+              }
+
         PagedList.Config pagedListConfig =
                 (new PagedList.Config.Builder())
                         .setEnablePlaceholders(false)
@@ -61,8 +64,6 @@ public class SearchViewModel extends ViewModel {
 
         //Building the paged list
         itemPagedList=(new LivePagedListBuilder(itemDataSourceFactory,pagedListConfig)).build();
-              }
-
     }
     public void setQueryAndSortBy(String query,String sortBy){
         itemDataSourceFactory.setOrderBy(sortBy);
