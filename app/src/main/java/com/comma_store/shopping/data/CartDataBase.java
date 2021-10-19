@@ -7,11 +7,13 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.comma_store.shopping.pojo.CartItem;
+import com.comma_store.shopping.pojo.FavoriteItem;
 
-@Database(entities = {CartItem.class},version = 1)
+@Database(entities = {CartItem.class, FavoriteItem.class},version = 1)
 public abstract class CartDataBase extends RoomDatabase {
 
     public abstract itemCartDAO itemDAO();
+    public abstract FavoriteItemsDAO favoriteItemsDAO();
     public static CartDataBase ourInstance;
 
     public static CartDataBase getInstance(Context context) {

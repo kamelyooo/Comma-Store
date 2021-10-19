@@ -96,13 +96,26 @@
         app:layout_constraintGuide_begin="@dimen/_5sdp" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/Cm_FavoriteImageNo"
         android:layout_width="@dimen/_20sdp"
         android:layout_height="@dimen/_20sdp"
         android:layout_marginTop="@dimen/_2sdp"
         android:layout_marginEnd="@dimen/_2sdp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="@+id/cm_Item_Image"
         app:layout_constraintTop_toTopOf="@+id/cm_Item_Image"
-        app:srcCompat="@drawable/ic_favorite_add_outlined" />
+        app:srcCompat="@drawable/ic_heart_thin" />
+
+    <ImageView
+        android:id="@+id/Cm_FavoriteImageYes"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/cm_Item_Image"
+        app:layout_constraintTop_toTopOf="@+id/cm_Item_Image"
+        app:srcCompat="@drawable/ic_favorite_filled"
+        tools:layout_editor_absoluteX="50dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
