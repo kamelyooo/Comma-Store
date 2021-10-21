@@ -15,6 +15,7 @@ import androidx.navigation.Navigation;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PageKeyedDataSource;
 import androidx.paging.PagedList;
+import androidx.paging.RxPagedListBuilder;
 
 import com.comma_store.shopping.R;
 import com.comma_store.shopping.data.ItemClient;
@@ -33,13 +34,12 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class SearchViewModel extends ViewModel {
-    LiveData itemPagedList;
     String sortByText="idDesc";
     String queryText="";
     LiveData<PageKeyedDataSource<Integer, ItemModel>> liveDataSource;
     ItemDataSourceFactorySearch itemDataSourceFactory;
     CompositeDisposable disposable=new CompositeDisposable();
-    boolean observe =false;
+    MutableLiveData<PagedList<ItemModel>> iitempagelist=new MutableLiveData<>();
     boolean recycleVisible=false;
     boolean SearchForSomeThingImage=true;
     boolean nothigeFoundImge=false;
@@ -63,7 +63,10 @@ public class SearchViewModel extends ViewModel {
                         .build();
 
         //Building the paged list
-        itemPagedList=(new LivePagedListBuilder(itemDataSourceFactory,pagedListConfig)).build();
+//        itemPagedList=(new LivePagedListBuilder(itemDataSourceFactory,pagedListConfig)).build();
+        new RxPagedListBuilder<>(itemDataSourceFactory,pagedListConfig).
+                buildObservable().subscribeOn(Schedulers.io()).subscribe(s->iitempagelist.postValue((PagedList<ItemModel>) s));
+
     }
     public void setQueryAndSortBy(String query,String sortBy){
         itemDataSourceFactory.setOrderBy(sortBy);
@@ -113,8 +116,6 @@ public class SearchViewModel extends ViewModel {
                         searchFragment.mViewModel.nothigeFoundImge=false;
                         GetSearchResult(searchFragment);
                         setQueryAndSortBy(queryText,sortByText);
-                        if (!observe)
-                           searchFragment. observeItemPagedList();
                     }
 
                 }));

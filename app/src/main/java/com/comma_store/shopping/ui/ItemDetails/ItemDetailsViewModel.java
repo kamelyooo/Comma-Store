@@ -30,6 +30,7 @@ public class ItemDetailsViewModel extends ViewModel {
 
     MutableLiveData<CartItem>cartItem=new MutableLiveData<>();
     MutableLiveData<ItemModel>itemDetails=new MutableLiveData<>();
+    MutableLiveData<Boolean>isItemSaved=new MutableLiveData<>();
     public void getItemFromDataBase(int id, FragmentActivity context){
         CartDataBase.getInstance(context).itemDAO().getitembyId(id).subscribeOn(Schedulers.computation())
                 .subscribe(new SingleObserver<CartItem>() {

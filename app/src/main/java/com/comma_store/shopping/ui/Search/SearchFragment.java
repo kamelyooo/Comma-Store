@@ -61,7 +61,7 @@ Button TryAgain;
         binding.recycleViewSearchScreen.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.recycleViewSearchScreen.setAdapter(adapter);
         binding.etSearchViewSearchScreen.requestFocus();
-        if (mViewModel.itemPagedList!=null)
+
             observeItemPagedList();
 
         TryAgain.setOnClickListener(new View.OnClickListener() {
@@ -82,17 +82,12 @@ Button TryAgain;
     }
 
     public void observeItemPagedList() {
-        mViewModel.itemPagedList.observe(getViewLifecycleOwner(),(Observer<PagedList<ItemModel>>) itemModels -> {
-            adapter.submitList(itemModels);
+        mViewModel.iitempagelist.observe(getViewLifecycleOwner(), new Observer<PagedList<ItemModel>>() {
+            @Override
+            public void onChanged(PagedList<ItemModel> itemModels) {
+                adapter.submitList(itemModels);
+            }
         });
-
-//        mViewModel.iitempagelist.observe(getViewLifecycleOwner(), new Observer<PagedList<ItemModel>>() {
-//            @Override
-//            public void onChanged(PagedList<ItemModel> itemModels) {
-//                adapter.submitList(itemModels);
-//            }
-//        });
-        mViewModel.observe=true;
     }
     private void showSortByDialog() {
         CFAlertDialog.Builder builder = new CFAlertDialog.Builder(getActivity());

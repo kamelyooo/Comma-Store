@@ -112,9 +112,6 @@ public class DealsFragment extends Fragment {
 
             }
         });
-//        mViewModel.itemPagedList.observe(getViewLifecycleOwner(), (Observer<PagedList<ItemModel>>) itemModels -> {
-//            adapter.submitList(itemModels);
-//        });
         //tryAgain Button in Deals Fragment
         tryAgainErrorScreen.setOnClickListener(v -> {
             loadData();

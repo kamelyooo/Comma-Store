@@ -26,7 +26,6 @@ import io.reactivex.schedulers.Schedulers;
 public class CategoriesViewModel extends ViewModel {
 
     int categorySelected=0;
-    boolean getCategoriesForFristTime=false;
     boolean showSpinKitCategories=false;
     MutableLiveData<Boolean>isConnected=new MutableLiveData<>();
     MutableLiveData<List<CategoryScreenResposnse>> mutableLiveDataCategoryScreen=

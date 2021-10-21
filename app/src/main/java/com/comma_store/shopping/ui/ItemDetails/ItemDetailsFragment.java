@@ -19,9 +19,11 @@ import android.widget.ArrayAdapter;
 
 import com.comma_store.shopping.Utils.AnimationUtils;
 import com.comma_store.shopping.R;
+import com.comma_store.shopping.data.CartDataBase;
 import com.comma_store.shopping.databinding.ItemDetailsFragmentBinding;
 import com.comma_store.shopping.pojo.CartItem;
 import com.comma_store.shopping.pojo.ItemModel;
+import com.google.android.material.button.MaterialButton;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -36,7 +38,8 @@ public class ItemDetailsFragment extends Fragment {
     ItemDetailsSliderAdapter adapter;
     CartItem cartItem;
     ItemModel itemDetail;
-    int Quantity=1;
+    int Quantity = 1;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,49 +52,79 @@ public class ItemDetailsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.item_details_fragment, container, false);
         View root = binding.getRoot();
-        if (getArguments()!=null){
-            if (ItemDetailsFragmentArgs.fromBundle(getArguments()).getItemDetails()!=null){
+        if (getArguments() != null) {
+            if (ItemDetailsFragmentArgs.fromBundle(getArguments()).getItemDetails() != null) {
                 itemDetail = ItemDetailsFragmentArgs.fromBundle(getArguments()).getItemDetails();
-                handleCartItem(itemDetail);
+
                 setview(itemDetail);
 
             }
         }
-
-
+        handleCartItem(itemDetail);
         binding.popUpItemDetails.setOnClickListener(v -> Navigation.findNavController(v).navigateUp());
 
-        mViewModel.itemDetails.observe(getViewLifecycleOwner(), new Observer<ItemModel>() {
-            @Override
-            public void onChanged(ItemModel itemModel) {
+//        CartDataBase.getInstance(getActivity()).itemDAO().getItemById2(itemDetail.getId())
+//                .observe(getViewLifecycleOwner(), new Observer<CartItem>() {
+//                    @Override
+//                    public void onChanged(CartItem item) {
+//                        if (item != null) {
+//                            cartItem = item;
+//                            mViewModel.isItemSaved.postValue(true);
+////                  binding.AddToCartButton.setVisibility(View.INVISIBLE);
+////                  binding.PlusMinusLayout.setVisibility(View.VISIBLE);
+////                  AnimationUtils.slideDown(binding.AddToCartButton);
+////                  AnimationUtils.slideUp(binding.PlusMinusLayout);
+//                            Quantity = item.getQuantity();
+//                            binding.QuantityTV.setText(Quantity + "");
+//                        } else {
+//                            mViewModel.isItemSaved.postValue(false);
+//
+////                  binding.AddToCartButton.setVisibility(View.VISIBLE);
+////                  binding.PlusMinusLayout.setVisibility(View.INVISIBLE);
+//                        }
+//                    }
+//                });
 
-
-            }
-        });
-
+//        mViewModel.isItemSaved.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+//            @Override
+//            public void onChanged(Boolean aBoolean) {
+//                if (aBoolean){
+//                    binding.AddToCartButton.setVisibility(View.INVISIBLE);
+//                  binding.PlusMinusLayout.setVisibility(View.VISIBLE);
+//                }else {
+//                    binding.AddToCartButton.setVisibility(View.VISIBLE);
+//                  binding.PlusMinusLayout.setVisibility(View.INVISIBLE);
+//                }
+//            }
+//        });
         return root;
 
     }
-    public void handleCartItem(ItemModel itemDetails){
+
+    public void handleCartItem(ItemModel itemDetails) {
         mViewModel.getItemFromDataBase(itemDetails.getId(),getActivity());
         mViewModel.cartItem.observe(getViewLifecycleOwner(), new Observer<CartItem>() {
             @Override
             public void onChanged(CartItem item) {
-
               if (item!=null) {
                   cartItem = item;
-                  AnimationUtils.slideDown(binding.AddToCartButton);
-                  AnimationUtils.slideUp(binding.PlusMinusLayout);
+                  binding.AddToCartButton.setVisibility(View.INVISIBLE);
+                  binding.PlusMinusLayout.setVisibility(View.VISIBLE);
+//                  AnimationUtils.slideDown(binding.AddToCartButton);
+//                  AnimationUtils.slideUp(binding.PlusMinusLayout);
                   Quantity = item.getQuantity();
                   binding.QuantityTV.setText(Quantity + "");
+              }else {
+                  binding.AddToCartButton.setVisibility(View.VISIBLE);
+                  binding.PlusMinusLayout.setVisibility(View.INVISIBLE);
               }
             }
         });
         binding.AddToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Quantity=1;
-                binding.QuantityTV.setText(Quantity+"");
+                Quantity = 1;
+                binding.QuantityTV.setText(Quantity + "");
                 AnimationUtils.slideDown(binding.AddToCartButton);
                 AnimationUtils.slideUp(binding.PlusMinusLayout);
                 binding.MinusButton.setEnabled(true);
@@ -101,47 +134,48 @@ public class ItemDetailsFragment extends Fragment {
                 cartItem.setQuantity(Quantity);
                 if (!itemDetails.getColors().get(0).equals("")) {
                     cartItem.setColor(binding.colorSpinner.getSelectedItem().toString());
-                }else cartItem.setColor(null);
-                mViewModel.insertItemCart(getActivity(),cartItem);
+                } else cartItem.setColor(null);
+                mViewModel.insertItemCart(getActivity(), cartItem);
             }
         });
         binding.PlusButton.setOnClickListener(v -> {
             Quantity++;
-            binding.QuantityTV.setText(Quantity+"");
+            binding.QuantityTV.setText(Quantity + "");
             cartItem.setQuantity(Quantity);
-            mViewModel.updateItemCart(getActivity(),cartItem);
+            mViewModel.updateItemCart(getActivity(), cartItem);
         });
         binding.MinusButton.setOnClickListener(v -> {
-            if (Quantity==1){
+            if (Quantity == 1) {
                 binding.MinusButton.setEnabled(false);
                 AnimationUtils.slideDown(binding.PlusMinusLayout);
                 AnimationUtils.slideUp(binding.AddToCartButton);
                 binding.AddToCartButton.setEnabled(true);
-                mViewModel.DeleteItemCart(getActivity(),cartItem);
+                mViewModel.DeleteItemCart(getActivity(), cartItem);
                 mViewModel.cartItem.postValue(null);
-            }else if (Quantity>1) {
+            } else if (Quantity > 1) {
                 Quantity--;
                 binding.QuantityTV.setText(Quantity + "");
                 cartItem.setQuantity(Quantity);
-                mViewModel.updateItemCart(getActivity(),cartItem);
+                mViewModel.updateItemCart(getActivity(), cartItem);
             }
         });
     }
-    public void setview(ItemModel itemDetails){
-        if (itemDetails.getImages()!=null&&itemDetails!=null){
+
+    public void setview(ItemModel itemDetails) {
+        if (itemDetails.getImages() != null && itemDetails != null) {
             adapter = new ItemDetailsSliderAdapter(itemDetails.getImages());
             binding.viewPagerItemDetails.setAdapter(adapter);
         }
         //set the title of the item
         binding.TitleItemDetailsTV.setText(itemDetails.getTitle());
         //set the priceAfter of the item
-        binding.PriceAfterItemDetailsTV.setText(itemDetails.getPriceAfter()+getActivity().getResources().getString(R.string.EGP));
-        if (itemDetails.getDiscount()==1){
-            binding.PriceBeforeItemDetailsTV.setText(itemDetails.getPriceBefor()+getActivity().getResources().getString(R.string.EGP));
-            binding.DesctountPrecentageItemDetailsTV.setText(itemDetails.getDiscountPrecentage()+getActivity().getResources().getString(R.string.off));
-        }else binding.DescountLayOutItemDetails.setVisibility(View.GONE);
+        binding.PriceAfterItemDetailsTV.setText(itemDetails.getPriceAfter() + getActivity().getResources().getString(R.string.EGP));
+        if (itemDetails.getDiscount() == 1) {
+            binding.PriceBeforeItemDetailsTV.setText(itemDetails.getPriceBefor() + getActivity().getResources().getString(R.string.EGP));
+            binding.DesctountPrecentageItemDetailsTV.setText(itemDetails.getDiscountPrecentage() + getActivity().getResources().getString(R.string.off));
+        } else binding.DescountLayOutItemDetails.setVisibility(View.GONE);
 
-        if (itemDetails.getDuration() != 0){
+        if (itemDetails.getDuration() != 0) {
             Date c = Calendar.getInstance().getTime();
             SimpleDateFormat df = new SimpleDateFormat("dd-MMM", Locale.getDefault());
             String formattedDate = df.format(c);
@@ -149,15 +183,14 @@ public class ItemDetailsFragment extends Fragment {
             calendar.setTime(c);
             calendar.add(Calendar.DAY_OF_YEAR, itemDetails.getDuration());
             String format = df.format(calendar.getTime());
-            binding.DurationDaysItemDetialsTV.setText(formattedDate+"--"+format);
-        }
-        else binding.DurationLayOutItemDetailsTV.setVisibility(View.GONE);
+            binding.DurationDaysItemDetialsTV.setText(formattedDate + "--" + format);
+        } else binding.DurationLayOutItemDetailsTV.setVisibility(View.GONE);
 
         //set the colors in the spinner color
-        if (itemDetails.getColors().get(0).equals("")||itemDetails.getColors().isEmpty()||itemDetails.getColors().size()==0) {
+        if (itemDetails.getColors().get(0).equals("") || itemDetails.getColors().isEmpty() || itemDetails.getColors().size() == 0) {
             binding.ItemColorItemDetailsTV.setVisibility(View.GONE);
 
-        }else {
+        } else {
             ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, itemDetails.getColors());
             dataAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
             binding.colorSpinner.setAdapter(dataAdapter);
@@ -167,4 +200,11 @@ public class ItemDetailsFragment extends Fragment {
 
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+//        mViewModel.cartItem.postValue(null);
+//        binding.unbind();
+//        Log.i("xxx","ondestoryview");
+    }
 }

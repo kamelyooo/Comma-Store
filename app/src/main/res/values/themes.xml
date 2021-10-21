@@ -23,7 +23,7 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="SpinKitStyle" parent="SpinKitView.WanderingCubes">
+    <style name="CustomSpinKitStyle" parent="SpinKitView.WanderingCubes">
 
     </style>
     <!--    header Font text logIN Style-->

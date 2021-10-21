@@ -30,6 +30,8 @@ public interface itemCartDAO {
     @Query("SELECT * FROM cart WHERE item_id =:item_Id")
     Single<CartItem> getitembyId( int item_Id);
 
+    @Query("SELECT * FROM cart WHERE item_id =:item_Id")
+    LiveData<CartItem> getItemById2( int item_Id);
     @Query("SELECT SUM (quantity) as total FROM cart")
     Single<Integer> TotalItemInCart ();
 

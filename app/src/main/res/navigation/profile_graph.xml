@@ -8,5 +8,14 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.comma_store.shopping.ui.Profile.ProfileFragment"
-        tools:layout="@layout/profile_fragment" />
+        tools:layout="@layout/profile_fragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_favoriteItemsFragment"
+            app:destination="@id/favoriteItemsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoriteItemsFragment"
+        android:name="com.comma_store.shopping.ui.FavoriteItemsScreen.FavoriteItemsFragment"
+        android:label="FavoriteItemsFragment"
+        tools:layout="@layout/favorite_items_fragment" />
 </navigation>

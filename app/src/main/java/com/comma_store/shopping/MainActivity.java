@@ -5,6 +5,8 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 
 import com.comma_store.shopping.Utils.NavigationUtils;
 import com.comma_store.shopping.Utils.SharedPreferencesUtils;
@@ -13,10 +15,13 @@ import com.comma_store.shopping.databinding.ActivityMainBinding;
 import com.comma_store.shopping.pojo.CartItem;
 import com.google.android.material.badge.BadgeDrawable;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 
@@ -83,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
         }
-
 //        appBarConfiguration = new AppBarConfiguration.Builder(
 //                R.id.homeFragment, R.id.cartFragment, R.id.dealsFragment, R.id.cartFragment, R.id.profileFragment, R.id.categoriesFragment)
 //                .build();
