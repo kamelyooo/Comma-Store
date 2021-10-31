@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.comma_store.shopping.R;
 import com.comma_store.shopping.pojo.ItemModel;
 import com.comma_store.shopping.pojo.SubCategoryHome;
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -148,7 +149,7 @@ public class HomeSubsAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
     public class Type2ViewHolder extends RecyclerView.ViewHolder {
-        GifImageView spinSubHOmeType2;
+        SpinKitView spinSubHOmeType2;
         ImageView image_sub_home_type2;
         public Type2ViewHolder(@NonNull View itemView) {
             super(itemView);

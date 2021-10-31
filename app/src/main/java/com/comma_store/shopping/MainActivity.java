@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import com.comma_store.shopping.Utils.NavigationUtils;
 import com.comma_store.shopping.Utils.SharedPreferencesUtils;
@@ -32,9 +33,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
     NavHostFragment navHostFragment;
     NavController navController;
-    AppBarConfiguration appBarConfiguration;
     ActivityMainBinding binding;
-
     BadgeDrawable badgeDrawable;
 
     int lang;
@@ -55,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         Configuration config = resources.getConfiguration();
         config.setLocale(locale);
         resources.updateConfiguration(config, resources.getDisplayMetrics());
-
+        
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.setLifecycleOwner(this);
         binding.navView.setItemIconTintList(null);
@@ -107,8 +106,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void badecounter(int id, int number, boolean visibilty) {
-
-
         badgeDrawable = binding.navView.getOrCreateBadge(id);
         badgeDrawable.setBackgroundColor(getResources().getColor(R.color.Buttons));
         badgeDrawable.setBadgeTextColor(Color.WHITE);

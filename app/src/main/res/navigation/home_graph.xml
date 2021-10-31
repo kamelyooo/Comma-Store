@@ -11,10 +11,15 @@
         android:label="homeFragment">
         <action
             android:id="@+id/action_homeFragment_to_search_graph"
-            app:destination="@id/search_graph" />
+            app:destination="@id/search_graph"
+       />
         <action
             android:id="@+id/action_homeFragment_to_get_items_graph"
-            app:destination="@id/get_items_graph">
+            app:destination="@id/get_items_graph"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
             <argument
                 android:name="subCategory_id"
                 android:defaultValue="10"
@@ -22,7 +27,11 @@
         </action>
         <action
             android:id="@+id/action_homeFragment_to_itemDetailsFragment2"
-            app:destination="@id/itemDetailsFragment2" />
+            app:destination="@id/itemDetailsFragment2"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
 
     </fragment>
 

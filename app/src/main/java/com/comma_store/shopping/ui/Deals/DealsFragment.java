@@ -79,7 +79,7 @@ public class DealsFragment extends Fragment {
         adapter = new ItemAdapter(getActivity());
         binding.RecycleDeals.setLayoutManager(new GridLayoutManager(getActivity(),2));
         binding.RecycleDeals.setAdapter(adapter);
-        binding.DealsScreen.setVisibility(View.VISIBLE);
+//        binding.DealsScreen.setVisibility(View.VISIBLE);
         //on click listenter for search edit text
         binding.etSearchViewDeals.setOnClickListener(new View.OnClickListener() {
             @Override

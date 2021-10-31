@@ -6,13 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <pl.droidsonroids.gif.GifImageView
+    <com.github.ybq.android.spinkit.SpinKitView
         android:id="@+id/spin_kit_SerachItem"
-        android:layout_width="@dimen/_40sdp"
-        android:layout_height="@dimen/_40sdp"
         android:layout_gravity="center"
-        android:src="@drawable/comma"
-        app:SpinKit_Color="@color/ToolBar"
+        style="@style/CustomSpinKitStyle"
         app:layout_constraintBottom_toBottomOf="@+id/Cm_ImageSearchItem"
         app:layout_constraintEnd_toEndOf="@+id/Cm_ImageSearchItem"
         app:layout_constraintStart_toStartOf="@+id/Cm_ImageSearchItem"

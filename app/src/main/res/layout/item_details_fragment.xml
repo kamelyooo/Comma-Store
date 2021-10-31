@@ -20,13 +20,29 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:layout_width="@dimen/_80sdp"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_notification"
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:fontFamily="@font/emblema_one"
+                android:gravity="center"
+                android:text="@string/comma"
+                android:textAlignment="center"
+                android:textColor="@color/HeaderTextColor"
+                android:textSize="@dimen/_18sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/popUp_ItemDetails"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="@dimen/_17sdp"
+                android:layout_height="@dimen/_17sdp"
+                app:layout_constraintBottom_toBottomOf="@+id/text"
+                app:layout_constraintStart_toEndOf="@+id/text"
+                app:layout_constraintTop_toTopOf="@+id/text"
+                app:srcCompat="@drawable/ic_notification" />
 
             <ImageView
                 android:id="@+id/popUp_ItemDetails"

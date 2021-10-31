@@ -10,6 +10,15 @@ public class CartItem {
     int quantity;
     String color;
 
+    public CartItem() {
+    }
+
+    public CartItem(int item_id, int quantity, String color) {
+        this.item_id = item_id;
+        this.quantity = quantity;
+        this.color = color;
+    }
+
     public int getItem_id() {
         return item_id;
     }

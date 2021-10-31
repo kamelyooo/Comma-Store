@@ -8,6 +8,7 @@ import com.comma_store.shopping.pojo.CheckPromoCodeResponse;
 import com.comma_store.shopping.pojo.CustomerModel;
 import com.comma_store.shopping.pojo.GetHomeResponse;
 import com.comma_store.shopping.pojo.GetItemResponse;
+import com.comma_store.shopping.pojo.GetOrderModelResponse;
 import com.comma_store.shopping.pojo.ItemModel;
 import com.comma_store.shopping.pojo.RegisterResponse;
 import com.comma_store.shopping.pojo.Resource;
@@ -101,14 +102,14 @@ public interface ItemInterface {
             , @Query("password") String passeWord
             , @Query("device_type") int deviceType
             , @Query("device_token") String deviceToken
-            ,@Query("lang") String lang);
+            , @Query("lang") String lang);
 
     @Headers("token:" + token)
     @POST("mttgr/public/api/changePasswordTmp")
     Single<Resource<NullPointerException>> ChangePasswordTmp(@Query("tmpToken") String tmpToken
             , @Query("password") String passeWord
             , @Query("activation_key") String activation_key
-            ,@Query("lang") String lang);
+            , @Query("lang") String lang);
 
 
     @Headers("token:" + token)
@@ -126,5 +127,32 @@ public interface ItemInterface {
     @Headers("token:" + token)
     @POST("mttgr/public/api/AddOrder")
     Single<Resource<String>> AddOrder2(@Body AddOrderModel order);
+
+    @Headers("token:" + token)
+    @GET("mttgr/public/api/getOrders")
+    Single<Resource<List<GetOrderModelResponse>>> getOrders(@Query("lang") String lang,
+                                                            @Query("api_key") String apiKey);
+
+    @Headers("token:" + token)
+    @GET("mttgr/public/api/getOrder")
+    Single<Resource<GetOrderModelResponse>> getOrderDetails(@Query("lang") String lang,
+                                                            @Query("api_key") String apiKey,
+                                                            @Query("order_id") int order_id);
+
+    @Headers("token:" + token)
+    @POST("mttgr/public/api/updateProfile")
+    Single<Resource<CustomerModel>> UpdateProfile(@Query("name") String name,
+                                        @Query("api_key") String api_key,
+                                        @Query("longitude") double longitude,
+                                        @Query("latitude") double latitude,
+                                        @Query("address") String address,
+                                        @Query("lang") String lang);
+
+    @Headers("token:" + token)
+    @POST("mttgr/public/api/changePassword")
+    Single<Resource<String>> ChangePassword(@Query("api_key") String api_key,
+                                  @Query("old_password") double longitude,
+                                  @Query("password") double latitude,
+                                  @Query("lang") String lang);
 
 }

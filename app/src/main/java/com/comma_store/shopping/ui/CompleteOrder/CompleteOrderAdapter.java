@@ -73,11 +73,8 @@ public class CompleteOrderAdapter extends RecyclerView.Adapter<CompleteOrderAdap
                 holder.Cm_DescountPecentageOrderItem.setVisibility(View.VISIBLE);
             }
 
-            if (cartItemList.get(position).getColor()!=null){
                 holder.ColorOrderItemTv.setText(cartItemList.get(position).getColor());
-                holder.ColorOrderItemTv.setVisibility(View.VISIBLE);
-                holder.textViewColotText.setVisibility(View.VISIBLE);
-            }
+
             holder.TotalCostOrderItemTv.setText(itemModel.get().getPriceAfter()*cartItemList.get(position).getQuantity()+"");
 
         }

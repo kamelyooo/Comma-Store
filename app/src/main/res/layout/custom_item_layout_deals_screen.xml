@@ -12,11 +12,8 @@
 
     <com.github.ybq.android.spinkit.SpinKitView
         android:id="@+id/spin_kit_Deals_item"
-        style="@style/SpinKitView.DoubleBounce"
-        android:layout_width="@dimen/_50sdp"
-        android:layout_height="@dimen/_50sdp"
+        style="@style/CustomSpinKitStyle"
         android:layout_gravity="center"
-        app:SpinKit_Color="@color/ToolBar"
         app:layout_constraintBottom_toBottomOf="@+id/cm_Item_Image_Deals_Screen"
         app:layout_constraintEnd_toEndOf="@+id/cm_Item_Image_Deals_Screen"
         app:layout_constraintStart_toStartOf="@+id/cm_Item_Image_Deals_Screen"

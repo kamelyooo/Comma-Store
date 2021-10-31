@@ -64,12 +64,10 @@
             app:srcCompat="@drawable/ic_baseline_close_24" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <pl.droidsonroids.gif.GifImageView
+    <com.github.ybq.android.spinkit.SpinKitView
         android:id="@+id/cm_spin_kit_CartItem"
-        android:layout_width="@dimen/_40sdp"
-        android:layout_height="@dimen/_40sdp"
+        style="@style/CustomSpinKitStyle"
         android:layout_gravity="center"
-        android:src="@drawable/comma"
         app:layout_constraintBottom_toBottomOf="@+id/cm_Image_cartItem"
         app:layout_constraintEnd_toEndOf="@+id/cm_Image_cartItem"
         app:layout_constraintStart_toStartOf="parent"

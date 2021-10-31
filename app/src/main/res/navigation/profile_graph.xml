@@ -12,10 +12,32 @@
         <action
             android:id="@+id/action_profileFragment_to_favoriteItemsFragment"
             app:destination="@id/favoriteItemsFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_myOrdersFragment"
+            app:destination="@id/myOrdersFragment" />
     </fragment>
     <fragment
         android:id="@+id/favoriteItemsFragment"
         android:name="com.comma_store.shopping.ui.FavoriteItemsScreen.FavoriteItemsFragment"
         android:label="FavoriteItemsFragment"
         tools:layout="@layout/favorite_items_fragment" />
+    <fragment
+        android:id="@+id/myOrdersFragment"
+        android:name="com.comma_store.shopping.ui.MyOrdersFragment.MyOrdersFragment"
+        android:label="my_orders_fragment"
+        tools:layout="@layout/my_orders_fragment" >
+        <action
+            android:id="@+id/action_myOrdersFragment_to_orderDetailsFragment"
+            app:destination="@id/orderDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderDetailsFragment"
+        android:name="com.comma_store.shopping.ui.OrderDetailsFragment.OrderDetailsFragment"
+        android:label="order_details_fragment"
+        tools:layout="@layout/order_details_fragment" >
+        <argument
+            android:name="orderId"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
 </navigation>

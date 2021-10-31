@@ -116,7 +116,7 @@ public class CategoriesFragment extends Fragment {
             binding.categoriesRecycleCatScreen.setLayoutManager(new LinearLayoutManager(getActivity()));
             binding.categoriesRecycleCatScreen.setAdapter(categoriesReycycleAdapter);
 
-            Glide.with(getActivity()).load("http://store-comma.com/mttgr/public/storage/"+categoryScreenResposnses.get(mViewModel.categorySelected).getImage())
+            Glide.with(getActivity()).load("https://store-comma.com/mttgr/public/storage/"+categoryScreenResposnses.get(mViewModel.categorySelected).getImage())
                     .listener(new RequestListener<Drawable>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {

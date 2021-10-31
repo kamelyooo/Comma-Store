@@ -126,7 +126,8 @@
                     android:gravity="center"
                     android:hint="What Are You Looking For?"
                     android:inputType="textPersonName"
-                    android:paddingStart="@dimen/_20sdp"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_10sdp"
                     android:theme="@style/cursorColor"
                     tools:layout_editor_absoluteX="151dp"
                     tools:layout_editor_absoluteY="17dp" />

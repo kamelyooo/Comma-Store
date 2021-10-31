@@ -37,8 +37,6 @@
     <com.github.ybq.android.spinkit.SpinKitView
         android:id="@+id/cm_spin_kit_favoriteItem"
         style="@style/CustomSpinKitStyle"
-        android:layout_width="@dimen/_40sdp"
-        android:layout_height="@dimen/_40sdp"
         android:layout_gravity="center"
         app:layout_constraintBottom_toBottomOf="@+id/cm_Image_favoriteItem"
         app:layout_constraintEnd_toEndOf="@+id/cm_Image_favoriteItem"
@@ -88,6 +86,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_5sdp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cm_Image_favoriteItem"
         app:layout_constraintTop_toBottomOf="@+id/cm_PriceAfter_favorite_item">
@@ -131,6 +130,7 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/_25sdp"
         android:layout_marginTop="@dimen/_5sdp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toStartOf="@+id/guideline28"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view4">
@@ -194,6 +194,7 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/_25sdp"
         android:layout_marginTop="@dimen/_5sdp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toStartOf="@+id/guideline28"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view4">

@@ -13,10 +13,56 @@
         tools:context=".ui.FavoriteItemsScreen.FavoriteItemsFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/Empty_favoriteScreen"
+            android:id="@+id/ToolBarFavorite"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="invisible">
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <ImageView
+                android:id="@+id/PopUpBtn_FavoriteItems"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:src="@drawable/ic_baseline_arrow_back_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:fontFamily="@font/emblema_one"
+                android:gravity="center"
+                android:text="@string/comma"
+                android:textAlignment="center"
+                android:textColor="@color/HeaderTextColor"
+                android:textSize="@dimen/_18sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/PopUpBtn_FavoriteItems"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="@dimen/_17sdp"
+                android:layout_height="@dimen/_17sdp"
+                app:layout_constraintBottom_toBottomOf="@+id/text"
+                app:layout_constraintStart_toEndOf="@+id/text"
+                app:layout_constraintTop_toTopOf="@+id/text"
+                app:srcCompat="@drawable/ic_notification" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/Empty_favoriteScreen"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ToolBarFavorite">
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline29"
@@ -52,19 +98,19 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/FavoriteItemsScreen"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/ToolBarFavorite">
 
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/FavoriteItemsRecycleView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="invisible"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -75,8 +121,6 @@
         <com.github.ybq.android.spinkit.SpinKitView
             android:id="@+id/spin_kitFavoriteScreen"
             style="@style/CustomSpinKitStyle"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
             android:layout_gravity="center"
             android:visibility="invisible"
             app:SpinKit_Color="@color/Buttons"

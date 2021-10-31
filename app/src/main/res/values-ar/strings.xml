@@ -19,4 +19,5 @@
         <item>من الاغلى الى الارخص</item>
         <item>من الارخص الى الاغلى</item>
     </string-array>
+    <string name="Day">" يوم"</string>
 </resources>

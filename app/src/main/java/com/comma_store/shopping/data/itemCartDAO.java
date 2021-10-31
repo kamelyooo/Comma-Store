@@ -35,6 +35,8 @@ public interface itemCartDAO {
     @Query("SELECT SUM (quantity) as total FROM cart")
     Single<Integer> TotalItemInCart ();
 
+    @Query("SELECT count (*)FROM cart WHERE item_id=:Id")
+    Single<Integer> ItemCount(int Id);
     @Query("DELETE FROM cart")
    Single<Void> deleteAll ();
 }

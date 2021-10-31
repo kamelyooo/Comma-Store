@@ -33,5 +33,6 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="comma">COMMA</string>
     <string name="quantity">Quantity :</string>
+    <string name="Day">" Day"</string>
 
 </resources>

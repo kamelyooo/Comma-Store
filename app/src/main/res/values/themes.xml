@@ -24,7 +24,9 @@
     </style>
 
     <style name="CustomSpinKitStyle" parent="SpinKitView.WanderingCubes">
-
+        <item name="android:layout_height">@dimen/_40sdp</item>
+        <item name="android:layout_width">@dimen/_40sdp</item>
+        <item name="SpinKit_Color">@color/Buttons</item>
     </style>
     <!--    header Font text logIN Style-->
     <style name="HeaderTextViewFontlogIN" parent="Widget.AppCompat.TextView">

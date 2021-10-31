@@ -26,12 +26,12 @@ public class ProfileFragment extends Fragment {
 
     private ProfileViewModel mViewModel;
     ProfileFragmentBinding binding;
+    Intent intent;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
-
-
     }
 
     @Override
@@ -95,7 +95,7 @@ public class ProfileFragment extends Fragment {
        binding.LogInButton.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-               Intent intent=new Intent(getActivity(), LogIn_Registration_Activity.class);
+                intent=new Intent(getActivity(), LogIn_Registration_Activity.class);
                intent.putExtra("FragmentKey",1);
                startActivity(intent);
            }
@@ -103,15 +103,36 @@ public class ProfileFragment extends Fragment {
         binding.RegistrationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getActivity(), LogIn_Registration_Activity.class);
+                intent = new Intent(getActivity(), LogIn_Registration_Activity.class);
                 intent.putExtra("FragmentKey",0);
+                startActivity(intent);
+            }
+        });
+        binding.MyOrderBtn.setOnClickListener(v -> {
+            if (SharedPreferencesUtils.getInstance(getActivity()).getIsLogin()){
+                Navigation.findNavController(v).navigate(R.id.action_profileFragment_to_myOrdersFragment);
+            }else {
+                intent=new Intent(getActivity(), LogIn_Registration_Activity.class);
+                intent.putExtra("FragmentKey",1);
+                startActivity(intent);
+            }
+        });
+
+        binding.MyProfileBtn.setOnClickListener(v -> {
+            if (SharedPreferencesUtils.getInstance(getActivity()).getIsLogin()){
+                intent=new Intent(getActivity(), LogIn_Registration_Activity.class);
+                intent.putExtra("FragmentKey",2);
+                startActivity(intent);
+            }else {
+                intent=new Intent(getActivity(), LogIn_Registration_Activity.class);
+                intent.putExtra("FragmentKey",1);
                 startActivity(intent);
             }
         });
         return root;
     }
     private void Restart (){
-        Intent intent = getActivity().getIntent();
+        intent = getActivity().getIntent();
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK
                 | Intent.FLAG_ACTIVITY_NO_ANIMATION);
         getActivity().overridePendingTransition(0, 0);

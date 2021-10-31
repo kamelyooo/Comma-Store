@@ -67,7 +67,6 @@ public class ItemAdapter extends PagedListAdapter<ItemModel,ItemAdapter.ItemView
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        holder.spinKitView.setVisibility(View.GONE);
                         return false;
                     }
 

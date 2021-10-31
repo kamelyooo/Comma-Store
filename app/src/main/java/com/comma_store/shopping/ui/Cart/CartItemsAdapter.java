@@ -20,6 +20,7 @@ import com.comma_store.shopping.R;
 import com.comma_store.shopping.pojo.CartItem;
 import com.comma_store.shopping.pojo.ItemModel;
 import com.crowdfire.cfalertdialog.CFAlertDialog;
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -149,7 +150,7 @@ public class CartItemsAdapter extends ListAdapter<CartItem,CartItemsAdapter.View
                 cm_PriceBefor_Cart_item,
                 cm_QuantityTV_CartItem,cm_total_CartItem;
         Button cm_MinusButton_CartItem,cm_PlusButton_CartItem;
-        GifImageView cm_spin_kit_CartItem;
+        SpinKitView cm_spin_kit_CartItem;
 
 
         public ViewHolder(@NonNull View itemView) {

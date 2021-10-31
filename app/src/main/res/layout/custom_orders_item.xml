@@ -22,11 +22,8 @@
 
     <com.github.ybq.android.spinkit.SpinKitView
         android:id="@+id/spin_kit_OrderItem"
-        style="@style/SpinKitView.Small.FoldingCube"
-        android:layout_width="@dimen/_40sdp"
-        android:layout_height="@dimen/_40sdp"
+        style="@style/CustomSpinKitStyle"
         android:layout_gravity="center"
-        app:SpinKit_Color="@color/Buttons"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewOrderItem"
         app:layout_constraintEnd_toEndOf="@+id/imageViewOrderItem"
         app:layout_constraintStart_toStartOf="@+id/imageViewOrderItem"
@@ -126,7 +123,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_2sdp"
         android:text="Color :"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toBottomOf="@+id/Cm_PriceBeforeOrderItem" />
 
@@ -135,7 +132,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/HeaderTextColor"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/textViewColotText"
         app:layout_constraintStart_toEndOf="@+id/textViewColotText"
         app:layout_constraintTop_toTopOf="@+id/textViewColotText"

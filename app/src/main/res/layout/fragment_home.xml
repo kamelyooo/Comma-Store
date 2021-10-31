@@ -17,10 +17,7 @@
         <com.github.ybq.android.spinkit.SpinKitView
             android:id="@+id/spin_kit"
             style="@style/CustomSpinKitStyle"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
             android:layout_gravity="center"
-            app:SpinKit_Color="@color/Buttons"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,6 +44,7 @@
                 android:id="@+id/recycleParent"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:nestedScrollingEnabled="false"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -91,7 +89,8 @@
                     android:gravity="center"
                     android:hint="What Are You Looking For?"
                     android:inputType="textPersonName"
-                    android:paddingStart="@dimen/_20sdp"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_10sdp"
                     android:theme="@style/cursorColor"
                     tools:layout_editor_absoluteX="151dp"
                     tools:layout_editor_absoluteY="17dp" />
