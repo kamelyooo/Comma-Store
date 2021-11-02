@@ -4,6 +4,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,20 +24,28 @@ import com.comma_store.shopping.R;
 import com.comma_store.shopping.Utils.NetworkUtils;
 import com.comma_store.shopping.data.CartDataBase;
 import com.comma_store.shopping.databinding.FavoriteItemsFragmentBinding;
+import com.comma_store.shopping.pojo.CartItem;
 import com.comma_store.shopping.pojo.FavoriteItem;
 import com.comma_store.shopping.pojo.ItemModel;
+import com.crowdfire.cfalertdialog.CFAlertDialog;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class FavoriteItemsFragment extends Fragment {
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+
+public class FavoriteItemsFragment extends Fragment implements FavoriteItemAdapterIterface {
 
     private FavoriteItemsViewModel mViewModel;
     private FavoriteItemsFragmentBinding binding;
     List<Integer> ids;
     Button tryAgain;
     FavoriteItemsAdapter adapter;
-    List<FavoriteItem>favoriteItemslist;
+    List<FavoriteItem> favoriteItemslist;
+    CompositeDisposable disposable = new CompositeDisposable();
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +54,7 @@ public class FavoriteItemsFragment extends Fragment {
 
     }
 
-    private void loadData(List<Integer>ids) {
+    private void loadData(List<Integer> ids) {
         //check if network found or not
         if (NetworkUtils.isNetworkConnected(requireContext())) {
             mViewModel.getItems(ids);
@@ -67,7 +76,7 @@ public class FavoriteItemsFragment extends Fragment {
                 Navigation.findNavController(v).navigateUp();
             }
         });
-        mViewModel.getCartItems(getActivity());
+//        mViewModel.getCartItems();
         mViewModel.ScreenState.observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer StateInt) {
@@ -75,7 +84,7 @@ public class FavoriteItemsFragment extends Fragment {
                 // 1 ==loading
                 //2== Recycle
                 //3== error
-                if (StateInt!=null) {
+                if (StateInt != null) {
                     if (StateInt == 0) {
                         binding.FavoriteItemsScreen.setVisibility(View.INVISIBLE);
                         binding.ErrorScreenFavoriteItems.setVisibility(View.INVISIBLE);
@@ -101,41 +110,37 @@ public class FavoriteItemsFragment extends Fragment {
             }
         });
 
-        CartDataBase.getInstance(getActivity()).favoriteItemsDAO().FavoriteItems2().observe(getViewLifecycleOwner(), new Observer<List<FavoriteItem>>() {
-            @Override
-            public void onChanged(List<FavoriteItem> favoriteItems) {
-                if (favoriteItems!=null){
-                    if (favoriteItems.size() != 0) {
-                        ids = favoriteItems.parallelStream().map(FavoriteItem::getId).collect(Collectors.toList());
-                        loadData(ids);
-                       favoriteItemslist=favoriteItems;
-                    }else {
-                        mViewModel.ScreenState.postValue(0);
-                    }
-                }
-            }
-        });
-//        mViewModel.FavoriteItemsMutableLiveData.observe(getViewLifecycleOwner(), new Observer<List<FavoriteItem>>() {
+       disposable.add(CartDataBase.getInstance(getActivity()).favoriteItemsDAO().FavoriteItems().subscribeOn(Schedulers.io()).subscribe(x->{
+           if (x != null) {
+               if (x.size() != 0) {
+                   ids = x.parallelStream().map(FavoriteItem::getId).collect(Collectors.toList());
+                   loadData(ids);
+                   favoriteItemslist = x;
+               } else {
+                   mViewModel.ScreenState.postValue(0);
+               }
+           }
+       }));
+//        CartDataBase.getInstance(getActivity()).favoriteItemsDAO().FavoriteItems2().observe(getViewLifecycleOwner(), new Observer<List<FavoriteItem>>() {
 //            @Override
 //            public void onChanged(List<FavoriteItem> favoriteItems) {
-//              if (favoriteItems!=null){
-//                  if (favoriteItems.size() != 0) {
-//                      ids = favoriteItems.parallelStream().map(FavoriteItem::getId).collect(Collectors.toList());
-//                      loadData(ids);
-//
-//                  }else {
-//                      mViewModel.ScreenState.postValue(0);
-//                  }
-//              }
+//                if (favoriteItems != null) {
+//                    if (favoriteItems.size() != 0) {
+//                        ids = favoriteItems.parallelStream().map(FavoriteItem::getId).collect(Collectors.toList());
+//                        loadData(ids);
+//                        favoriteItemslist = favoriteItems;
+//                    } else {
+//                        mViewModel.ScreenState.postValue(0);
+//                    }
+//                }
 //            }
 //        });
-
         mViewModel.listItemsMutableLiveData.observe(getViewLifecycleOwner(), new Observer<List<ItemModel>>() {
             @Override
             public void onChanged(List<ItemModel> itemModels) {
-                adapter = new FavoriteItemsAdapter(getActivity(),mViewModel.cartItemsId,itemModels,favoriteItemslist);
+                adapter = new FavoriteItemsAdapter(getActivity(), itemModels, FavoriteItemsFragment.this);
                 binding.FavoriteItemsRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
-              binding.FavoriteItemsRecycleView.setAdapter(adapter);
+                binding.FavoriteItemsRecycleView.setAdapter(adapter);
                 adapter.submitList(itemModels);
             }
         });
@@ -163,6 +168,42 @@ public class FavoriteItemsFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         binding.unbind();
-        binding=null;
+        binding = null;
+        disposable.dispose();
+        disposable.clear();
+    }
+
+    @Override
+    public void onAddToCartBtn(ItemModel itemModel) {
+       disposable.add( CartDataBase.getInstance(getActivity()).itemDAO().insert(new CartItem(itemModel.getId(), 1, itemModel.getColors().get(0)))
+                .subscribeOn(Schedulers.io()).subscribe());
+    }
+
+    @Override
+    public void RemoveToCartBtn(ItemModel itemModel, int position) {
+        showDialog(position, itemModel);
+    }
+
+    private void showDialog(int position, ItemModel itemModel) {
+        new CFAlertDialog.Builder(getActivity())
+                .setDialogStyle(CFAlertDialog.CFAlertStyle.ALERT)
+                .setTitle("Do You Want To Delete The Item ?")
+                .setTextColor(getActivity().getResources().getColor(R.color.HeaderTextColor))
+                .addButton("Delete", getActivity().getResources().getColor(R.color.white), getActivity().getResources().getColor(R.color.Buttons), CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, (dialog, which) -> {
+                    disposable.add(CartDataBase.getInstance(getActivity()).favoriteItemsDAO().DeleteFavoriteItem(new FavoriteItem(itemModel.getId())).subscribeOn(Schedulers.io()).subscribe());
+                    adapter.itemModels.remove(position);
+                    adapter.notifyItemRemoved(position);
+                    if (adapter.getCurrentList().size()==0)
+                        mViewModel.ScreenState.postValue(0);
+                    dialog.dismiss();
+                })
+                .addButton("Cancel", getActivity().getResources().getColor(R.color.Buttons), getActivity().getResources().getColor(R.color.white), CFAlertDialog.CFAlertActionStyle.DEFAULT, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+
     }
 }

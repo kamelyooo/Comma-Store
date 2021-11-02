@@ -20,10 +20,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.comma_store.shopping.Utils.NetworkUtils;
 import com.comma_store.shopping.R;
+import com.comma_store.shopping.data.CartDataBase;
 import com.comma_store.shopping.databinding.DealsFragmentBinding;
+import com.comma_store.shopping.pojo.FavoriteItem;
 import com.comma_store.shopping.pojo.ItemModel;
 import com.crowdfire.cfalertdialog.CFAlertDialog;
 
@@ -33,7 +36,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class DealsFragment extends Fragment {
+public class DealsFragment extends Fragment implements itemAdapterDeals_SubItems {
 
     DealsViewModel mViewModel;
     DealsFragmentBinding binding;
@@ -76,7 +79,7 @@ public class DealsFragment extends Fragment {
             showSortByDialog();
         });
         //make adapter for recycleView Deals
-        adapter = new ItemAdapter(getActivity());
+        adapter = new ItemAdapter(getActivity(),this);
         binding.RecycleDeals.setLayoutManager(new GridLayoutManager(getActivity(),2));
         binding.RecycleDeals.setAdapter(adapter);
 //        binding.DealsScreen.setVisibility(View.VISIBLE);
@@ -165,4 +168,25 @@ public class DealsFragment extends Fragment {
         else binding.spinKitDeals.setVisibility(View.INVISIBLE);
     }
 
+
+    @Override
+    public void OnItemClick(ItemModel itemModel) {
+        DealsFragmentDirections.ActionDealsFragmentToItemDetailsFragment2 action=DealsFragmentDirections.actionDealsFragmentToItemDetailsFragment2(itemModel);
+                    action.setItemDetails(itemModel);
+                    Navigation.findNavController(getView()).navigate(action);
+    }
+
+    @Override
+    public void OnFavoriteClicked(ItemModel itemModel) {
+        CartDataBase.getInstance(getActivity()).favoriteItemsDAO().insetFavoriteItem(new FavoriteItem(itemModel.getId()))
+                .subscribeOn(Schedulers.io()).subscribe();
+        Toast.makeText(getActivity(), "Love In DealsFragment"+itemModel.getDiscerption(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onUnFavoriteClicked(ItemModel itemModel) {
+        CartDataBase.getInstance(getActivity()).favoriteItemsDAO().DeleteFavoriteItem(new FavoriteItem(itemModel.getId()))
+                .subscribeOn(Schedulers.io()).subscribe();
+        Toast.makeText(getActivity(), "unLove In DealsFragment"+itemModel.getDiscerption(), Toast.LENGTH_SHORT).show();
+    }
 }

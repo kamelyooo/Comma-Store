@@ -23,17 +23,27 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.comma_store.shopping.R;
+import com.comma_store.shopping.Utils.AnimationUtils;
+import com.comma_store.shopping.data.CartDataBase;
 import com.comma_store.shopping.pojo.ItemModel;
 import com.comma_store.shopping.ui.SubCategoryItems.SubCategoryItemsFragmentDirections;
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+
 public class ItemAdapter extends PagedListAdapter<ItemModel,ItemAdapter.ItemViewHolder> {
     private Context mCtx;
-    public ItemAdapter(Context mCtx) {
+    itemAdapterDeals_SubItems itemAdapterDeals_subItems;
+    CompositeDisposable disposable=new CompositeDisposable();
+    public ItemAdapter(Context mCtx, itemAdapterDeals_SubItems itemAdapterDeals_subItems) {
         super(DIFF_CALLBACK);
         this.mCtx = mCtx;
+        this.itemAdapterDeals_subItems=itemAdapterDeals_subItems;
+
     }
     private static DiffUtil.ItemCallback<ItemModel> DIFF_CALLBACK =
             new DiffUtil.ItemCallback<ItemModel>() {
@@ -62,7 +72,6 @@ public class ItemAdapter extends PagedListAdapter<ItemModel,ItemAdapter.ItemView
         holder.PriceAfter.setText(getItem(position).getPriceAfter()+"");
         holder.PriceBefore.setText(getItem(position).getPriceBefor()+"");
         holder.Precentage.setText(getItem(position).getDiscountPrecentage()+"");
-
         Glide.with(mCtx).load("https://store-comma.com/mttgr/public/storage/"+getItem(position).getImages().get(0))
                 .listener(new RequestListener<Drawable>() {
                     @Override
@@ -76,45 +85,64 @@ public class ItemAdapter extends PagedListAdapter<ItemModel,ItemAdapter.ItemView
                         return false;
                     }
                 }).into(holder.itemImage);
-        holder.favoriteImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mCtx, "loved"+getItem(position).getTitle(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        holder.DealsItemLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if ( Navigation.findNavController(v).getCurrentDestination().getId()==R.id.dealsFragment){
-                    DealsFragmentDirections.ActionDealsFragmentToItemDetailsFragment2 action=DealsFragmentDirections.actionDealsFragmentToItemDetailsFragment2(getItem(position));
-                    action.setItemDetails(getItem(position));
-                    Navigation.findNavController(v).navigate(action);
-                }else{
-                    SubCategoryItemsFragmentDirections.ActionSubCategoryItemsToItemDetailsFragment action=SubCategoryItemsFragmentDirections.actionSubCategoryItemsToItemDetailsFragment(getItem(position));
-                    action.setItemDetails(getItem(position));
-                    Navigation.findNavController(v).navigate(action);
-                }
+        disposable.add(CartDataBase.getInstance(mCtx).favoriteItemsDAO().ItemCount(getItem(position).getId()).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(x->{
+                    if (x==0){
+                        holder.unFavoriteImage.setVisibility(View.INVISIBLE);
+                        holder.favoriteImage.setVisibility(View.VISIBLE);
+                    }else {
+                        holder.unFavoriteImage.setVisibility(View.VISIBLE);
+                        holder.favoriteImage.setVisibility(View.INVISIBLE);
+                    }
+                }));
+    }
 
-            }
-        });
+    @Override
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+        disposable.clear();
+        disposable.dispose();
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
-       ImageView itemImage,favoriteImage;
+       ImageView itemImage,favoriteImage,unFavoriteImage;
        TextView title, PriceAfter,PriceBefore
                ,Precentage;
        SpinKitView spinKitView;
-       ConstraintLayout DealsItemLayout;
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             itemImage=itemView.findViewById(R.id.cm_Item_Image_Deals_Screen);
             favoriteImage=itemView.findViewById(R.id.favorite_Deals_Screen);
+            unFavoriteImage=itemView.findViewById(R.id.Unfavorite_Deals_Screen);
             title=itemView.findViewById(R.id.Custom_item_Title_Deals_Screen);
             PriceAfter =itemView.findViewById(R.id.Custom_Item_PriceAfter_Deals_Screen);
             PriceBefore=itemView.findViewById(R.id.Custom_Item_PriceBefor_Deals_Screen);
             Precentage=itemView.findViewById(R.id.Custom_Item_Precentage_Deals_Screen);
             spinKitView=itemView.findViewById(R.id.spin_kit_Deals_item);
-            DealsItemLayout=itemView.findViewById(R.id.DealsItemLayOut);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemAdapterDeals_subItems.OnItemClick(getItem(getAdapterPosition()));
+
+                }
+            });
+            favoriteImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemAdapterDeals_subItems.OnFavoriteClicked(getItem(getAdapterPosition()));
+                    AnimationUtils.slideDown(favoriteImage);
+                    AnimationUtils.slideUp(unFavoriteImage);
+                }
+            });
+            unFavoriteImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemAdapterDeals_subItems.onUnFavoriteClicked(getItem(getAdapterPosition()));
+                    AnimationUtils.slideDown(unFavoriteImage);
+                    AnimationUtils.slideUp(favoriteImage);
+                }
+            });
         }
     }
 }

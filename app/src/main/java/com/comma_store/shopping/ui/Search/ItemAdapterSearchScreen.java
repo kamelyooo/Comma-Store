@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.comma_store.shopping.R;
 import com.comma_store.shopping.pojo.ItemModel;
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -88,7 +89,7 @@ public class ItemAdapterSearchScreen extends PagedListAdapter<ItemModel,ItemAdap
 
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
-        GifImageView Spin_Kit_SeachItem;
+        SpinKitView Spin_Kit_SeachItem;
         ImageView Cm_ImagSearchItem;
         TextView Cm_TitleSearchItem,Cm_PriceAfterSearchItem
                 ,Cm_PriceBeforeSearchItem,Cm_DescountPecentageSearchItem;

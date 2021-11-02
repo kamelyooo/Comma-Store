@@ -151,8 +151,8 @@ public interface ItemInterface {
     @Headers("token:" + token)
     @POST("mttgr/public/api/changePassword")
     Single<Resource<String>> ChangePassword(@Query("api_key") String api_key,
-                                  @Query("old_password") double longitude,
-                                  @Query("password") double latitude,
+                                  @Query("old_password") String old_password,
+                                  @Query("password") String password,
                                   @Query("lang") String lang);
 
 }

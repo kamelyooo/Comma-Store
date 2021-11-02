@@ -24,13 +24,14 @@ import java.util.List;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class    HomeSubAdapterTybe0 extends RecyclerView.Adapter<HomeSubAdapterTybe0.ViewHolder> {
     List<ItemModel>itemModelList;
     Context context;
-
+CompositeDisposable disposable=new CompositeDisposable();
     public HomeSubAdapterTybe0(List<ItemModel> itemModelList, Context context) {
         this.itemModelList = itemModelList;
         this.context = context;
@@ -54,31 +55,19 @@ public class    HomeSubAdapterTybe0 extends RecyclerView.Adapter<HomeSubAdapterT
             HomeFragmentDirections.ActionHomeFragmentToItemDetailsFragment2 action=HomeFragmentDirections.actionHomeFragmentToItemDetailsFragment2(itemModelList.get(position));
             action.setItemDetails(itemModelList.get(position));
             Navigation.findNavController(v).navigate(action);
+
         });
-        CartDataBase.getInstance(context).favoriteItemsDAO().ItemCount(itemModelList.get(position).getId()).subscribeOn(Schedulers.io())
+        disposable.add(CartDataBase.getInstance(context).favoriteItemsDAO().ItemCount(itemModelList.get(position).getId()).subscribeOn(Schedulers.io())
                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<Integer>() {
-                    @Override
-                    public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
-
+                .subscribe(x->{
+                    if (x==0){
+                        holder.Cm_FavoriteImageYes.setVisibility(View.INVISIBLE);
+                        holder.Cm_FavoriteImageNo.setVisibility(View.VISIBLE);
+                    }else {
+                        holder.Cm_FavoriteImageYes.setVisibility(View.VISIBLE);
+                        holder.Cm_FavoriteImageNo.setVisibility(View.INVISIBLE);
                     }
-
-                    @Override
-                    public void onSuccess(@io.reactivex.annotations.NonNull Integer integer) {
-                        if (integer==0){
-                            holder.Cm_FavoriteImageYes.setVisibility(View.INVISIBLE);
-                            holder.Cm_FavoriteImageNo.setVisibility(View.VISIBLE);
-                        }else {
-                            holder.Cm_FavoriteImageYes.setVisibility(View.VISIBLE);
-                            holder.Cm_FavoriteImageNo.setVisibility(View.INVISIBLE);
-                        }
-                    }
-
-                    @Override
-                    public void onError(@io.reactivex.annotations.NonNull Throwable e) {
-
-                    }
-                });
+                }));
         holder.Cm_FavoriteImageNo.setOnClickListener(v -> {
             CartDataBase.getInstance(context).favoriteItemsDAO().insetFavoriteItem(new FavoriteItem(itemModelList.get(position).getId()))
                     .subscribeOn(Schedulers.io()).subscribe();
@@ -125,5 +114,12 @@ public class    HomeSubAdapterTybe0 extends RecyclerView.Adapter<HomeSubAdapterT
 
         }
 
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+        disposable.clear();
+        disposable.dispose();
     }
 }

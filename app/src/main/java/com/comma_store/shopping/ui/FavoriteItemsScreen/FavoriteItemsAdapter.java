@@ -14,7 +14,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.exifinterface.media.ExifInterface;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,19 +39,22 @@ import java.util.List;
 import java.util.Optional;
 import java.util.zip.Inflater;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class FavoriteItemsAdapter extends ListAdapter<ItemModel,FavoriteItemsAdapter.ViewHolder> {
     Context context;
-    List<Integer>CartIds;
+
     List<ItemModel> itemModels;
-    List<FavoriteItem>favoriteItems;
-    public FavoriteItemsAdapter(Context context,List<Integer>cartIds,List<ItemModel>itemModels,List<FavoriteItem>favoriteItems) {
+    FavoriteItemAdapterIterface favoriteItemAdapterIterface;
+    CompositeDisposable disposable=new CompositeDisposable();
+    public FavoriteItemsAdapter(Context context,List<ItemModel>itemModels, FavoriteItemAdapterIterface favoriteItemAdapterIterface) {
         super(diffCallback);
         this.context=context;
-        this.CartIds=cartIds;
+
         this.itemModels=itemModels;
-        this.favoriteItems=favoriteItems;
+        this.favoriteItemAdapterIterface=favoriteItemAdapterIterface;
     }
     private static final DiffUtil.ItemCallback<ItemModel> diffCallback=new DiffUtil.ItemCallback<ItemModel>() {
         @Override
@@ -92,29 +97,25 @@ public class FavoriteItemsAdapter extends ListAdapter<ItemModel,FavoriteItemsAda
             holder.cm_PriceBefore_favorite_item.setText(getItem(position).getPriceBefor()+context.getResources().getString(R.string.EGP));
             holder.cm_DescountPercentage_favorite_Item.setText(getItem(position).getDiscountPrecentage()+context.getResources().getString(R.string.off));
         }
-        if (CartIds.contains(getItem(position).getId())){
-            holder.cm_AddedToCartButton.setVisibility(View.VISIBLE);
-        }else {
-            holder.cm_AddToCartButton.setVisibility(View.VISIBLE);
-        }
-        holder.cm_AddToCartButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CartDataBase.getInstance(context).itemDAO().insert(new CartItem(getItem(position).getId(),1,getItem(position).getColors().get(0)))
-                        .subscribeOn(Schedulers.io()).subscribe();
-                AnimationUtils.slideDown(holder.cm_AddToCartButton);
-                AnimationUtils.slideUp(holder.cm_AddedToCartButton);
-            }
-        });
-        holder.cm_Delete_favoriteItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialog(position);
-            }
-        });
-
+//        if (CartIds.contains(getItem(position).getId())){
+//            holder.cm_AddedToCartButton.setVisibility(View.VISIBLE);
+//        }else {
+//            holder.cm_AddToCartButton.setVisibility(View.VISIBLE);
+//        }
+        disposable.add(CartDataBase.getInstance(context).itemDAO().ItemCount(getItem(position).getId()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(x-> {
+                    if (x==0){
+                        holder.cm_AddToCartButton.setVisibility(View.VISIBLE);
+                    }else holder.cm_AddedToCartButton.setVisibility(View.VISIBLE);
+                }));
     }
 
+    @Override
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+        disposable.clear();
+        disposable.dispose();
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder  {
         ImageView cm_Image_favoriteItem;
@@ -140,27 +141,22 @@ public class FavoriteItemsAdapter extends ListAdapter<ItemModel,FavoriteItemsAda
             cm_AddedToCartButton=itemView.findViewById(R.id.cm_AddedToCartButton);
             cm_AddToCartButton=itemView.findViewById(R.id.cm_AddToCartButton);
             cm_Delete_favoriteItem=itemView.findViewById(R.id.cm_Delete_favoriteItem);
+
+            cm_AddToCartButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    favoriteItemAdapterIterface.onAddToCartBtn(getItem(getAdapterPosition()));
+                    AnimationUtils.slideDown(cm_AddToCartButton);
+                    AnimationUtils.slideUp(cm_AddedToCartButton);
+                }
+            });
+            cm_Delete_favoriteItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    favoriteItemAdapterIterface.RemoveToCartBtn(getItem(getAdapterPosition()),getAdapterPosition());
+                }
+            });
         }
     }
-    private  void showDialog( int position){
-        new CFAlertDialog.Builder(context)
-                .setDialogStyle(CFAlertDialog.CFAlertStyle.ALERT)
-                .setTitle("Do You Want To Delete The Item ?")
-                .setTextColor( context.getResources().getColor(R.color.HeaderTextColor))
-                .addButton("Delete", context.getResources().getColor(R.color.white), context.getResources().getColor(R.color.Buttons), CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, (dialog, which) -> {
-                    Optional<FavoriteItem> favoriteItem = favoriteItems.parallelStream().filter(x -> x.getId() == getItem(position).getId()).findFirst();
-                    favoriteItem.ifPresent(favoriteItem1 -> CartDataBase.getInstance(context).favoriteItemsDAO().DeleteFavoriteItem(favoriteItem1).subscribeOn(Schedulers.io()).subscribe());
-                    itemModels.remove(position);
-                    notifyItemRemoved(position);
-                    dialog.dismiss();
-                })
-                .addButton("Cancel",  context.getResources().getColor(R.color.Buttons),  context.getResources().getColor(R.color.white), CFAlertDialog.CFAlertActionStyle.DEFAULT, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .show();
 
-    }
 }

@@ -152,8 +152,20 @@
         android:layout_height="@dimen/_20sdp"
         android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginEnd="@dimen/_2sdp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="@+id/cm_Item_Image_Deals_Screen"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_favorite_add_outlined" />
+        app:srcCompat="@drawable/ic_heart_thin" />
+
+    <ImageView
+        android:id="@+id/Unfavorite_Deals_Screen"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/cm_Item_Image_Deals_Screen"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_favorite_filled" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

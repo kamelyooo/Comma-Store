@@ -19,15 +19,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.comma_store.shopping.Utils.NetworkUtils;
 import com.comma_store.shopping.R;
+import com.comma_store.shopping.data.CartDataBase;
 import com.comma_store.shopping.databinding.SubCategoryItemsFragmentBinding;
+import com.comma_store.shopping.pojo.FavoriteItem;
 import com.comma_store.shopping.pojo.ItemModel;
 import com.comma_store.shopping.ui.Deals.ItemAdapter;
+import com.comma_store.shopping.ui.Deals.itemAdapterDeals_SubItems;
 import com.crowdfire.cfalertdialog.CFAlertDialog;
 
-public class SubCategoryItemsFragment extends Fragment {
+import io.reactivex.schedulers.Schedulers;
+
+public class SubCategoryItemsFragment extends Fragment implements itemAdapterDeals_SubItems {
 
      SubCategoryItemsViewModel mViewModel;
     SubCategoryItemsFragmentBinding binding;
@@ -62,7 +68,7 @@ Button TryAgain;
         showSpinKit();
         TryAgain=root.findViewById(R.id.Error_Conection_Retry_Btn);
         showSpinKit();
-        adapter = new ItemAdapter(getActivity());
+        adapter = new ItemAdapter(getActivity(),this);
 
 
 
@@ -146,4 +152,26 @@ Button TryAgain;
         builder.show();
     }
 
+
+    @Override
+    public void OnItemClick(ItemModel itemModel) {
+        SubCategoryItemsFragmentDirections.ActionSubCategoryItemsToItemDetailsFragment action=SubCategoryItemsFragmentDirections.actionSubCategoryItemsToItemDetailsFragment(itemModel);
+                    action.setItemDetails(itemModel);
+                    Navigation.findNavController(getView()).navigate(action);
+    }
+
+    @Override
+    public void OnFavoriteClicked(ItemModel itemModel) {
+        Toast.makeText(getActivity(), "Love In SubFragment"+itemModel.getDiscerption(), Toast.LENGTH_SHORT).show();
+        CartDataBase.getInstance(getActivity()).favoriteItemsDAO().insetFavoriteItem(new FavoriteItem(itemModel.getId()))
+                .subscribeOn(Schedulers.io()).subscribe();
+
+    }
+
+    @Override
+    public void onUnFavoriteClicked(ItemModel itemModel) {
+        Toast.makeText(getActivity(), "unLove In SubFragment"+itemModel.getDiscerption(), Toast.LENGTH_SHORT).show();
+        CartDataBase.getInstance(getActivity()).favoriteItemsDAO().DeleteFavoriteItem(new FavoriteItem(itemModel.getId()))
+                .subscribeOn(Schedulers.io()).subscribe();
+    }
 }

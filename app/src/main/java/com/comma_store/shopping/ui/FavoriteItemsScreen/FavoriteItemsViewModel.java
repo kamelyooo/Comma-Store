@@ -1,8 +1,11 @@
 package com.comma_store.shopping.ui.FavoriteItemsScreen;
 
+import android.app.Application;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
@@ -22,18 +25,24 @@ import java.util.stream.Collectors;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
-import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
-public class FavoriteItemsViewModel extends ViewModel {
+public class FavoriteItemsViewModel extends AndroidViewModel {
     private final CompositeDisposable disposables = new CompositeDisposable();
     MutableLiveData<List<FavoriteItem>> FavoriteItemsMutableLiveData=new MutableLiveData<>();
     MutableLiveData<List<ItemModel>>listItemsMutableLiveData= new MutableLiveData<>();
     MutableLiveData<Integer>ScreenState=new MutableLiveData<>(1);
     List<Integer>cartItemsId= Arrays.asList();
+    private Application context;
+
+    public FavoriteItemsViewModel(@NonNull Application application) {
+        super(application);
+        context = application;
+    }
+
     // 0==Empty
     // 1 ==loading
     //2== Recycle
@@ -50,8 +59,8 @@ public class FavoriteItemsViewModel extends ViewModel {
               ));
     }
 
-    public void getCartItems(FragmentActivity activity){
-        Single<List<CartItem>> listOfCartItes = CartDataBase.getInstance(activity).itemDAO().GetItemsCart().subscribeOn(Schedulers.io());
+    public void getCartItems(){
+        Single<List<CartItem>> listOfCartItes = CartDataBase.getInstance(context).itemDAO().GetItemsCart().subscribeOn(Schedulers.io());
 
         disposables.add(listOfCartItes.subscribe(x-> {
             cartItemsId = x.parallelStream().map(CartItem::getItem_id).collect(Collectors.toList());

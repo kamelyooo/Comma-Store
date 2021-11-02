@@ -4,6 +4,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,13 +14,20 @@ import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.comma_store.shopping.R;
 import com.comma_store.shopping.Utils.SharedPreferencesUtils;
 import com.comma_store.shopping.databinding.MyProfileFragmentBinding;
+import com.schibstedspain.leku.LocationPickerActivity;
+import com.schibstedspain.leku.LocationPickerActivityKt;
+
+import static android.provider.MediaStore.Video.VideoColumns.LATITUDE;
+import static android.provider.MediaStore.Video.VideoColumns.LONGITUDE;
 
 public class MyProfileFragment extends Fragment {
 
@@ -27,8 +36,9 @@ public class MyProfileFragment extends Fragment {
     MyProfileFragmentBinding binding;
     String NewPassword;
     String CurrentPassword;
-    String UserName;
-
+    String UserName,address;
+    double lat,longg;
+    Intent locationPickerIntent;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,44 +56,64 @@ public class MyProfileFragment extends Fragment {
         binding.userNameETMyProfle.addTextChangedListener(userNameWatcher);
         binding.newPasswordETMyProfile.addTextChangedListener(ChangePasswordWatcher);
         binding.CurrentPasswordETMyProfile.addTextChangedListener(ChangePasswordWatcher);
-
-        mViewModel.isChangBtnLoading.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean isChangBtnLoading) {
-                if (isChangBtnLoading){
-                    binding.ChangeButtonMyProfileScreen.setEnabled(false);
-                    binding.ChangeTV.setText("Please Wait");
-                    binding.spinKitChangeBtn.setVisibility(View.VISIBLE);
-                }else {
-                    binding.ChangeButtonMyProfileScreen.setEnabled(true);
-                    binding.ChangeTV.setText("Change");
-                    binding.spinKitChangeBtn.setVisibility(View.INVISIBLE);
-                }
+       lat= Double.parseDouble(SharedPreferencesUtils.getInstance(getActivity()).getCustomerLat()) ;
+       longg= Double.parseDouble(SharedPreferencesUtils.getInstance(getActivity()).getCustomerLong()) ;
+       binding.userNameETMyProfle.setText(SharedPreferencesUtils.getInstance(getActivity()).getCustomerName());
+       binding.etLocationMyProfile.setText(SharedPreferencesUtils.getInstance(getActivity()).getCustomerAddress());
+       binding.EmailETMyProfile.setText(SharedPreferencesUtils.getInstance(getActivity()).getCustomerEmail());
+        mViewModel.isChangBtnLoading.observe(getViewLifecycleOwner(), isChangBtnLoading -> {
+            if (isChangBtnLoading){
+                binding.ChangeButtonMyProfileScreen.setEnabled(false);
+                binding.ChangeTV.setText("Please Wait");
+                binding.spinKitChangeBtn.setVisibility(View.VISIBLE);
+            }else {
+                binding.ChangeButtonMyProfileScreen.setEnabled(true);
+                binding.ChangeTV.setText("Change");
+                binding.spinKitChangeBtn.setVisibility(View.INVISIBLE);
             }
         });
 
-        mViewModel.isSaveBtnLoading.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean isSaveBtnLoading) {
-                if (isSaveBtnLoading){
-                    binding.saveButtonMyProfileScreen.setEnabled(false);
-                    binding.saveTV.setText("Please Wait");
-                    binding.spinKitSaveUpBtn.setVisibility(View.VISIBLE);
-                }else {
-                    binding.saveButtonMyProfileScreen.setEnabled(true);
-                    binding.saveTV.setText("Save");
-                    binding.spinKitSaveUpBtn.setVisibility(View.INVISIBLE);
-                }
+        mViewModel.isSaveBtnLoading.observe(getViewLifecycleOwner(), isSaveBtnLoading -> {
+            if (isSaveBtnLoading){
+                binding.saveButtonMyProfileScreen.setEnabled(false);
+                binding.saveTV.setText("Please Wait");
+                binding.spinKitSaveUpBtn.setVisibility(View.VISIBLE);
+            }else {
+                binding.saveButtonMyProfileScreen.setEnabled(true);
+                binding.saveTV.setText("Save");
+                binding.spinKitSaveUpBtn.setVisibility(View.INVISIBLE);
             }
         });
-        binding.saveButtonMyProfileScreen.setOnClickListener(new View.OnClickListener() {
+        mViewModel.msg.observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
+            }
+        });
+        binding.saveButtonMyProfileScreen.setOnClickListener(v -> {
+            mViewModel.isSaveBtnLoading.postValue(true);
+            mViewModel.UpdateProfile(binding.userNameETMyProfle.getText().toString(), SharedPreferencesUtils.getInstance(getActivity()).getApiKey(),lat,longg,binding.etLocationMyProfile.getText().toString());
+        });
+
+        binding.etLocationMyProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mViewModel.isSaveBtnLoading.postValue(true);
-                mViewModel.UpdateProfile(binding.userNameETMyProfle.getText().toString(), SharedPreferencesUtils.getInstance(getActivity()).getApiKey(),0.32166546,1.65464,"matarya");
+                mViewModel.checkLocationOpened();
+                if (!mViewModel.gps_enabled && !mViewModel.network_enabled) {
+                    mViewModel.showLocationSettingDiaog(getActivity());
+                } else {
+                    setLocationPickerIntent();
+                }
             }
         });
-
+        binding.ChangeButtonMyProfileScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewModel.isChangBtnLoading.postValue(true);
+                mViewModel.ChangePassWord(SharedPreferencesUtils.getInstance(getActivity()).getApiKey(),binding.CurrentPasswordETMyProfile.getText().toString(),
+                        binding.newPasswordETMyProfile.getText().toString());
+            }
+        });
 
         return root;
     }
@@ -123,5 +153,40 @@ public class MyProfileFragment extends Fragment {
 
         }
     };
+
+    private void setLocationPickerIntent() {
+        locationPickerIntent = new LocationPickerActivity.Builder()
+                .withGeolocApiKey("AIzaSyDksR9M0SUkLZIlzLZjVkGuDxVsd7NRTDc")
+                .withGooglePlacesApiKey("AIzaSyBAvumGK60xeoV_XOPnzXBIhM-AymfECRM")
+                .withDefaultLocaleSearchZone()
+                .withGoogleTimeZoneEnabled()
+                .withUnnamedRoadHidden()
+                .withSearchZone("ar")
+                .build(getActivity());
+        startActivityForResult(locationPickerIntent, 1);
+
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && data != null) {
+            Log.i("xxx", "OK");
+            try {
+                if (requestCode == 1) {
+                    lat = data.getDoubleExtra(LATITUDE, 0.0);
+                    longg = data.getDoubleExtra(LONGITUDE, 0.0);
+                    binding.etLocationMyProfile.setText(data.getStringExtra(LocationPickerActivityKt.LOCATION_ADDRESS));
+                }
+            } catch (Exception ex) {
+                Log.i("xxxEX", ex.toString());
+            }
+
+        }
+        if (resultCode == Activity.RESULT_CANCELED) {
+            Log.i("xxx", "CANCELLED");
+        }
+    }
 
 }

@@ -32,7 +32,6 @@ import pl.droidsonroids.gif.GifImageView;
 public class CartItemsAdapter extends ListAdapter<CartItem,CartItemsAdapter.ViewHolder> {
     List<ItemModel>ItemsCart;
     List<CartItem>localItemsCart;
-
     int quantity;
 
     CartFragment cartFragment;
@@ -133,7 +132,6 @@ public class CartItemsAdapter extends ListAdapter<CartItem,CartItemsAdapter.View
             holder.cm_Delete_cartItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//
                      showDialog(cartFragment.getActivity(),position,localItem);
                 }
             });

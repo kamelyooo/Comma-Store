@@ -31,6 +31,7 @@ public class HomeFragment extends Fragment {
     String deviceToken;
     boolean deviceTokenSentBoolean;
     HomeFragmentDirections.ActionHomeFragmentToGetItemsGraph action;
+    View root;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,7 +54,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
-        View root = binding.getRoot();
+        root = binding.getRoot();
         RetryAgainBtn = root.findViewById(R.id.Error_Conection_Retry_Btn);
         deviceToken = SharedPreferencesUtils.getInstance(getActivity()).getDeviceToken();
         deviceTokenSentBoolean = SharedPreferencesUtils.getInstance(getActivity()).getDeviceTokenSentBoolean();
