@@ -43,7 +43,6 @@ public class FavoriteItemsFragment extends Fragment implements FavoriteItemAdapt
     List<Integer> ids;
     Button tryAgain;
     FavoriteItemsAdapter adapter;
-    List<FavoriteItem> favoriteItemslist;
     CompositeDisposable disposable = new CompositeDisposable();
 
     @Override
@@ -69,7 +68,7 @@ public class FavoriteItemsFragment extends Fragment implements FavoriteItemAdapt
 
         binding = DataBindingUtil.inflate(inflater, R.layout.favorite_items_fragment, container, false);
         View root = binding.getRoot();
-//        mViewModel.getFavoriteItems(getActivity());
+        mViewModel.getFavoriteItems();
         binding.PopUpBtnFavoriteItems.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,31 +109,30 @@ public class FavoriteItemsFragment extends Fragment implements FavoriteItemAdapt
             }
         });
 
-       disposable.add(CartDataBase.getInstance(getActivity()).favoriteItemsDAO().FavoriteItems().subscribeOn(Schedulers.io()).subscribe(x->{
-           if (x != null) {
-               if (x.size() != 0) {
-                   ids = x.parallelStream().map(FavoriteItem::getId).collect(Collectors.toList());
+        mViewModel.FavoriteItemsMutableLiveData.observe(getViewLifecycleOwner(), new Observer<List<FavoriteItem>>() {
+            @Override
+            public void onChanged(List<FavoriteItem> favoriteItems) {
+                if (favoriteItems != null) {
+               if (favoriteItems.size() != 0) {
+                   ids = favoriteItems.parallelStream().map(FavoriteItem::getId).collect(Collectors.toList());
                    loadData(ids);
-                   favoriteItemslist = x;
                } else {
                    mViewModel.ScreenState.postValue(0);
                }
            }
-       }));
-//        CartDataBase.getInstance(getActivity()).favoriteItemsDAO().FavoriteItems2().observe(getViewLifecycleOwner(), new Observer<List<FavoriteItem>>() {
-//            @Override
-//            public void onChanged(List<FavoriteItem> favoriteItems) {
-//                if (favoriteItems != null) {
-//                    if (favoriteItems.size() != 0) {
-//                        ids = favoriteItems.parallelStream().map(FavoriteItem::getId).collect(Collectors.toList());
-//                        loadData(ids);
-//                        favoriteItemslist = favoriteItems;
-//                    } else {
-//                        mViewModel.ScreenState.postValue(0);
-//                    }
-//                }
-//            }
-//        });
+            }
+        });
+//       disposable.add(CartDataBase.getInstance(getActivity()).favoriteItemsDAO().FavoriteItems().subscribeOn(Schedulers.io()).subscribe(x->{
+//           if (x != null) {
+//               if (x.size() != 0) {
+//                   ids = x.parallelStream().map(FavoriteItem::getId).collect(Collectors.toList());
+//                   loadData(ids);
+//               } else {
+//                   mViewModel.ScreenState.postValue(0);
+//               }
+//           }
+//       }));
+
         mViewModel.listItemsMutableLiveData.observe(getViewLifecycleOwner(), new Observer<List<ItemModel>>() {
             @Override
             public void onChanged(List<ItemModel> itemModels) {

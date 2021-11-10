@@ -87,9 +87,6 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
         }
-//        appBarConfiguration = new AppBarConfiguration.Builder(
-//                R.id.homeFragment, R.id.cartFragment, R.id.dealsFragment, R.id.cartFragment, R.id.profileFragment, R.id.categoriesFragment)
-//                .build();
 
         CartDataBase.getInstance(this).itemDAO().GetItemsCart2().observe(this, new Observer<List<CartItem>>() {
             @Override
@@ -113,5 +110,6 @@ public class MainActivity extends AppCompatActivity {
         badgeDrawable.setNumber(number);
         badgeDrawable.setBadgeGravity(BadgeDrawable.TOP_END);
         badgeDrawable.setVisible(visibilty);
+
     }
 }

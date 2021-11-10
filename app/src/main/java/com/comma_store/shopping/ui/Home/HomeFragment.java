@@ -20,10 +20,15 @@ import com.comma_store.shopping.R;
 //import com.comma_store.shopping.databinding.FragmentHomeBinding;
 
 import com.comma_store.shopping.Utils.SharedPreferencesUtils;
+import com.comma_store.shopping.data.CartDataBase;
 import com.comma_store.shopping.databinding.FragmentHomeBinding;
+import com.comma_store.shopping.pojo.FavoriteItem;
+import com.comma_store.shopping.pojo.ItemModel;
+
+import io.reactivex.schedulers.Schedulers;
 
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements HomeAdapterOnClick {
 
     private HomeViewModel homeViewModel;
     FragmentHomeBinding binding;
@@ -31,6 +36,10 @@ public class HomeFragment extends Fragment {
     String deviceToken;
     boolean deviceTokenSentBoolean;
     HomeFragmentDirections.ActionHomeFragmentToGetItemsGraph action;
+    HomeFragmentDirections.ActionHomeFragmentToOrderDetailsFragment2 actionToOrderDetailsFragment;
+    HomeFragmentDirections.ActionHomeFragmentToItemDetailsFragment2 actionToItemDetails;
+
+
     View root;
 
     @Override
@@ -58,16 +67,18 @@ public class HomeFragment extends Fragment {
         RetryAgainBtn = root.findViewById(R.id.Error_Conection_Retry_Btn);
         deviceToken = SharedPreferencesUtils.getInstance(getActivity()).getDeviceToken();
         deviceTokenSentBoolean = SharedPreferencesUtils.getInstance(getActivity()).getDeviceTokenSentBoolean();
-        if (deviceToken != null&&!deviceTokenSentBoolean) {
-          homeViewModel.AddDeviceTokenGuest(deviceToken, getActivity());
+        if (deviceToken != null && !deviceTokenSentBoolean) {
+            homeViewModel.AddDeviceTokenGuest(deviceToken);
 
         }
 
-        if (SharedPreferencesUtils.getInstance(getActivity()).getNotificationNavigation()!=null){
+        if (SharedPreferencesUtils.getInstance(getActivity()).getNotificationNavigation() != null) {
             int notificationId = SharedPreferencesUtils.getInstance(getActivity()).getNotificationId();
-            switch (SharedPreferencesUtils.getInstance(getActivity()).getNotificationNavigation()){
+            switch (SharedPreferencesUtils.getInstance(getActivity()).getNotificationNavigation()) {
                 case "order":
-//                    Toast.makeText(this, "order"+id, Toast.LENGTH_SHORT).show();
+                    actionToOrderDetailsFragment = HomeFragmentDirections.actionHomeFragmentToOrderDetailsFragment2();
+                    actionToOrderDetailsFragment.setOrderId(notificationId);
+                    Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(actionToOrderDetailsFragment);
                     break;
                 case "promoCode":
 //                    Toast.makeText(this, "promoCode"+id, Toast.LENGTH_SHORT).show();
@@ -75,7 +86,7 @@ public class HomeFragment extends Fragment {
                 case "offers_sub":
                     action = HomeFragmentDirections.actionHomeFragmentToGetItemsGraph();
                     action.setSubCategoryId(notificationId);
-                    Navigation.findNavController(getActivity(),R.id.nav_host_fragment).navigate(action);
+                    Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
                     break;
             }
 
@@ -88,7 +99,7 @@ public class HomeFragment extends Fragment {
                 if (connect) {
                     homeViewModel.getOnError().observe(getViewLifecycleOwner(), error -> Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show());
                     homeViewModel.getLiveDatagetHomeResponse().observe(getViewLifecycleOwner(), getHomeResponse -> {
-                        binding.recycleParent.setAdapter(new HomeRecycleParentAdapter(getHomeResponse,getActivity()));
+                        binding.recycleParent.setAdapter(new HomeRecycleParentAdapter(getHomeResponse, getActivity(),HomeFragment.this));
                         binding.homeLayout.setVisibility(View.VISIBLE);
                         binding.homeErrorConnection.setVisibility(View.INVISIBLE);
                         binding.spinKit.setVisibility(View.INVISIBLE);
@@ -120,4 +131,27 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
+    @Override
+    public void ClickToSubCategoryItems(int CategoryId) {
+        action = HomeFragmentDirections.actionHomeFragmentToGetItemsGraph();
+        action.setSubCategoryId(CategoryId);
+        Navigation.findNavController(getView()).navigate(action);
+    }
+
+    @Override
+    public void ClickToItemDetails(ItemModel itemModel) {
+        actionToItemDetails = HomeFragmentDirections.actionHomeFragmentToItemDetailsFragment2(itemModel);
+        actionToItemDetails.setItemDetails(itemModel);
+        Navigation.findNavController(getView()).navigate(actionToItemDetails);
+    }
+
+    @Override
+    public void ClickOnFavorite(int itemId) {
+       homeViewModel.insertFavorite(itemId);
+    }
+
+    @Override
+    public void ClickOnUnFavorite(int itemId) {
+     homeViewModel.DeleteFavorite(itemId);
+    }
 }

@@ -35,57 +35,60 @@ import io.reactivex.schedulers.Schedulers;
 
 public class SubCategoryItemsFragment extends Fragment implements itemAdapterDeals_SubItems {
 
-     SubCategoryItemsViewModel mViewModel;
+    SubCategoryItemsViewModel mViewModel;
     SubCategoryItemsFragmentBinding binding;
     View root;
+    SubCategoryItemsFragmentDirections.ActionSubCategoryItemsToItemDetailsFragment action;
 
     ItemAdapter adapter;
-    int sortBySelected=0;
+    int sortBySelected = 0;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(SubCategoryItemsViewModel.class);
-      loadData();
+        loadData();
     }
 
     private void loadData() {
         //check if network found or not
         if (NetworkUtils.isNetworkConnected(requireContext())) {
-            if (getArguments()!=null){
-                mViewModel.getSubCategoryItems(this,SubCategoryItemsFragmentArgs.fromBundle(getArguments()).getSubCategoryId());
+            if (getArguments() != null) {
+                mViewModel.getSubCategoryItems(this, SubCategoryItemsFragmentArgs.fromBundle(getArguments()).getSubCategoryId());
             }
         } else {
             mViewModel.setConnected(false);
 
         }
     }
-Button TryAgain;
+
+    Button TryAgain;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater,R.layout.sub_category_items_fragment, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.sub_category_items_fragment, container, false);
         root = binding.getRoot();
         showSpinKit();
-        TryAgain=root.findViewById(R.id.Error_Conection_Retry_Btn);
+        TryAgain = root.findViewById(R.id.Error_Conection_Retry_Btn);
         showSpinKit();
-        adapter = new ItemAdapter(getActivity(),this);
+        adapter = new ItemAdapter(getActivity(), this);
 
 
-
-        binding.recycleSubCategoryItems.setLayoutManager(new GridLayoutManager(getActivity(),2));
+        binding.recycleSubCategoryItems.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         binding.recycleSubCategoryItems.setAdapter(adapter);
         mViewModel.getIsConnected().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isConnected) {
-                if (isConnected){
+                if (isConnected) {
                     binding.spinKitSubCategoryItems.setVisibility(View.INVISIBLE);
-                    mViewModel.showSpinKit=false;
+                    mViewModel.showSpinKit = false;
                     binding.SubCategoryItemsScreen.setVisibility(View.VISIBLE);
-                }else if (!isConnected){
+                } else if (!isConnected) {
                     binding.SubCategoryItemsScreen.setVisibility(View.INVISIBLE);
                     binding.SubCategoryItemsErrorConnection.setVisibility(View.VISIBLE);
                     binding.spinKitSubCategoryItems.setVisibility(View.INVISIBLE);
-                    mViewModel.showSpinKit=false;
+                    mViewModel.showSpinKit = false;
                 }
             }
         });
@@ -97,13 +100,13 @@ Button TryAgain;
         binding.sortBySubCategoryItems.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                  showSortByDialog();
+                showSortByDialog();
             }
         });
         TryAgain.setOnClickListener(v -> {
             binding.SubCategoryItemsErrorConnection.setVisibility(View.INVISIBLE);
             binding.spinKitSubCategoryItems.setVisibility(View.VISIBLE);
-            mViewModel.showSpinKit=true;
+            mViewModel.showSpinKit = true;
             loadData();
         });
         return root;
@@ -155,23 +158,20 @@ Button TryAgain;
 
     @Override
     public void OnItemClick(ItemModel itemModel) {
-        SubCategoryItemsFragmentDirections.ActionSubCategoryItemsToItemDetailsFragment action=SubCategoryItemsFragmentDirections.actionSubCategoryItemsToItemDetailsFragment(itemModel);
-                    action.setItemDetails(itemModel);
-                    Navigation.findNavController(getView()).navigate(action);
+        action = SubCategoryItemsFragmentDirections.actionSubCategoryItemsToItemDetailsFragment(itemModel);
+        action.setItemDetails(itemModel);
+        Navigation.findNavController(getView()).navigate(action);
     }
 
     @Override
     public void OnFavoriteClicked(ItemModel itemModel) {
-        Toast.makeText(getActivity(), "Love In SubFragment"+itemModel.getDiscerption(), Toast.LENGTH_SHORT).show();
-        CartDataBase.getInstance(getActivity()).favoriteItemsDAO().insetFavoriteItem(new FavoriteItem(itemModel.getId()))
-                .subscribeOn(Schedulers.io()).subscribe();
+        mViewModel.insertFavoriteItem(itemModel.getId());
+
 
     }
 
     @Override
     public void onUnFavoriteClicked(ItemModel itemModel) {
-        Toast.makeText(getActivity(), "unLove In SubFragment"+itemModel.getDiscerption(), Toast.LENGTH_SHORT).show();
-        CartDataBase.getInstance(getActivity()).favoriteItemsDAO().DeleteFavoriteItem(new FavoriteItem(itemModel.getId()))
-                .subscribeOn(Schedulers.io()).subscribe();
+        mViewModel.deleteFavoriteItem(itemModel.getId());
     }
 }

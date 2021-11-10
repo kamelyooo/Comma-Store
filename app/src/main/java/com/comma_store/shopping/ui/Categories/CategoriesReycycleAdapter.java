@@ -18,19 +18,19 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.comma_store.shopping.R;
-import com.comma_store.shopping.pojo.CategoryModel;
 import com.comma_store.shopping.pojo.CategoryScreenResposnse;
-import com.comma_store.shopping.ui.Home.HomeRecycleParentAdapter;
 
 import java.util.List;
 
 public class CategoriesReycycleAdapter extends RecyclerView.Adapter<CategoriesReycycleAdapter.ViewHolder> {
     List<CategoryScreenResposnse>categories;
-    CategoriesFragment categoriesFragment;
 
-    public CategoriesReycycleAdapter(List<CategoryScreenResposnse> categories, CategoriesFragment categoriesFragment) {
+    categoryiesFargmentAdatperInterface categoryiesFargmentAdatperInterface;
+    int categorySelected;
+    public CategoriesReycycleAdapter(List<CategoryScreenResposnse> categories,categoryiesFargmentAdatperInterface categoryiesFargmentAdatperInterface,int categorySelected) {
         this.categories = categories;
-        this.categoriesFragment = categoriesFragment;
+        this.categoryiesFargmentAdatperInterface=categoryiesFargmentAdatperInterface;
+        this.categorySelected=categorySelected;
     }
 
     @NonNull
@@ -43,36 +43,7 @@ public class CategoriesReycycleAdapter extends RecyclerView.Adapter<CategoriesRe
     @Override
     public void onBindViewHolder(@NonNull CategoriesReycycleAdapter.ViewHolder holder, int position) {
         holder.radioButtonCategory.setText(categories.get(position).getTitle());
-        holder.radioButtonCategory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (categoriesFragment.mViewModel.categorySelected!=position){
-                    Glide.with(categoriesFragment.getActivity())
-                            .load("https://store-comma.com/mttgr/public/storage/"+categories.get(position).getImage())
-                            .listener(new RequestListener<Drawable>() {
-                                @Override
-                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                    return false;
-                                }
-
-                                @Override
-                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                    categoriesFragment.binding.spinKitCategoriyImage.setVisibility(View.INVISIBLE);
-                                    return false;
-                                }
-                            }) .into(categoriesFragment.binding.categoryImageCategoriesScreen);
-                    categoriesFragment.subCategoriesRecycleAdapter.subCategories=categories.get(position).getSubcategories();
-                    categoriesFragment.subCategoriesRecycleAdapter.notifyDataSetChanged();
-                }
-
-                categoriesFragment.mViewModel.categorySelected=position;
-
-                notifyDataSetChanged();
-
-            }
-        });
-        if (categoriesFragment.mViewModel.categorySelected==position){
+        if (categorySelected==position){
             holder.radioButtonCategory.setChecked(true);
         }else holder.radioButtonCategory.setChecked(false);
 
@@ -88,6 +59,12 @@ public class CategoriesReycycleAdapter extends RecyclerView.Adapter<CategoriesRe
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             radioButtonCategory=itemView.findViewById(R.id.radioButton_category_CatScreen);
+            radioButtonCategory.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    categoryiesFargmentAdatperInterface.onCategoryClicked(categories.get(getAdapterPosition()),getAdapterPosition());
+                }
+            });
         }
     }
 }

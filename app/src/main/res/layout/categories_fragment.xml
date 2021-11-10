@@ -37,6 +37,16 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+                    <com.github.ybq.android.spinkit.SpinKitView
+                        android:id="@+id/spin_kit_CategoriyImage"
+                        style="@style/CustomSpinKitStyle"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_gravity="center"
+                        app:layout_constraintBottom_toBottomOf="@+id/categoryImageCategoriesScreen"
+                        app:layout_constraintEnd_toEndOf="@+id/categoryImageCategoriesScreen"
+                        app:layout_constraintStart_toStartOf="@+id/categoryImageCategoriesScreen"
+                        app:layout_constraintTop_toTopOf="@+id/categoryImageCategoriesScreen"
+                        tools:ignore="MissingConstraints" />
                     <ImageView
                         android:id="@+id/categoryImageCategoriesScreen"
                         android:layout_width="match_parent"
@@ -48,18 +58,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         tools:srcCompat="@tools:sample/avatars" />
 
-                    <com.github.ybq.android.spinkit.SpinKitView
-                        android:id="@+id/spin_kit_CategoriyImage"
-                        style="@style/SpinKitView.WanderingCubes"
-                        android:layout_width="@dimen/_40sdp"
-                        android:layout_height="@dimen/_40sdp"
-                        android:layout_gravity="center"
-                        app:SpinKit_Color="@color/HeaderTextColor"
-                        app:layout_constraintBottom_toBottomOf="@+id/categoryImageCategoriesScreen"
-                        app:layout_constraintEnd_toEndOf="@+id/categoryImageCategoriesScreen"
-                        app:layout_constraintStart_toStartOf="@+id/categoryImageCategoriesScreen"
-                        app:layout_constraintTop_toTopOf="@+id/categoryImageCategoriesScreen"
-                        tools:ignore="MissingConstraints" />
+
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/subs_Recycle_CatScreen"
@@ -188,11 +187,8 @@
 
         <com.github.ybq.android.spinkit.SpinKitView
             android:id="@+id/spin_kit_Categoris"
-            style="@style/SpinKitView.WanderingCubes"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
+            style="@style/CustomSpinKitStyle"
             android:layout_gravity="center"
-            app:SpinKit_Color="@color/HeaderTextColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

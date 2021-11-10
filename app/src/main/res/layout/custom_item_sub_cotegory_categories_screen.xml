@@ -6,6 +6,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:id="@+id/cm_spin_kit_SubCategoris"
+        style="@style/SpinKitView.WanderingCubes"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_gravity="center"
+        app:SpinKit_Color="@color/HeaderTextColor"
+
+        app:layout_constraintBottom_toBottomOf="@+id/Cm_image_SubCategory_CategoryScteen"
+        app:layout_constraintEnd_toEndOf="@+id/Cm_image_SubCategory_CategoryScteen"
+        app:layout_constraintStart_toStartOf="@+id/Cm_image_SubCategory_CategoryScteen"
+        app:layout_constraintTop_toTopOf="@+id/Cm_image_SubCategory_CategoryScteen"
+        tools:ignore="MissingConstraints" />
+
     <ImageView
         android:id="@+id/Cm_image_SubCategory_CategoryScteen"
         android:layout_width="@dimen/_70sdp"
@@ -29,17 +43,4 @@
         app:layout_constraintTop_toBottomOf="@+id/Cm_image_SubCategory_CategoryScteen"
         tools:text="TextView" />
 
-    <com.github.ybq.android.spinkit.SpinKitView
-        android:id="@+id/cm_spin_kit_SubCategoris"
-        style="@style/SpinKitView.WanderingCubes"
-        android:layout_width="@dimen/_30sdp"
-        android:layout_height="@dimen/_30sdp"
-        android:layout_gravity="center"
-        app:SpinKit_Color="@color/HeaderTextColor"
-
-        app:layout_constraintBottom_toBottomOf="@+id/Cm_image_SubCategory_CategoryScteen"
-        app:layout_constraintEnd_toEndOf="@+id/Cm_image_SubCategory_CategoryScteen"
-        app:layout_constraintStart_toStartOf="@+id/Cm_image_SubCategory_CategoryScteen"
-        app:layout_constraintTop_toTopOf="@+id/Cm_image_SubCategory_CategoryScteen"
-        tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>

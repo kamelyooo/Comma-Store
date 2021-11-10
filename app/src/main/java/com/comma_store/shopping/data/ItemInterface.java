@@ -2,7 +2,7 @@ package com.comma_store.shopping.data;
 
 import com.comma_store.shopping.pojo.AddOrderModel;
 import com.comma_store.shopping.pojo.CartItem;
-import com.comma_store.shopping.pojo.CategoryModel;
+
 import com.comma_store.shopping.pojo.CategoryScreenResposnse;
 import com.comma_store.shopping.pojo.CheckPromoCodeResponse;
 import com.comma_store.shopping.pojo.CustomerModel;
@@ -45,9 +45,6 @@ public interface ItemInterface {
     @GET("mttgr/public/api/deals")
     Observable<Resource<List<ItemModel>>> getDealsItems(@Query("lang") String lang, @Query("orderBy") String orderBy, @Query("page") int page);
 
-    @Headers("token:" + token)
-    @GET("mttgr/public/api/getCategories")
-    Observable<Resource<List<CategoryModel>>> getCategories(@Query("lang") String lang);
 
     @Headers("token:" + token)
     @GET("mttgr/public/api/getSubcategories")

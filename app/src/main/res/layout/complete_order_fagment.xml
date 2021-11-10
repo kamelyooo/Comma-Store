@@ -8,9 +8,11 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/framee"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.CompleteOrder.CompleteOrderFagment">
+
         <com.github.ybq.android.spinkit.SpinKitView
             android:id="@+id/spin_kit_completeOrderScreen"
             style="@style/SpinKitView.FoldingCube"
@@ -40,7 +42,8 @@
                 android:layout_height="?attr/actionBarSize"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/scrollView3">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/SubmitOrderCompleteOrderScreenBtn"
@@ -95,7 +98,6 @@
                     android:id="@+id/frameLayout16"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     tools:layout_conversion_absoluteHeight="0dp"
                     tools:layout_conversion_absoluteWidth="411dp"
                     tools:layout_editor_absoluteX="0dp"
@@ -104,9 +106,8 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/ReviewTheOrderRecycleView"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/_5sdp"
-                        android:layout_marginBottom="@dimen/_5sdp"
                         android:background="@color/BottomNavBar"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/guideline25"

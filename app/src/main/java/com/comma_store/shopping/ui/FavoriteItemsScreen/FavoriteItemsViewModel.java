@@ -35,7 +35,6 @@ public class FavoriteItemsViewModel extends AndroidViewModel {
     MutableLiveData<List<FavoriteItem>> FavoriteItemsMutableLiveData=new MutableLiveData<>();
     MutableLiveData<List<ItemModel>>listItemsMutableLiveData= new MutableLiveData<>();
     MutableLiveData<Integer>ScreenState=new MutableLiveData<>(1);
-    List<Integer>cartItemsId= Arrays.asList();
     private Application context;
 
     public FavoriteItemsViewModel(@NonNull Application application) {
@@ -59,11 +58,9 @@ public class FavoriteItemsViewModel extends AndroidViewModel {
               ));
     }
 
-    public void getCartItems(){
-        Single<List<CartItem>> listOfCartItes = CartDataBase.getInstance(context).itemDAO().GetItemsCart().subscribeOn(Schedulers.io());
-
-        disposables.add(listOfCartItes.subscribe(x-> {
-            cartItemsId = x.parallelStream().map(CartItem::getItem_id).collect(Collectors.toList());
+    public void getFavoriteItems(){
+        disposables.add(CartDataBase.getInstance(context).favoriteItemsDAO().FavoriteItems().subscribeOn(Schedulers.io()).subscribe(x->{
+         FavoriteItemsMutableLiveData.postValue(x);
         }));
     }
     @Override

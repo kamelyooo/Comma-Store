@@ -44,6 +44,11 @@ public class ItemDetailsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(ItemDetailsViewModel.class);
+        if (getArguments() != null) {
+            if (ItemDetailsFragmentArgs.fromBundle(getArguments()).getItemDetails() != null) {
+                itemDetail = ItemDetailsFragmentArgs.fromBundle(getArguments()).getItemDetails();
+            }
+        }
 
     }
 
@@ -52,51 +57,9 @@ public class ItemDetailsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.item_details_fragment, container, false);
         View root = binding.getRoot();
-        if (getArguments() != null) {
-            if (ItemDetailsFragmentArgs.fromBundle(getArguments()).getItemDetails() != null) {
-                itemDetail = ItemDetailsFragmentArgs.fromBundle(getArguments()).getItemDetails();
-
-                setview(itemDetail);
-
-            }
-        }
+        setview(itemDetail);
         handleCartItem(itemDetail);
         binding.popUpItemDetails.setOnClickListener(v -> Navigation.findNavController(v).navigateUp());
-
-//        CartDataBase.getInstance(getActivity()).itemDAO().getItemById2(itemDetail.getId())
-//                .observe(getViewLifecycleOwner(), new Observer<CartItem>() {
-//                    @Override
-//                    public void onChanged(CartItem item) {
-//                        if (item != null) {
-//                            cartItem = item;
-//                            mViewModel.isItemSaved.postValue(true);
-////                  binding.AddToCartButton.setVisibility(View.INVISIBLE);
-////                  binding.PlusMinusLayout.setVisibility(View.VISIBLE);
-////                  AnimationUtils.slideDown(binding.AddToCartButton);
-////                  AnimationUtils.slideUp(binding.PlusMinusLayout);
-//                            Quantity = item.getQuantity();
-//                            binding.QuantityTV.setText(Quantity + "");
-//                        } else {
-//                            mViewModel.isItemSaved.postValue(false);
-//
-////                  binding.AddToCartButton.setVisibility(View.VISIBLE);
-////                  binding.PlusMinusLayout.setVisibility(View.INVISIBLE);
-//                        }
-//                    }
-//                });
-
-//        mViewModel.isItemSaved.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
-//            @Override
-//            public void onChanged(Boolean aBoolean) {
-//                if (aBoolean){
-//                    binding.AddToCartButton.setVisibility(View.INVISIBLE);
-//                  binding.PlusMinusLayout.setVisibility(View.VISIBLE);
-//                }else {
-//                    binding.AddToCartButton.setVisibility(View.VISIBLE);
-//                  binding.PlusMinusLayout.setVisibility(View.INVISIBLE);
-//                }
-//            }
-//        });
         return root;
 
     }
@@ -108,10 +71,10 @@ public class ItemDetailsFragment extends Fragment {
             public void onChanged(CartItem item) {
               if (item!=null) {
                   cartItem = item;
-                  binding.AddToCartButton.setVisibility(View.INVISIBLE);
-                  binding.PlusMinusLayout.setVisibility(View.VISIBLE);
-//                  AnimationUtils.slideDown(binding.AddToCartButton);
-//                  AnimationUtils.slideUp(binding.PlusMinusLayout);
+//                  binding.AddToCartButton.setVisibility(View.INVISIBLE);
+//                  binding.PlusMinusLayout.setVisibility(View.VISIBLE);
+                  AnimationUtils.slideDown(binding.AddToCartButton);
+                  AnimationUtils.slideUp(binding.PlusMinusLayout);
                   Quantity = item.getQuantity();
                   binding.QuantityTV.setText(Quantity + "");
               }else {
@@ -203,8 +166,8 @@ public class ItemDetailsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-//        mViewModel.cartItem.postValue(null);
+        mViewModel.cartItem.postValue(null);
 //        binding.unbind();
-//        Log.i("xxx","ondestoryview");
+
     }
 }

@@ -32,9 +32,12 @@ public class    HomeSubAdapterTybe0 extends RecyclerView.Adapter<HomeSubAdapterT
     List<ItemModel>itemModelList;
     Context context;
 CompositeDisposable disposable=new CompositeDisposable();
-    public HomeSubAdapterTybe0(List<ItemModel> itemModelList, Context context) {
+HomeAdapterOnClick homeAdapterOnClick;
+    public HomeSubAdapterTybe0(List<ItemModel> itemModelList, Context context,HomeAdapterOnClick homeAdapterOnClick) {
         this.itemModelList = itemModelList;
         this.context = context;
+        this.homeAdapterOnClick=homeAdapterOnClick;
+
     }
 
     @NonNull
@@ -51,12 +54,7 @@ CompositeDisposable disposable=new CompositeDisposable();
                 .into(holder.imageViewItem);
         holder.Cm_Item_Title.setText(itemModelList.get(position).getTitle());
         holder.Cm_Item_priceAfter.setText(itemModelList.get(position).getPriceAfter()+context.getResources().getString(R.string.EGP));
-        holder.CustomItemLayoutType0.setOnClickListener(v -> {
-            HomeFragmentDirections.ActionHomeFragmentToItemDetailsFragment2 action=HomeFragmentDirections.actionHomeFragmentToItemDetailsFragment2(itemModelList.get(position));
-            action.setItemDetails(itemModelList.get(position));
-            Navigation.findNavController(v).navigate(action);
 
-        });
         disposable.add(CartDataBase.getInstance(context).favoriteItemsDAO().ItemCount(itemModelList.get(position).getId()).subscribeOn(Schedulers.io())
                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(x->{
@@ -68,18 +66,7 @@ CompositeDisposable disposable=new CompositeDisposable();
                         holder.Cm_FavoriteImageNo.setVisibility(View.INVISIBLE);
                     }
                 }));
-        holder.Cm_FavoriteImageNo.setOnClickListener(v -> {
-            CartDataBase.getInstance(context).favoriteItemsDAO().insetFavoriteItem(new FavoriteItem(itemModelList.get(position).getId()))
-                    .subscribeOn(Schedulers.io()).subscribe();
-            AnimationUtils.slideDown(holder.Cm_FavoriteImageNo);
-            AnimationUtils.slideUp(holder.Cm_FavoriteImageYes);
-        });
-        holder.Cm_FavoriteImageYes.setOnClickListener(v -> {
-            CartDataBase.getInstance(context).favoriteItemsDAO().DeleteFavoriteItem(new FavoriteItem(itemModelList.get(position).getId()))
-                    .subscribeOn(Schedulers.io()).subscribe();
-            AnimationUtils.slideDown(holder.Cm_FavoriteImageYes);
-            AnimationUtils.slideUp(holder.Cm_FavoriteImageNo);
-        });
+
         if (itemModelList.get(position).getDiscount()==1){
 
             holder.Cm_Item_PriceBefor.setVisibility(View.VISIBLE);
@@ -111,7 +98,21 @@ CompositeDisposable disposable=new CompositeDisposable();
             Cm_FavoriteImageNo=itemView.findViewById(R.id.Cm_FavoriteImageNo);
             Cm_FavoriteImageYes=itemView.findViewById(R.id.Cm_FavoriteImageYes);
             CustomItemLayoutType0=itemView.findViewById(R.id.CustomItemLayoutType0);
+            CustomItemLayoutType0.setOnClickListener(v -> {
+                homeAdapterOnClick.ClickToItemDetails(itemModelList.get(getAdapterPosition()));
+            });
 
+
+            Cm_FavoriteImageNo.setOnClickListener(v -> {
+                homeAdapterOnClick.ClickOnFavorite(itemModelList.get(getAdapterPosition()).getId());
+                AnimationUtils.slideDown(Cm_FavoriteImageNo);
+                AnimationUtils.slideUp(Cm_FavoriteImageYes);
+            });
+            Cm_FavoriteImageYes.setOnClickListener(v -> {
+                homeAdapterOnClick.ClickOnUnFavorite(itemModelList.get(getAdapterPosition()).getId());
+                AnimationUtils.slideDown(Cm_FavoriteImageYes);
+                AnimationUtils.slideUp(Cm_FavoriteImageNo);
+            });
         }
 
     }

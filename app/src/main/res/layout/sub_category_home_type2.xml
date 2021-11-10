@@ -5,6 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:id="@+id/spin_sub_category_home_type2"
+        style="@style/CustomSpinKitStyle"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/image_sub_home_type2"
         android:layout_width="match_parent"
@@ -20,13 +30,4 @@
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/roundedImageView"
         tools:srcCompat="@tools:sample/avatars" />
-    <com.github.ybq.android.spinkit.SpinKitView
-        android:id="@+id/spin_sub_category_home_type2"
-       style="@style/CustomSpinKitStyle"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>

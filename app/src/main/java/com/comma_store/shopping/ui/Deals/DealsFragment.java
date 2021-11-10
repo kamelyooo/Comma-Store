@@ -44,6 +44,7 @@ public class DealsFragment extends Fragment implements itemAdapterDeals_SubItems
     ItemAdapter adapter;
     View root;
     int sortBySelected = 0;
+    DealsFragmentDirections.ActionDealsFragmentToItemDetailsFragment2 action;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -171,22 +172,18 @@ public class DealsFragment extends Fragment implements itemAdapterDeals_SubItems
 
     @Override
     public void OnItemClick(ItemModel itemModel) {
-        DealsFragmentDirections.ActionDealsFragmentToItemDetailsFragment2 action=DealsFragmentDirections.actionDealsFragmentToItemDetailsFragment2(itemModel);
-                    action.setItemDetails(itemModel);
+        action = DealsFragmentDirections.actionDealsFragmentToItemDetailsFragment2(itemModel);
+        action.setItemDetails(itemModel);
                     Navigation.findNavController(getView()).navigate(action);
     }
 
     @Override
     public void OnFavoriteClicked(ItemModel itemModel) {
-        CartDataBase.getInstance(getActivity()).favoriteItemsDAO().insetFavoriteItem(new FavoriteItem(itemModel.getId()))
-                .subscribeOn(Schedulers.io()).subscribe();
-        Toast.makeText(getActivity(), "Love In DealsFragment"+itemModel.getDiscerption(), Toast.LENGTH_SHORT).show();
-    }
+        mViewModel.insertFavoriteItem(itemModel.getId());
+        }
 
     @Override
     public void onUnFavoriteClicked(ItemModel itemModel) {
-        CartDataBase.getInstance(getActivity()).favoriteItemsDAO().DeleteFavoriteItem(new FavoriteItem(itemModel.getId()))
-                .subscribeOn(Schedulers.io()).subscribe();
-        Toast.makeText(getActivity(), "unLove In DealsFragment"+itemModel.getDiscerption(), Toast.LENGTH_SHORT).show();
+       mViewModel.deleteFavoriteItem(itemModel.getId());
     }
 }

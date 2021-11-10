@@ -32,6 +32,13 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_homeFragment_to_orderDetailsFragment2"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:destination="@id/orderDetailsFragment2" />
 
     </fragment>
 
@@ -46,5 +53,14 @@
             android:name="itemDetails"
             app:argType="com.comma_store.shopping.pojo.ItemModel"
             app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderDetailsFragment2"
+        android:name="com.comma_store.shopping.ui.OrderDetailsFragment.OrderDetailsFragment"
+        android:label="OrderDetailsFragment" >
+        <argument
+            android:name="orderId"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
 </navigation>

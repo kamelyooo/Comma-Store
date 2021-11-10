@@ -1,15 +1,19 @@
 package com.comma_store.shopping.ui.Cart;
 
+import android.app.Application;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.navigation.Navigation;
 
 import com.comma_store.shopping.LogIn_Registration_Activity;
+import com.comma_store.shopping.R;
 import com.comma_store.shopping.Utils.SharedPreferencesUtils;
 import com.comma_store.shopping.data.CartDataBase;
 import com.comma_store.shopping.data.ItemClient;
@@ -28,178 +32,106 @@ import io.reactivex.Observer;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class CartViewModel extends ViewModel {
+public class CartViewModel extends AndroidViewModel {
 
     List<CartItem> cartItemsLocalLiveData = Arrays.asList();
-    MutableLiveData<List<ItemModel>> cartItemsLiveData =new MutableLiveData<>();
+    MutableLiveData<List<ItemModel>> cartItemsLiveData = new MutableLiveData<>();
     List<Integer> cartItemsIds;
-    boolean vaild,validating;
+    boolean vaild;
     CompleteOrderModel lists;
+    MutableLiveData<Integer> screenState = new MutableLiveData<>(3);
+    CompositeDisposable disposable = new CompositeDisposable();
+    private Application context;
+    MutableLiveData<Integer> Navigate = new MutableLiveData<>();
 
-    CartFragmentDirections.ActionCartFragmentToCompleteOrderFagment action;
+    public CartViewModel(@androidx.annotation.NonNull Application application) {
+        super(application);
+        context = application;
+    }
 
-    public void getItemsCartLocal(CartFragment cartFragment){
-        CartDataBase.getInstance(cartFragment.getActivity()).itemDAO().GetItemsCart().subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe(
-                new SingleObserver<List<CartItem>>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
+    //state 0 cart Screen
+    //state 1 error Screen
+    //state 2 empty Screen
+    //state 3 loading
 
-                    }
-
-                    @Override
-                    public void onSuccess(@NonNull List<CartItem> cartItems) {
-                        if (!cartItems.isEmpty()) {
-                            cartItemsLocalLiveData= cartItems;
-                            cartItemsIds = cartItems.stream().map(CartItem::getItem_id).collect(Collectors.toList());
-                            getItem(cartFragment);
-                        }else {
-                            cartFragment.binding.cartScreen.setVisibility(View.INVISIBLE);
-                            cartFragment.binding.ErrorScreenCartScreen.setVisibility(View.INVISIBLE);
-                            cartFragment.binding.spinKitCartScreen.setVisibility(View.INVISIBLE);                                    cartFragment.binding.EmptyCartScreen.setVisibility(View.INVISIBLE);
-                            cartFragment.binding.EmptyCartScreen.setVisibility(View.VISIBLE);
+    public void getItemCartLocal(boolean isValidating) {
+        disposable.add(CartDataBase.getInstance(context).itemDAO().GetItemsCart().subscribeOn(Schedulers.io())
+                .subscribe(itemCartLocal -> {
+                            if (!itemCartLocal.isEmpty()) {
+                                cartItemsLocalLiveData = itemCartLocal;
+                                cartItemsIds = itemCartLocal.stream().map(CartItem::getItem_id).collect(Collectors.toList());
+                                getItem(isValidating);
+                            } else {
+                                screenState.postValue(2);
+                            }
                         }
-                    }
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-
-                    }
-                }
-        );
+                ));
     }
 
-    public void getItem(CartFragment cartFragment){
-        ItemClient.getINSTANCE().getItemInterface().getItemsCart(Locale.getDefault().getLanguage(), cartItemsIds).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Resource<List<ItemModel>>>() {
-            @Override
-            public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(@io.reactivex.annotations.NonNull Resource<List<ItemModel>> listResource) {
-                cartItemsLiveData.postValue(listResource.getData());
-                if (validating){
-                    setVaild(listResource.getData(),cartFragment);
-                }else {
-                    getDataDone(cartFragment);
-                }
-            }
-
-            @Override
-            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
-                cartFragment.binding.cartScreen.setVisibility(View.INVISIBLE);
-                cartFragment.binding.ErrorScreenCartScreen.setVisibility(View.VISIBLE);
-                cartFragment.binding.spinKitCartScreen.setVisibility(View.INVISIBLE);
-                cartFragment.binding.EmptyCartScreen.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        });
+    public void getItem(boolean isValidatin) {
+        disposable.add(ItemClient.getINSTANCE().getItemInterface().getItemsCart(Locale.getDefault().getLanguage(), cartItemsIds).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(x -> {
+                            if (x.getStatus() == 200) {
+                                if (isValidatin) {
+                                    setVaild(x.getData());
+                                } else {
+                                    cartItemsLiveData.postValue(x.getData());
+                                    screenState.postValue(0);
+                                }
+                            }
+                        }, e ->
+                                screenState.postValue(1)
+                ));
 
     }
 
-    public void validateList() {
+    private void setVaild(List<ItemModel> itemModels) {
         vaild = true;
-        validating=true;
-    }
-
-    private void setVaild(List<ItemModel>itemModels,CartFragment cartFragment){
         Optional<ItemModel> itemModelFound;
         for (int i = 0; i < cartItemsLocalLiveData.size(); i++) {
             int finalI = i;
-            itemModelFound = itemModels.parallelStream().filter(x -> x.getId() ==cartItemsLocalLiveData.get(finalI).getItem_id()).findFirst();
+            itemModelFound = itemModels.parallelStream().filter(x -> x.getId() == cartItemsLocalLiveData.get(finalI).getItem_id()).findFirst();
             if (itemModelFound.isPresent()) {
-                if (itemModelFound.get().getCount() < cartItemsLocalLiveData.get(finalI).getQuantity()||itemModelFound.get().getCount() == 0) {
+                if (itemModelFound.get().getCount() < cartItemsLocalLiveData.get(finalI).getQuantity() || itemModelFound.get().getCount() == 0) {
                     vaild = false;
                     break;
                 }
             }
-
         }
-
         if (vaild) {
             //make validat  if log in or not
-
-            if (SharedPreferencesUtils.getInstance(cartFragment.getActivity()).getIsLogin()) {
-                lists = new CompleteOrderModel(itemModels,cartItemsLocalLiveData);
-                action = CartFragmentDirections.actionCartFragmentToCompleteOrderFagment(lists);
-                action.setListsOfItem(lists);
-                Navigation.findNavController(cartFragment.getView()).navigate(action);
-
-
+            if (SharedPreferencesUtils.getInstance(context).getIsLogin()) {
+                lists = new CompleteOrderModel(itemModels, cartItemsLocalLiveData);
+                Navigate.postValue(0);
             } else {
-                Intent intent = new Intent(cartFragment.getActivity(), LogIn_Registration_Activity.class);
-                intent.putExtra("FragmentKey", 1);
-                cartFragment.startActivity(intent);
-
+                Navigate.postValue(1);
             }
-
         } else {
-
-            Toast.makeText(cartFragment.getActivity(), "You Have To Make All Items Valid", Toast.LENGTH_SHORT).show();
+            cartItemsLiveData.postValue(itemModels);
+            Toast.makeText(context.getApplicationContext(), "You Have To Make All Items Valid", Toast.LENGTH_SHORT).show();
         }
-        getDataDone(cartFragment);
-        validating=false;
+        screenState.postValue(0);
+
     }
 
-
-
-
-    private void getDataDone(CartFragment cartFragment){
-        cartFragment.binding.cartScreen.setVisibility(View.VISIBLE);
-        cartFragment.binding.spinKitCartScreen.setVisibility(View.INVISIBLE);
-        cartFragment.binding.shadow.setVisibility(View.INVISIBLE);
-        cartFragment.binding.CompleteOrderTV.setText("Complete Your Order");
-        cartFragment.binding.spinKitCompleteYourOrderBtn.setVisibility(View.INVISIBLE);
-        cartFragment.binding.CompleteOrderCartScreen.setEnabled(true);
-        cartFragment.binding.EmptyCartScreen.setVisibility(View.INVISIBLE);
+    public void updateItemCart( CartItem cartItem) {
+       disposable.add(CartDataBase.getInstance(context).itemDAO().update(cartItem).subscribeOn(Schedulers.io()).subscribe());
     }
 
-
-
-
-    public void updateItemCart(FragmentActivity getActivity,CartItem cartItem){
-        CartDataBase.getInstance(getActivity).itemDAO().update(cartItem).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<Integer>() {
-            @Override
-            public void onSubscribe(@NonNull Disposable d) {
-
-            }
-
-            @Override
-            public void onSuccess(@NonNull Integer integer) {
-
-            }
-
-            @Override
-            public void onError(@NonNull Throwable e) {
-
-            }
-        });
+    public void DeleteItemCart(CartItem cartItem) {
+        disposable.add(CartDataBase.getInstance(context).itemDAO().delete(cartItem).subscribeOn(Schedulers.io()).
+                subscribe());
     }
-    public void DeleteItemCart(FragmentActivity getActivity,CartItem cartItem){
-        CartDataBase.getInstance(getActivity).itemDAO().delete(cartItem).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
-                subscribe(new SingleObserver<Integer>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
 
-                    }
-
-                    @Override
-                    public void onSuccess(@NonNull Integer integer) {
-
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-
-                    }
-                });
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        disposable.clear();
+        disposable.dispose();
     }
 }

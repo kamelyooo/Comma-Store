@@ -28,14 +28,13 @@ import com.bumptech.glide.request.target.Target;
 import com.comma_store.shopping.Utils.NetworkUtils;
 import com.comma_store.shopping.R;
 import com.comma_store.shopping.databinding.CategoriesFragmentBinding;
-import com.comma_store.shopping.pojo.CategoryModel;
 import com.comma_store.shopping.pojo.CategoryScreenResposnse;
 import com.comma_store.shopping.pojo.SubCategory;
 
 
 import java.util.List;
 
-public class CategoriesFragment extends Fragment {
+public class CategoriesFragment extends Fragment implements categoryiesFargmentAdatperInterface{
     CategoriesReycycleAdapter categoriesReycycleAdapter;
     SubCategoriesRecycleAdapter subCategoriesRecycleAdapter;
     CategoriesViewModel mViewModel;
@@ -75,13 +74,13 @@ public class CategoriesFragment extends Fragment {
             public void onChanged(Boolean isConnected) {
                 if (isConnected) {
                     binding.spinKitCategoris.setVisibility(View.INVISIBLE);
-                    mViewModel.showSpinKitCategories=false;
+                    mViewModel.showSpinKitCategories = false;
                     binding.CategorisScreen.setVisibility(View.VISIBLE);
                     binding.CategoriesErrorConnection.setVisibility(View.INVISIBLE);
                     setCategoriesScreenViews();
                 } else {
                     binding.spinKitCategoris.setVisibility(View.INVISIBLE);
-                    mViewModel.showSpinKitCategories=false;
+                    mViewModel.showSpinKitCategories = false;
                     binding.CategorisScreen.setVisibility(View.INVISIBLE);
                     binding.CategoriesErrorConnection.setVisibility(View.VISIBLE);
 
@@ -94,7 +93,7 @@ public class CategoriesFragment extends Fragment {
             public void onClick(View v) {
                 loadData();
                 binding.spinKitCategoris.setVisibility(View.VISIBLE);
-                mViewModel.showSpinKitCategories=true;
+                mViewModel.showSpinKitCategories = true;
                 binding.CategorisScreen.setVisibility(View.INVISIBLE);
                 binding.CategoriesErrorConnection.setVisibility(View.INVISIBLE);
             }
@@ -111,29 +110,16 @@ public class CategoriesFragment extends Fragment {
 
     private void setCategoriesScreenViews() {
         mViewModel.mutableLiveDataCategoryScreen.observe(getViewLifecycleOwner(), categoryScreenResposnses -> {
-            categoriesReycycleAdapter=new CategoriesReycycleAdapter(categoryScreenResposnses,
-                    CategoriesFragment.this);
+            categoriesReycycleAdapter = new CategoriesReycycleAdapter(categoryScreenResposnses,
+                    CategoriesFragment.this,mViewModel.categorySelected);
             binding.categoriesRecycleCatScreen.setLayoutManager(new LinearLayoutManager(getActivity()));
             binding.categoriesRecycleCatScreen.setAdapter(categoriesReycycleAdapter);
 
-            Glide.with(getActivity()).load("https://store-comma.com/mttgr/public/storage/"+categoryScreenResposnses.get(mViewModel.categorySelected).getImage())
-                    .listener(new RequestListener<Drawable>() {
-                        @Override
-                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                            return false;
-                        }
-
-                        @Override
-                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                            binding.spinKitCategoriyImage.setVisibility(View.INVISIBLE);
-                            return false;
-                        }
-                    }) .into(binding.categoryImageCategoriesScreen);
-            subCategoriesRecycleAdapter=new SubCategoriesRecycleAdapter(categoryScreenResposnses.get(mViewModel.categorySelected).getSubcategories());
-            binding.subsRecycleCatScreen.setLayoutManager(new GridLayoutManager(getActivity(),3));
+            Glide.with(getActivity()).load("https://store-comma.com/mttgr/public/storage/" + categoryScreenResposnses.get(mViewModel.categorySelected).getImage())
+                    .into(binding.categoryImageCategoriesScreen);
+            subCategoriesRecycleAdapter = new SubCategoriesRecycleAdapter(categoryScreenResposnses.get(mViewModel.categorySelected).getSubcategories(),CategoriesFragment.this);
+            binding.subsRecycleCatScreen.setLayoutManager(new GridLayoutManager(getActivity(), 3));
             binding.subsRecycleCatScreen.setAdapter(subCategoriesRecycleAdapter);
-
-
 
 
         });
@@ -146,4 +132,27 @@ public class CategoriesFragment extends Fragment {
 
     }
 
+    @Override
+    public void onCategoryClicked(CategoryScreenResposnse Categories, int position) {
+        if (mViewModel.categorySelected!=position){
+            Glide.with(getActivity())
+                    .load("https://store-comma.com/mttgr/public/storage/"+Categories.getImage())
+                    .into(binding.categoryImageCategoriesScreen);
+            subCategoriesRecycleAdapter.subCategories=Categories.getSubcategories();
+            subCategoriesRecycleAdapter.notifyDataSetChanged();
+            mViewModel.categorySelected=position;
+            categoriesReycycleAdapter.categorySelected=position;
+            categoriesReycycleAdapter.notifyDataSetChanged();
+        }
+
+
+    }
+
+    @Override
+    public void onSubCategoryClicked(int subCategoryId) {
+        CategoriesFragmentDirections.ActionCategoriesFragmentToGetItemsGraph action;
+        action = CategoriesFragmentDirections.actionCategoriesFragmentToGetItemsGraph();
+        action.setSubCategoryId(subCategoryId);
+        Navigation.findNavController(getView()).navigate(action);
+    }
 }

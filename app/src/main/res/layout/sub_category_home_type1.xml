@@ -5,6 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:id="@+id/spin_sub_category_home_type1"
+        style="@style/CustomSpinKitStyle"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="@+id/image_sub_home_type1"
+        app:layout_constraintEnd_toEndOf="@+id/image_sub_home_type1"
+        app:layout_constraintStart_toStartOf="@+id/image_sub_home_type1"
+        app:layout_constraintTop_toTopOf="@+id/image_sub_home_type1"
+        tools:ignore="MissingConstraints" />
     <androidx.constraintlayout.helper.widget.Flow
         android:id="@+id/ShopNow_sub_home_type1"
         android:layout_width="@dimen/_90sdp"

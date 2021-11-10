@@ -73,18 +73,7 @@ public class ItemAdapter extends PagedListAdapter<ItemModel,ItemAdapter.ItemView
         holder.PriceBefore.setText(getItem(position).getPriceBefor()+"");
         holder.Precentage.setText(getItem(position).getDiscountPrecentage()+"");
         Glide.with(mCtx).load("https://store-comma.com/mttgr/public/storage/"+getItem(position).getImages().get(0))
-                .listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        holder.spinKitView.setVisibility(View.GONE);
-                        return false;
-                    }
-                }).into(holder.itemImage);
+                .into(holder.itemImage);
         disposable.add(CartDataBase.getInstance(mCtx).favoriteItemsDAO().ItemCount(getItem(position).getId()).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(x->{

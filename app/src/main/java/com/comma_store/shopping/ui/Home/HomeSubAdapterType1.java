@@ -28,11 +28,12 @@ public class HomeSubAdapterType1 extends RecyclerView.Adapter<HomeSubAdapterType
     List<ItemModel> itemModelList;
     int type;
     Context context;
-
-    public HomeSubAdapterType1(List<ItemModel> itemModelList, int type, Context context) {
+    HomeAdapterOnClick homeAdapterOnClick;
+    public HomeSubAdapterType1(List<ItemModel> itemModelList, int type, Context context, HomeAdapterOnClick homeAdapterOnClick) {
         this.itemModelList = itemModelList;
         this.type = type;
         this.context = context;
+        this.homeAdapterOnClick=homeAdapterOnClick;
     }
 
     @NonNull
@@ -43,20 +44,9 @@ public class HomeSubAdapterType1 extends RecyclerView.Adapter<HomeSubAdapterType
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-//        Picasso.get().load("http://store-comma.com/mttgr/public/storage/"+itemModelList.get(position).getImages().get(0))
-//                .into(holder.imageViewItem_type1);
-        Glide.with(context).load("https://store-comma.com/mttgr/public/storage/"+itemModelList.get(position).getImages().get(0))
-              .listener(new RequestListener<Drawable>() {
-                  @Override
-                  public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                      return false;
-                  }
 
-                  @Override
-                  public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                      return false;
-                  }
-              })  .into(holder.imageViewItem_type1);
+        Glide.with(context).load("https://store-comma.com/mttgr/public/storage/"+itemModelList.get(position).getImages().get(0))
+               .into(holder.imageViewItem_type1);
 
         holder.Cm_Item_Title_type1.setText(itemModelList.get(position).getTitle());
         holder.Cm_Item_priceAfter_type1.setText(itemModelList.get(position).getPriceAfter()+"");
@@ -104,6 +94,12 @@ public class HomeSubAdapterType1 extends RecyclerView.Adapter<HomeSubAdapterType
             Cm_Item_Off_type1=itemView.findViewById(R.id.Custom_Item_Off_type1);
             Cm_Item_View_type1=itemView.findViewById(R.id.Custom_Item_View_type1);
             cm_layout_item_Type1=itemView.findViewById(R.id.cm_layout_item_Type1);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    homeAdapterOnClick.ClickToItemDetails(itemModelList.get(getAdapterPosition()));
+                }
+            });
         }
     }
 }

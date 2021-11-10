@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,23 +44,24 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class FavoriteItemsAdapter extends ListAdapter<ItemModel,FavoriteItemsAdapter.ViewHolder> {
+public class FavoriteItemsAdapter extends ListAdapter<ItemModel, FavoriteItemsAdapter.ViewHolder> {
     Context context;
-
     List<ItemModel> itemModels;
     FavoriteItemAdapterIterface favoriteItemAdapterIterface;
-    CompositeDisposable disposable=new CompositeDisposable();
-    public FavoriteItemsAdapter(Context context,List<ItemModel>itemModels, FavoriteItemAdapterIterface favoriteItemAdapterIterface) {
-        super(diffCallback);
-        this.context=context;
+    CompositeDisposable disposable = new CompositeDisposable();
 
-        this.itemModels=itemModels;
-        this.favoriteItemAdapterIterface=favoriteItemAdapterIterface;
+    public FavoriteItemsAdapter(Context context, List<ItemModel> itemModels, FavoriteItemAdapterIterface favoriteItemAdapterIterface) {
+        super(diffCallback);
+        this.context = context;
+
+        this.itemModels = itemModels;
+        this.favoriteItemAdapterIterface = favoriteItemAdapterIterface;
     }
-    private static final DiffUtil.ItemCallback<ItemModel> diffCallback=new DiffUtil.ItemCallback<ItemModel>() {
+
+    private static final DiffUtil.ItemCallback<ItemModel> diffCallback = new DiffUtil.ItemCallback<ItemModel>() {
         @Override
         public boolean areItemsTheSame(@NonNull ItemModel oldItem, @NonNull ItemModel newItem) {
-            return oldItem.getId() ==newItem.getId();
+            return oldItem.getId() == newItem.getId();
         }
 
         @Override
@@ -69,16 +71,15 @@ public class FavoriteItemsAdapter extends ListAdapter<ItemModel,FavoriteItemsAda
     };
 
 
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_favorite_item_layout,parent,false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_favorite_item_layout, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Glide.with(context).load("https://store-comma.com/mttgr/public/storage/"+getItem(position).getImages().get(0)).addListener(new RequestListener<Drawable>() {
+        Glide.with(context).load("https://store-comma.com/mttgr/public/storage/" + getItem(position).getImages().get(0)).addListener(new RequestListener<Drawable>() {
             @Override
             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                 return false;
@@ -86,27 +87,26 @@ public class FavoriteItemsAdapter extends ListAdapter<ItemModel,FavoriteItemsAda
 
             @Override
             public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-               holder.cm_spin_kit_favoriteItem.setVisibility(View.INVISIBLE);
+                holder.cm_spin_kit_favoriteItem.setVisibility(View.INVISIBLE);
                 return false;
             }
         }).into(holder.cm_Image_favoriteItem);
         holder.cm_title_favoriteItem.setText(getItem(position).getTitle());
-        holder.cm_PriceAfter_favorite_item.setText(getItem(position).getPriceAfter()+context.getResources().getString(R.string.EGP));
-        if (getItem(position).getDiscount()==1){
+        holder.cm_PriceAfter_favorite_item.setText(getItem(position).getPriceAfter() + context.getResources().getString(R.string.EGP));
+        if (getItem(position).getDiscount() == 1) {
             holder.cm_DescountLayout_favoriteItem.setVisibility(View.VISIBLE);
-            holder.cm_PriceBefore_favorite_item.setText(getItem(position).getPriceBefor()+context.getResources().getString(R.string.EGP));
-            holder.cm_DescountPercentage_favorite_Item.setText(getItem(position).getDiscountPrecentage()+context.getResources().getString(R.string.off));
+            holder.cm_PriceBefore_favorite_item.setText(getItem(position).getPriceBefor() + context.getResources().getString(R.string.EGP));
+            holder.cm_DescountPercentage_favorite_Item.setText(getItem(position).getDiscountPrecentage() + context.getResources().getString(R.string.off));
         }
-//        if (CartIds.contains(getItem(position).getId())){
-//            holder.cm_AddedToCartButton.setVisibility(View.VISIBLE);
-//        }else {
-//            holder.cm_AddToCartButton.setVisibility(View.VISIBLE);
-//        }
         disposable.add(CartDataBase.getInstance(context).itemDAO().ItemCount(getItem(position).getId()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(x-> {
-                    if (x==0){
+                .subscribe(x -> {
+                    if (x == 0) {
+                        holder.cm_AddedToCartButton.setVisibility(View.INVISIBLE);
                         holder.cm_AddToCartButton.setVisibility(View.VISIBLE);
-                    }else holder.cm_AddedToCartButton.setVisibility(View.VISIBLE);
+                    } else{
+                        holder.cm_AddedToCartButton.setVisibility(View.VISIBLE);
+                        holder.cm_AddToCartButton.setVisibility(View.INVISIBLE);
+                    }
                 }));
     }
 
@@ -117,7 +117,7 @@ public class FavoriteItemsAdapter extends ListAdapter<ItemModel,FavoriteItemsAda
         disposable.dispose();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder  {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView cm_Image_favoriteItem;
         SpinKitView cm_spin_kit_favoriteItem;
         TextView cm_title_favoriteItem,
@@ -125,22 +125,22 @@ public class FavoriteItemsAdapter extends ListAdapter<ItemModel,FavoriteItemsAda
                 cm_PriceBefore_favorite_item,
                 cm_DescountPercentage_favorite_Item;
         ConstraintLayout cm_DescountLayout_favoriteItem,
-                cm_AddedToCartButton,cm_AddToCartButton,
+                cm_AddedToCartButton, cm_AddToCartButton,
                 cm_Delete_favoriteItem;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            cm_Image_favoriteItem=itemView.findViewById(R.id.cm_Image_favoriteItem);
-            cm_spin_kit_favoriteItem=itemView.findViewById(R.id.cm_spin_kit_favoriteItem);
-            cm_title_favoriteItem=itemView.findViewById(R.id.cm_title_favoriteItem);
-            cm_PriceAfter_favorite_item=itemView.findViewById(R.id.cm_PriceAfter_favorite_item);
-            cm_PriceBefore_favorite_item=itemView.findViewById(R.id.cm_PriceBefore_favorite_item);
-            cm_DescountPercentage_favorite_Item=itemView.findViewById(R.id.cm_DescountPercentage_favorite_Item);
-            cm_DescountLayout_favoriteItem=itemView.findViewById(R.id.cm_DescountLayout_favoriteItem);
-            cm_AddedToCartButton=itemView.findViewById(R.id.cm_AddedToCartButton);
-            cm_AddToCartButton=itemView.findViewById(R.id.cm_AddToCartButton);
-            cm_Delete_favoriteItem=itemView.findViewById(R.id.cm_Delete_favoriteItem);
+            cm_Image_favoriteItem = itemView.findViewById(R.id.cm_Image_favoriteItem);
+            cm_spin_kit_favoriteItem = itemView.findViewById(R.id.cm_spin_kit_favoriteItem);
+            cm_title_favoriteItem = itemView.findViewById(R.id.cm_title_favoriteItem);
+            cm_PriceAfter_favorite_item = itemView.findViewById(R.id.cm_PriceAfter_favorite_item);
+            cm_PriceBefore_favorite_item = itemView.findViewById(R.id.cm_PriceBefore_favorite_item);
+            cm_DescountPercentage_favorite_Item = itemView.findViewById(R.id.cm_DescountPercentage_favorite_Item);
+            cm_DescountLayout_favoriteItem = itemView.findViewById(R.id.cm_DescountLayout_favoriteItem);
+            cm_AddedToCartButton = itemView.findViewById(R.id.cm_AddedToCartButton);
+            cm_AddToCartButton = itemView.findViewById(R.id.cm_AddToCartButton);
+            cm_Delete_favoriteItem = itemView.findViewById(R.id.cm_Delete_favoriteItem);
 
             cm_AddToCartButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -153,7 +153,7 @@ public class FavoriteItemsAdapter extends ListAdapter<ItemModel,FavoriteItemsAda
             cm_Delete_favoriteItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    favoriteItemAdapterIterface.RemoveToCartBtn(getItem(getAdapterPosition()),getAdapterPosition());
+                    favoriteItemAdapterIterface.RemoveToCartBtn(getItem(getAdapterPosition()), getAdapterPosition());
                 }
             });
         }

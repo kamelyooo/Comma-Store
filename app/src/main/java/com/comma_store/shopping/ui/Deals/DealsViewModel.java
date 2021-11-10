@@ -1,7 +1,10 @@
 package com.comma_store.shopping.ui.Deals;
 
+import android.app.Application;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -10,14 +13,17 @@ import androidx.paging.PageKeyedDataSource;
 import androidx.paging.PagedList;
 import androidx.paging.RxPagedListBuilder;
 
+import com.comma_store.shopping.data.CartDataBase;
+import com.comma_store.shopping.pojo.FavoriteItem;
 import com.comma_store.shopping.pojo.ItemModel;
 
 import java.util.Locale;
 
 import io.reactivex.Observable;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class DealsViewModel extends ViewModel {
+public class DealsViewModel extends AndroidViewModel {
 
     //creating livedata for PagedList  and PagedKeyedDataSource
     LiveData itemPagedList;
@@ -27,11 +33,19 @@ public class DealsViewModel extends ViewModel {
 
     boolean showSpinKit=false;
     public MutableLiveData<Boolean>isConnected=new MutableLiveData<>();
+    private Application context;
+
+    public DealsViewModel(@NonNull Application application) {
+        super(application);
+
+        context = application;
+    }
+
     public MutableLiveData<Boolean> getIsConnected() {
         return isConnected;
     }
     public ItemDataSourceFactoryDeals itemDataSourceFactoryDeals;
-
+    CompositeDisposable disposable=new CompositeDisposable();
 
     public void setShowSpinKit(boolean show){
         if (show)
@@ -46,11 +60,6 @@ public class DealsViewModel extends ViewModel {
             itemDataSourceFactoryDeals = new ItemDataSourceFactoryDeals("idDesc", Locale.getDefault().getLanguage(),dealsFragment);
             liveDataSource = itemDataSourceFactoryDeals.getItemLiveDataSource();
         }
-        //ItemDataSourceFactory itemDataSourceFactory = new ItemDataSourceFactory("idDesc", Locale.getDefault().getLanguage(),dealsFragment);
-
-
-
-
         //Getting PagedList config
         if (itemPagedList==null) {
             PagedList.Config pagedListConfig =
@@ -58,15 +67,29 @@ public class DealsViewModel extends ViewModel {
                             .setEnablePlaceholders(true)
                             .setPageSize(25)
                             .build();
-            new RxPagedListBuilder<>(itemDataSourceFactoryDeals,pagedListConfig).
-                    buildObservable().subscribeOn(Schedulers.io()).subscribe(s->iitempagelist.postValue((PagedList<ItemModel>) s));
+          disposable.add( new RxPagedListBuilder<>(itemDataSourceFactoryDeals,pagedListConfig).
+                    buildObservable().subscribeOn(Schedulers.io()).subscribe(s->iitempagelist.postValue((PagedList<ItemModel>) s)));
             //Building the paged list
 //            itemPagedList = (new LivePagedListBuilder(itemDataSourceFactoryDeals, pagedListConfig)).build();
         }
     }
-
+    public void insertFavoriteItem(int id){
+        disposable.add(CartDataBase.getInstance(context).favoriteItemsDAO().insetFavoriteItem(new FavoriteItem(id))
+                .subscribeOn(Schedulers.io()).subscribe());
+    }
+    public void deleteFavoriteItem(int id){
+        disposable.add( CartDataBase.getInstance(context).favoriteItemsDAO().DeleteFavoriteItem(new FavoriteItem(id))
+                .subscribeOn(Schedulers.io()).subscribe());
+    }
     public void sort(String sortBy){
         itemDataSourceFactoryDeals.setOrderBy(sortBy);
         itemDataSourceFactoryDeals.itemDataSourceDeals.invalidate();
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        disposable.dispose();
+        disposable.clear();
     }
 }

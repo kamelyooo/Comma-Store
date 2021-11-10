@@ -32,10 +32,12 @@ import pl.droidsonroids.gif.GifImageView;
 public class HomeSubsAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
    Context context;
     List<SubCategoryHome>subCategoryHomeList;
-    HomeFragmentDirections.ActionHomeFragmentToGetItemsGraph action;
-    public HomeSubsAdapter(List<SubCategoryHome> subCategoryHomeList,Context context) {
+
+    HomeAdapterOnClick homeAdapterOnClick;
+    public HomeSubsAdapter(List<SubCategoryHome> subCategoryHomeList,Context context, HomeAdapterOnClick homeAdapterOnClick) {
         this.subCategoryHomeList = subCategoryHomeList;
         this.context=context;
+        this.homeAdapterOnClick=homeAdapterOnClick;
     }
 
 
@@ -60,9 +62,8 @@ public class HomeSubsAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHold
             ((Type0ViewHolder)holder).ShopNow_sub_home_type0.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    action = HomeFragmentDirections.actionHomeFragmentToGetItemsGraph();
-                    action.setSubCategoryId(subCategoryHomeList.get(position).getId());
-                    Navigation.findNavController(v).navigate(action);
+                    homeAdapterOnClick.ClickToSubCategoryItems(subCategoryHomeList.get(position).getId());
+
                 }
             });
             }else if (subCategoryHomeList.get(position).getType()==1||subCategoryHomeList.get(position).getType()==2) {
@@ -70,31 +71,28 @@ public class HomeSubsAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHold
             ((Type1ViewHolder)holder).Title_sub_home_type1.setText(subCategoryHomeList.get(position).getTitle());
             ((Type1ViewHolder)holder).bindData(subCategoryHomeList.get(position).getItemslimit(),getItemViewType(position));
             ((Type1ViewHolder)holder).sHopNow_sub_home_type1.setOnClickListener(v -> {
-                action = HomeFragmentDirections.actionHomeFragmentToGetItemsGraph();
-                action.setSubCategoryId(subCategoryHomeList.get(position).getId());
-                Navigation.findNavController(v).navigate(action);
+                homeAdapterOnClick.ClickToSubCategoryItems(subCategoryHomeList.get(position).getId());
+
             });
             Picasso.get().load("https://store-comma.com/mttgr/public/storage/"+subCategoryHomeList.get(position).getImage_home())
                     .into(  ((Type1ViewHolder)holder).Image_sub_Home_Type1);
         }else {
-            Picasso.get().load("https://store-comma.com/mttgr/public/storage/" + subCategoryHomeList.get(position).getImage_home())
-                    .into(((Type2ViewHolder) holder).image_sub_home_type2, new Callback() {
-                        @Override
-                        public void onSuccess() {
-                            ((Type2ViewHolder) holder).spinSubHOmeType2.setVisibility(View.INVISIBLE);
-                        }
-
-                        @Override
-                        public void onError(Exception e) {
-
-                        }
-                    });
-//            Glide.with(context).load("http://store-comma.com/mttgr/public/storage/" + subCategoryHomeList.get(position).getImage_home())
-//                    .into(((Type2ViewHolder) holder).image_sub_home_type2);
+//            Picasso.get().load("https://store-comma.com/mttgr/public/storage/" + subCategoryHomeList.get(position).getImage_home())
+//                    .into(((Type2ViewHolder) holder).image_sub_home_type2, new Callback() {
+//                        @Override
+//                        public void onSuccess() {
+//                            ((Type2ViewHolder) holder).spinSubHOmeType2.setVisibility(View.INVISIBLE);
+//                        }
+//
+//                        @Override
+//                        public void onError(Exception e) {
+//
+//                        }
+//                    });
+            Glide.with(context).load("http://store-comma.com/mttgr/public/storage/" + subCategoryHomeList.get(position).getImage_home())
+                    .into(((Type2ViewHolder) holder).image_sub_home_type2);
             ((Type2ViewHolder)holder).image_sub_home_type2.setOnClickListener(v -> {
-                action = HomeFragmentDirections.actionHomeFragmentToGetItemsGraph();
-                action.setSubCategoryId(subCategoryHomeList.get(position).getId());
-                Navigation.findNavController(v).navigate(action);
+                homeAdapterOnClick.ClickToSubCategoryItems(subCategoryHomeList.get(position).getId());
             });
         }
 
@@ -121,7 +119,7 @@ public class HomeSubsAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHold
             ShopNow_sub_home_type0=itemView.findViewById(R.id.ShopNow_sub_home_type0);
         }
         public void bindData(List<ItemModel>itemslimit){
-            subHomeRecycleType0.setAdapter(new HomeSubAdapterTybe0(itemslimit,context));
+            subHomeRecycleType0.setAdapter(new HomeSubAdapterTybe0(itemslimit,context,homeAdapterOnClick));
             subHomeRecycleType0.setLayoutManager(new LinearLayoutManager(itemView.getContext(),LinearLayoutManager.HORIZONTAL,false));
 
         }
@@ -144,7 +142,7 @@ public class HomeSubsAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         public void bindData(List<ItemModel>itemslimit,int type){
             recycler_sub_home_type1.setLayoutManager(new GridLayoutManager(itemView.getContext(), 2));
-            recycler_sub_home_type1.setAdapter(new HomeSubAdapterType1(itemslimit,type,context));
+            recycler_sub_home_type1.setAdapter(new HomeSubAdapterType1(itemslimit,type,context,homeAdapterOnClick));
 
         }
     }

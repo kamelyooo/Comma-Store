@@ -23,11 +23,13 @@ public class HomeRecycleParentAdapter extends RecyclerView.Adapter<RecyclerView.
     private static final int VIEW_TYPE_SLIDER = 0;
     private static final int VIEW_TYPE_SUB_CATEGORIES = 1;
     GetHomeResponse getHomeResponse;
+    HomeAdapterOnClick homeAdapterOnClick;
     Context context;
 
-    public HomeRecycleParentAdapter(GetHomeResponse getHomeResponse, Context context) {
+    public HomeRecycleParentAdapter(GetHomeResponse getHomeResponse, Context context,HomeAdapterOnClick homeAdapterOnClick) {
         this.getHomeResponse = getHomeResponse;
         this.context = context;
+        this.homeAdapterOnClick=homeAdapterOnClick;
     }
 
     @NonNull
@@ -76,7 +78,7 @@ public class HomeRecycleParentAdapter extends RecyclerView.Adapter<RecyclerView.
         }
         public void bindData(List<SubCategory> subCategoriesList){
             //set view pagerAdapter(slider)
-       sliderView.setSliderAdapter(new HomeImageSliderAdapter(subCategoriesList));
+       sliderView.setSliderAdapter(new HomeImageSliderAdapter(subCategoriesList,homeAdapterOnClick));
             sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
             sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
             sliderView.startAutoCycle();
@@ -92,7 +94,7 @@ public class HomeRecycleParentAdapter extends RecyclerView.Adapter<RecyclerView.
         }
         public void bindData(List<SubCategoryHome> subCategoryHomeList){
             //set subcategorieslist adapter
-            subCategoriesListRow.setAdapter(new HomeSubsAdapter(subCategoryHomeList,context));
+            subCategoriesListRow.setAdapter(new HomeSubsAdapter(subCategoryHomeList,context,homeAdapterOnClick));
 
         }
     }

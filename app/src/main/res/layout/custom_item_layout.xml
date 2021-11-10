@@ -9,6 +9,15 @@
     android:background="@drawable/custom_item_shape"
     android:elevation="2dp">
 
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:id="@+id/spin_kitCustomItemType0"
+        style="@style/CustomSpinKitStyle"
+        android:layout_gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/cm_Item_Image"
+        app:layout_constraintEnd_toEndOf="@+id/cm_Item_Image"
+        app:layout_constraintStart_toStartOf="@+id/cm_Item_Image"
+        app:layout_constraintTop_toTopOf="@+id/cm_Item_Image"
+        tools:ignore="MissingConstraints" />
     <ImageView
         android:id="@+id/cm_Item_Image"
         android:layout_width="@dimen/_100sdp"

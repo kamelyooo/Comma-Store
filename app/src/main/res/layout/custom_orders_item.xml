@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/_5sdp"
-    android:background="#FFFFFF">
+    android:background="#FFFFFF"
+    android:paddingBottom="@dimen/_5sdp">
 
     <ImageView
         android:id="@+id/imageViewOrderItem"
@@ -50,7 +51,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
 
-        app:layout_constraintGuide_percent="0.35" />
+        app:layout_constraintGuide_percent="0.38" />
 
     <TextView
         android:id="@+id/textView33"
