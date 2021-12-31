@@ -10,7 +10,11 @@
         tools:layout="@layout/categories_fragment" >
         <action
             android:id="@+id/action_categoriesFragment_to_get_items_graph"
-            app:destination="@id/get_items_graph" >
+            app:destination="@id/get_items_graph"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
             <argument
                 android:name="subCategory_id"
                 app:argType="integer"
@@ -18,7 +22,11 @@
         </action>
         <action
             android:id="@+id/action_categoriesFragment_to_search_graph"
-            app:destination="@id/search_graph" />
+            app:destination="@id/search_graph"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
     <include app:graph="@navigation/search_graph" />
     <include app:graph="@navigation/get_sub_items_graph" />

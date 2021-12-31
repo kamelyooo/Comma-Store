@@ -11,10 +11,18 @@
         tools:layout="@layout/profile_fragment" >
         <action
             android:id="@+id/action_profileFragment_to_favoriteItemsFragment"
-            app:destination="@id/favoriteItemsFragment" />
+            app:destination="@id/favoriteItemsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
         <action
             android:id="@+id/action_profileFragment_to_myOrdersFragment"
-            app:destination="@id/myOrdersFragment" />
+            app:destination="@id/myOrdersFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/favoriteItemsFragment"
@@ -28,7 +36,11 @@
         tools:layout="@layout/my_orders_fragment" >
         <action
             android:id="@+id/action_myOrdersFragment_to_orderDetailsFragment"
-            app:destination="@id/orderDetailsFragment" />
+            app:destination="@id/orderDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/orderDetailsFragment"

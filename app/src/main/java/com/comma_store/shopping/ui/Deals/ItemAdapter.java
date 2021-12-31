@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,8 +29,8 @@ import com.comma_store.shopping.data.CartDataBase;
 import com.comma_store.shopping.pojo.ItemModel;
 import com.comma_store.shopping.ui.SubCategoryItems.SubCategoryItemsFragmentDirections;
 import com.github.ybq.android.spinkit.SpinKitView;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
+
+
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -37,6 +38,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ItemAdapter extends PagedListAdapter<ItemModel,ItemAdapter.ItemViewHolder> {
     private Context mCtx;
+    int lastPostion=-1;
     itemAdapterDeals_SubItems itemAdapterDeals_subItems;
     CompositeDisposable disposable=new CompositeDisposable();
     public ItemAdapter(Context mCtx, itemAdapterDeals_SubItems itemAdapterDeals_subItems) {
@@ -68,6 +70,10 @@ public class ItemAdapter extends PagedListAdapter<ItemModel,ItemAdapter.ItemView
 
     @Override
     public void onBindViewHolder(@NonNull ItemAdapter.ItemViewHolder holder, int position) {
+        if (holder.getAdapterPosition()>lastPostion) {
+            Animation animation = android.view.animation.AnimationUtils.loadAnimation(mCtx, R.anim.scale);
+            ((ItemViewHolder) holder).itemView.startAnimation(animation);
+        }
         holder.title.setText(getItem(position).getTitle());
         holder.PriceAfter.setText(getItem(position).getPriceAfter()+"");
         holder.PriceBefore.setText(getItem(position).getPriceBefor()+"");
@@ -132,6 +138,9 @@ public class ItemAdapter extends PagedListAdapter<ItemModel,ItemAdapter.ItemView
                     AnimationUtils.slideUp(favoriteImage);
                 }
             });
+
+
+
         }
     }
 }

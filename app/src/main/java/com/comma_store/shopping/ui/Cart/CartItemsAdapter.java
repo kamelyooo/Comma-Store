@@ -1,15 +1,18 @@
 package com.comma_store.shopping.ui.Cart;
 
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatDrawableManager;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -18,18 +21,23 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.comma_store.shopping.R;
 import com.comma_store.shopping.pojo.CartItem;
 import com.comma_store.shopping.pojo.ItemModel;
-import com.crowdfire.cfalertdialog.CFAlertDialog;
+import com.comma_store.shopping.ui.Home.HomeSubAdapterTybe0;
+
 import com.github.ybq.android.spinkit.SpinKitView;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
+
 
 import java.util.List;
 import java.util.Optional;
 
-import pl.droidsonroids.gif.GifImageView;
+
 
 public class CartItemsAdapter extends ListAdapter<CartItem, CartItemsAdapter.ViewHolder> {
     List<ItemModel> ItemsCart;
@@ -68,6 +76,10 @@ public class CartItemsAdapter extends ListAdapter<CartItem, CartItemsAdapter.Vie
 
     @Override
     public void onBindViewHolder(@NonNull CartItemsAdapter.ViewHolder holder, int position) {
+        if (holder.getAdapterPosition() > -1) {
+            Animation animation = android.view.animation.AnimationUtils.loadAnimation(parent.getContext(), R.anim.slide_in_left);
+            holder.itemView.startAnimation(animation);
+        }
         CartItem localItem = getItem(position);
         Optional<ItemModel> itemModelFound = ItemsCart.stream().filter(x -> x.getId() == localItem.getItem_id()).findFirst();
         if (itemModelFound.isPresent()) {
@@ -86,18 +98,20 @@ public class CartItemsAdapter extends ListAdapter<CartItem, CartItemsAdapter.Vie
 
             } else holder.Error_Layout_Item_Cart.setVisibility(View.GONE);
             holder.closeWarning_itemCart.setOnClickListener(v -> holder.Error_Layout_Item_Cart.setVisibility(View.GONE));
-            Picasso.get().load("https://store-comma.com/mttgr/public/storage/" + itemModelFound.get().getImages().get(0))
-                    .into(holder.cm_Image_cartItem, new Callback() {
+            Glide.with(parent.getContext()).load("https://store-comma.com/mttgr/public/storage/" + itemModelFound.get().getImages().get(0))
+                    .addListener(new RequestListener<Drawable>() {
                         @Override
-                        public void onSuccess() {
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                             holder.cm_spin_kit_CartItem.setVisibility(View.INVISIBLE);
-                        }
-
-                        @Override
-                        public void onError(Exception e) {
+                            return false;
 
                         }
-                    });
+                    }).into(holder.cm_Image_cartItem);
             holder.cm_title_cartItem.setText(itemModelFound.get().getTitle());
             holder.cm_PriceAfter_Cart_item.setText(itemModelFound.get().getPriceAfter() + parent.getContext().getResources().getString(R.string.EGP));
             if (itemModelFound.get().getDiscount() == 1) {

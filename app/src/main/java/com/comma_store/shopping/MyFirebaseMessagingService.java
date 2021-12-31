@@ -1,17 +1,21 @@
 package com.comma_store.shopping;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.util.Log;
 import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.navigation.Navigation;
 
 import com.comma_store.shopping.Utils.SharedPreferencesUtils;
@@ -25,15 +29,16 @@ import java.util.Map;
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     SharedPreferences preferences;
     int notificationId;
+    int id=2;
+
+    NotificationManager notificationManager;
+
     HomeFragmentDirections.ActionHomeFragmentToGetItemsGraph action;
+    String channel_id = "notification_channel";
 
     @Override
     public void onNewToken(@NonNull String deviceToken) {
-        Log.i("device_token",deviceToken);
-//        preferences = getSharedPreferences(SharedPreferencesUtils.SharedPrefranceName, MODE_PRIVATE);
-//        SharedPreferences.Editor editor = preferences.edit();
-//        editor.putString(SharedPreferencesUtils.DeviceToken,deviceToken);
-//        editor.apply();
+        Log.i("device_token", deviceToken);
         SharedPreferencesUtils.getInstance(getApplicationContext()).setDeviceToken(deviceToken);
         //cache token for sending in login and register.
         //check if logged in call add device token endpoint(optional).
@@ -41,30 +46,27 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
-        if(remoteMessage.getNotification()!=null){
-            Log.i("notificationType","notification");
+        if (remoteMessage.getNotification() != null) {
+            Log.i("notificationType", "notification");
         }
-        Map<String,String> data = remoteMessage.getData();
+        Map<String, String> data = remoteMessage.getData();
         int notificationType = Integer.parseInt(data.get("type_n"));
         // Pass the intent to switch to the MainActivity
         Intent intent
                 = new Intent(this, MainActivity.class);
-        intent.putExtra("id",Integer.parseInt(remoteMessage.getData().get("reference_id")));
-        // Here FLAG_ACTIVITY_CLEAR_TOP flag is set to clear
-        // the activities present in the activity stack,
-        // on the top of the Activity that is to be launched
+        intent.putExtra("id", Integer.parseInt(remoteMessage.getData().get("reference_id")));
+
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        // Pass the intent to PendingIntent to start the
-        // next Activity
-        switch (notificationType){
+
+        switch (notificationType) {
             case 0:
-                intent.putExtra("navigation","promoCode");
+                intent.putExtra("navigation", "promoCode");
                 break;
             case 1:
-                intent.putExtra("navigation","order");
+                intent.putExtra("navigation", "order");
                 break;
             case 2:
-                intent.putExtra("navigation","offers_sub");
+                intent.putExtra("navigation", "offers_sub");
                 break;
         }
         PendingIntent pendingIntent
@@ -72,16 +74,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
         //FLAG_ONE_SHOT
-        //createNotificationChannels();
-        int langKey = SharedPreferencesUtils.getInstance(getApplicationContext()).getLangKey();
-        if(langKey==0){
-            showNotification(data.get("title_en"),data.get("body_en"),pendingIntent);
-        }else {
-            showNotification(data.get("title_ar"),data.get("body_ar"),pendingIntent);
+
+        if (SharedPreferencesUtils.getInstance(getApplicationContext()).getLangKey() == 0) {
+            showNotification(data.get("title_en"), data.get("body_en"), pendingIntent);
+        } else {
+            showNotification(data.get("title_ar"), data.get("body_ar"), pendingIntent);
         }
 
         //handle data messages cames from server
-        Log.i("notificationType",""+notificationType);
+        Log.i("notificationType", "" + notificationType);
     }
 
 
@@ -105,7 +106,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                  PendingIntent pendingIntent) {
 
         // Assign channel ID
-        String channel_id = "notification_channel";
+
         // Create a Builder object using NotificationCompat
         // class. This will allow control over all the flags
         NotificationCompat.Builder builder
@@ -113,38 +114,50 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .Builder(getApplicationContext(),
                 channel_id)
                 .setSmallIcon(R.drawable.ic_notification)
-                .setAutoCancel(true)
-                .setGroup("store")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setContentText(message)
+                .setContentTitle(title)
+                .setGroup("CommaStore")
                 .setContentIntent(pendingIntent);
+        Notification summaryNotification =
+                new NotificationCompat.Builder(getApplicationContext(), channel_id)
+                        .setContentTitle("Comma Store")
+                        //set content text to support devices running API level < 24
+                        .setContentText("Two new messages")
+                        .setSmallIcon(R.drawable.ic_notification)
+                        //build summary info into InboxStyle template
+                        .setStyle(new NotificationCompat.InboxStyle()
+                                .setBigContentTitle(" new messages")
+                                .setSummaryText("CommaStore.com"))
+                        //specify which group this notification belongs to
+                        .setGroup("CommaStore")
+                        //set this notification as the summary for the group
+                        .setGroupSummary(true)
+                        .build();
 
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(id, builder.build());
+        notificationManager.notify(1, summaryNotification);
+        id++;
+        //createNotificationChannels();
+        CreateNotificationChannel();
 
-        if (Build.VERSION.SDK_INT
-                >= Build.VERSION_CODES.JELLY_BEAN) {
-            builder = builder.setContent(
-                    getCustomDesign(title, message));
-        }
-        else {
-            builder = builder.setContentTitle(title)
-                    .setContentText(message)
-                    .setSmallIcon(R.drawable.ic_notification);
-        }
-        // Create an object of NotificationManager class to
-        // notify the
-        // user of events that happen in the background.
-        NotificationManager notificationManager
-                = (NotificationManager) getSystemService(
-                Context.NOTIFICATION_SERVICE);
+    }
+
+    private void CreateNotificationChannel() {
+
         // Check if the Android Version is greater than Oreo
         if (Build.VERSION.SDK_INT
                 >= Build.VERSION_CODES.O) {
+            notificationManager = getSystemService(NotificationManager.class);
             NotificationChannel notificationChannel
                     = new NotificationChannel(
                     channel_id, "web_app",
                     NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(
                     notificationChannel);
+
+
         }
-        notificationManager.notify(1, builder.build());
-        notificationId++;
     }
 }
